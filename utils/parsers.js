@@ -1,11 +1,15 @@
 const cheerio = require("cheerio");
-const url = require("url");
+// const url = require("url");
+const { URL } = require("url");
 
-const getAbsoluteUrl = (baseUrl, href) => {
-  return url.resolve(baseUrl, href);
+const constants = require("./constants").default;
+
+const getAbsoluteUrl = (basePath, href) => {
+  // return url.resolve(basePath, href);
+  return new URL(href, basePath);
 };
 
-const parseBase = (baseUrl, $) => {
+const parseBase = (basePath, $) => {
   const preHeader = $("body > table:eq(0)");
   const header = $("body > table:eq(1)");
   const nav = $("body > table:eq(2)");
@@ -16,7 +20,7 @@ const parseBase = (baseUrl, $) => {
     header: {
       logo: {
         href: $(header).find("a").has('> img[src*="sambalogo"]').attr("href"),
-        ...parseImage(baseUrl, $(header).find('a > img[src*="sambalogo"]')),
+        ...parseImage(basePath, $(header).find('a > img[src*="sambalogo"]')),
       },
     },
     nav: $(nav)
@@ -36,40 +40,43 @@ const parseBase = (baseUrl, $) => {
   };
 };
 
-const parseImage = (baseUrl, imgHtml) => {
+const parseImage = (basePath, imgHtml) => {
   const $ = cheerio(imgHtml);
   return {
-    src: $.attr("src"),
+    src: `${constants.baseUrl}${getAbsoluteUrl(basePath, $.attr("src"))}`,
     alt: $.attr("alt"),
-    width: $.attr("width"),
-    height: $.attr("height"),
+    width: $.attr("width") || null,
+    height: $.attr("height") || null,
   };
 };
 
-export const parseHome = (baseUrl, html) => {
+export const parseHome = (basePath, html) => {
   const $ = cheerio.load(html);
   return {
-    ...parseBase(baseUrl, $),
+    ...parseBase(basePath, $),
     classifields: {
       href: $('td > a[href^="/vw/classifieds/detail"]').attr("href"),
-      img: $('td > a[href^="/vw/classifieds/detail"] img').attr("src"),
+      img: parseImage(
+        basePath,
+        $('td > a[href^="/vw/classifieds/detail"] img')
+      ),
       title: $("td").has('> a[href^="/vw/classifieds/detail"]').text(),
     },
   };
 };
 
-export const parseClassifieds = (baseUrl, html) => {
+export const parseClassifieds = (basePath, html) => {
   const $ = cheerio.load(html);
   return {
-    ...parseBase(baseUrl, $),
+    ...parseBase(basePath, $),
   };
 };
 
-export const parseForums = (baseUrl, html) => {
+export const parseForums = (basePath, html) => {
   const $ = cheerio.load(html);
   let group = {};
   return {
-    ...parseBase(baseUrl, $),
+    ...parseBase(basePath, $),
     forumGroups: $("body > table.forumline")
       .first()
       .find("> tbody > tr")
@@ -80,10 +87,7 @@ export const parseForums = (baseUrl, html) => {
         if ($(el).find("td.catLeft").length) {
           acc.push({
             title: $(el).find("a.cattitle").text(),
-            href: getAbsoluteUrl(
-              baseUrl,
-              $(el).find("a.cattitle").attr("href")
-            ),
+            href: $(el).find("a.cattitle").attr("href"),
             items: [],
           });
           return acc;
@@ -92,7 +96,7 @@ export const parseForums = (baseUrl, html) => {
         acc[acc.length - 1].items.push({
           newPosts: !!$(el).find('img[src*="folder_new"]').length,
           title: $(el).find("a.forumlink").text(),
-          href: getAbsoluteUrl(baseUrl, $(el).find("a.forumlink").attr("href")),
+          href: $(el).find("a.forumlink").attr("href"),
           description: $(el)
             .find("td:has(a.forumlink) span.genmed")
             .last()
@@ -110,15 +114,9 @@ export const parseForums = (baseUrl, html) => {
               .trim(),
             user: {
               title: $(el).find("td:eq(4) .gensmall a").first().text(),
-              href: getAbsoluteUrl(
-                baseUrl,
-                $(el).find("td:eq(4) .gensmall a").first().attr("href")
-              ),
+              href: $(el).find("td:eq(4) .gensmall a").first().attr("href"),
             },
-            latestReply: getAbsoluteUrl(
-              baseUrl,
-              $(el).find("td:eq(4) .gensmall a").last().attr("href")
-            ),
+            latestReply: $(el).find("td:eq(4) .gensmall a").last().attr("href"),
           },
         });
 
@@ -127,30 +125,37 @@ export const parseForums = (baseUrl, html) => {
   };
 };
 
-export const parseGallery = (baseUrl, html) => {
+export const parseGallery = (basePath, html) => {
   const $ = cheerio.load(html);
   return {
-    ...parseBase(baseUrl, $),
+    ...parseBase(basePath, $),
   };
 };
 
-export const parseCommunity = (baseUrl, html) => {
+export const parseCommunity = (basePath, html) => {
   const $ = cheerio.load(html);
   return {
-    ...parseBase(baseUrl, $),
+    ...parseBase(basePath, $),
   };
 };
 
-export const parseTechnical = (baseUrl, html) => {
+export const parseTechnical = (basePath, html) => {
   const $ = cheerio.load(html);
   return {
-    ...parseBase(baseUrl, $),
+    ...parseBase(basePath, $),
   };
 };
 
-export const parseArchives = (baseUrl, html) => {
+export const parseArchives = (basePath, html) => {
   const $ = cheerio.load(html);
   return {
-    ...parseBase(baseUrl, $),
+    ...parseBase(basePath, $),
+  };
+};
+
+export const parseAbout = (basePath, html) => {
+  const $ = cheerio.load(html);
+  return {
+    ...parseBase(basePath, $),
   };
 };

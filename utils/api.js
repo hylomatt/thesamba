@@ -1,5 +1,6 @@
 import fetch from "node-fetch";
 
+import constants from "./constants";
 import {
   parseHome,
   parseClassifieds,
@@ -8,13 +9,14 @@ import {
   parseCommunity,
   parseTechnical,
   parseArchives,
+  parseAbout,
 } from "./parsers";
 
-const baseUrl = "https://www.thesamba.com";
-
 const getPage = async (path) => {
-  return await fetch(`${baseUrl}${path}`)
-    .then((r) => r.text())
+  const url = `${constants.baseUrl}${path}`;
+  console.log("fetchUrl:", url);
+  return await fetch(url)
+    .then(async (r) => await r.text())
     .catch((e) => {
       console.error(e);
       return null;
@@ -47,4 +49,8 @@ export const getTechnical = async (path) => {
 
 export const getArchives = async (path) => {
   return await getPage(path).then((r) => parseArchives(path, r));
+};
+
+export const getAbout = async (path) => {
+  return await getPage(path).then((r) => parseAbout(path, r));
 };

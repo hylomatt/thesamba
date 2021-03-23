@@ -2,13 +2,15 @@ import Head from "next/head";
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 
-import { getForums } from "../../../utils/api";
+import { getForum } from "../../../utils/api";
 import HeaderTop from "../../../components/header-top";
 import Header from "../../../components/header";
 import HeaderNav from "../../../components/header-nav";
 import Box from "../../../components/box";
 
-export default function ForumIndex({ data }) {
+export default function ForumDetail({ data }) {
+  console.log(data);
+
   return (
     <div className="none:container mx-auto">
       <Head>
@@ -68,7 +70,7 @@ export default function ForumIndex({ data }) {
 export async function getServerSideProps(context) {
   return {
     props: {
-      data: await getForums(context.req.url),
+      data: await getForum(context.req.url),
     },
   };
 }
