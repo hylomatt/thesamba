@@ -27,6 +27,7 @@ export default function Home({ data }) {
 }
 
 export async function getServerSideProps(context) {
+  console.log("=== home:", context.req.url);
   return {
     props: {
       data: await getHome(context.req.url),
