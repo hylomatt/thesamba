@@ -5,6 +5,7 @@ import {
   parseHome,
   parseClassifieds,
   parseForums,
+  parseForum,
   parseGallery,
   parseCommunity,
   parseTechnical,
@@ -33,6 +34,10 @@ export const getClassifieds = async (path) => {
 
 export const getForums = async (path) => {
   return await getPage(path).then((r) => parseForums(path, r));
+};
+
+export const getForum = async (path) => {
+  return await getPage(path).then((r) => parseForum(path, r));
 };
 
 export const getGallery = async (path) => {

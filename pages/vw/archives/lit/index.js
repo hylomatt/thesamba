@@ -2,9 +2,9 @@ import Head from "next/head";
 import { useEffect, useState } from "react";
 
 import { getArchives } from "../../../../utils/api";
-import HeaderTop from "../../../../components/header-top";
-import Header from "../../../../components/header";
-import HeaderNav from "../../../../components/header-nav";
+import HeaderTop from "../../../../components/HeaderTop";
+import Header from "../../../../components/Header";
+import HeaderNav from "../../../../components/HeaderNav";
 
 export default function TechnicalIndex({ data }) {
   return (

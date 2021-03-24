@@ -1,12 +1,19 @@
 const cheerio = require("cheerio");
-// const url = require("url");
-const { URL } = require("url");
+const url = require("url");
+// const { URL } = require("url");
 
 const constants = require("./constants").default;
 
 const getAbsoluteUrl = (basePath, href) => {
+  console.log("===", basePath, href);
+  return href || "";
+
   // return url.resolve(basePath, href);
-  return new URL(href, basePath);
+};
+
+const getFQUrl = (basePath, href) => {
+  return getAbsoluteUrl(basePath, href);
+  return new url.URL(getAbsoluteUrl(basePath, href), constants.baseUrl);
 };
 
 const parseBase = (basePath, $) => {
@@ -43,7 +50,7 @@ const parseBase = (basePath, $) => {
 const parseImage = (basePath, imgHtml) => {
   const $ = cheerio(imgHtml);
   return {
-    src: `${constants.baseUrl}${getAbsoluteUrl(basePath, $.attr("src"))}`,
+    src: $.attr("src"), // getFQUrl(basePath, $.attr("src")),
     alt: $.attr("alt"),
     width: $.attr("width") || null,
     height: $.attr("height") || null,
@@ -122,6 +129,14 @@ export const parseForums = (basePath, html) => {
 
         return acc;
       }, []),
+  };
+};
+
+export const parseForum = (basePath, html) => {
+  const $ = cheerio.load(html);
+  let group = {};
+  return {
+    ...parseBase(basePath, $),
   };
 };
 

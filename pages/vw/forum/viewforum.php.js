@@ -3,10 +3,10 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 
 import { getForum } from "../../../utils/api";
-import HeaderTop from "../../../components/header-top";
-import Header from "../../../components/header";
-import HeaderNav from "../../../components/header-nav";
-import Box from "../../../components/box";
+import HeaderTop from "../../../components/HeaderTop";
+import Header from "../../../components/Header";
+import HeaderNav from "../../../components/HeaderNav";
+import Box from "../../../components/Box";
 
 export default function ForumDetail({ data }) {
   console.log(data);
