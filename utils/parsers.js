@@ -5,15 +5,24 @@ const url = require("url");
 const constants = require("./constants").default;
 
 const getAbsoluteUrl = (basePath, href) => {
-  console.log("===", basePath, href);
-  return href || "";
-
-  // return url.resolve(basePath, href);
+  return url.resolve(basePath, href);
 };
 
 const getFQUrl = (basePath, href) => {
-  return getAbsoluteUrl(basePath, href);
-  return new url.URL(getAbsoluteUrl(basePath, href), constants.baseUrl);
+  return new url.URL(
+    getAbsoluteUrl(basePath, href),
+    constants.baseUrl
+  ).toString();
+};
+
+const parseImage = (basePath, imgHtml) => {
+  const $ = cheerio(imgHtml);
+  return {
+    src: getFQUrl(basePath, $.attr("src")),
+    alt: $.attr("alt"),
+    width: $.attr("width") || null,
+    height: $.attr("height") || null,
+  };
 };
 
 const parseBase = (basePath, $) => {
@@ -44,16 +53,6 @@ const parseBase = (basePath, $) => {
           .toArray(),
       }))
       .toArray(),
-  };
-};
-
-const parseImage = (basePath, imgHtml) => {
-  const $ = cheerio(imgHtml);
-  return {
-    src: $.attr("src"), // getFQUrl(basePath, $.attr("src")),
-    alt: $.attr("alt"),
-    width: $.attr("width") || null,
-    height: $.attr("height") || null,
   };
 };
 
