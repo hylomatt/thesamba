@@ -15,7 +15,6 @@ import {
 
 const getPage = async (path) => {
   const url = `${constants.baseUrl}${path}`;
-  console.log("fetchUrl:", url);
   return await fetch(url)
     .then(async (r) => await r.text())
     .catch((e) => {

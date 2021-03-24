@@ -1,6 +1,7 @@
 import Head from "next/head";
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 import { getForums } from "../../../utils/api";
 import HeaderTop from "../../../components/HeaderTop";
@@ -9,6 +10,8 @@ import HeaderNav from "../../../components/HeaderNav";
 import Box from "../../../components/Box";
 
 export default function ForumIndex({ data }) {
+  const router = useRouter();
+
   return (
     <div className="none:container mx-auto">
       <Head>
@@ -32,7 +35,7 @@ export default function ForumIndex({ data }) {
         {data.forumGroups.map((el, i) => (
           <Box classes="mb-4" key={`forumGroup-${i}`}>
             <Box classes="p-2 bg-light-grey">
-              <Link href={el.href}>
+              <Link href={`${router.asPath}${el.href}`}>
                 <a>{el.title}</a>
               </Link>
             </Box>
@@ -45,7 +48,7 @@ export default function ForumIndex({ data }) {
                 >
                   <Box>{subEl.newPosts ? "!" : ""}</Box>
                   <Box>
-                    <Link href={subEl.href}>
+                    <Link href={`${router.asPath}${subEl.href}`}>
                       <a className="font-semibold">{subEl.title}</a>
                     </Link>
                     <p>{subEl.description}</p>

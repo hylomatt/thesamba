@@ -5,14 +5,16 @@ const url = require("url");
 const constants = require("./constants").default;
 
 const getAbsoluteUrl = (basePath, href) => {
-  return url.resolve(basePath, href);
+  return href;
+  // return url.resolve(basePath, href);
 };
 
 const getFQUrl = (basePath, href) => {
-  return new url.URL(
-    getAbsoluteUrl(basePath, href),
-    constants.baseUrl
-  ).toString();
+  return href;
+  // return new url.URL(
+  //   getAbsoluteUrl(basePath, href),
+  //   constants.baseUrl
+  // ).toString();
 };
 
 const parseImage = (basePath, imgHtml) => {
@@ -136,6 +138,58 @@ export const parseForum = (basePath, html) => {
   let group = {};
   return {
     ...parseBase(basePath, $),
+    forumGroups: $("body > table.forumline")
+      .first()
+      .find("> tbody > tr")
+      .toArray()
+      .reduce((acc, el) => {
+        if ($(el).find("th").length) return acc;
+
+        if ($(el).find("td.catHead  ").length) {
+          acc.push({
+            title: $(el).find(".cattitle a").text(),
+            href: null, // $(el).find(".cattitle a").attr("href"),
+            items: [],
+          });
+          return acc;
+        }
+
+        acc[acc.length - 1].items.push({
+          newPosts: !!$(el).find('img[src*="folder_new"]').length,
+          title: $(el).find("td:eq(1) a.topictitle").text(),
+          // href: $(el).find("td:eq(1) a.topictitle").attr("href"),
+          pages: $(el).find("td:eq(1) span.gensmall").last().text(),
+          replies: $(el).find("td:eq(2) .postdetails").text(),
+          author: {
+            text: $(el).find("td:eq(3) .postdetails").text(),
+            user: {
+              title: $(el).find("td:eq(3) .postdetails a").first().text(),
+              // href: $(el).find("td:eq(3) .postdetails a").first().attr("href"),
+            },
+          },
+          views: $(el).find("td:eq(4) .postdetails").text(),
+          lastPost: {
+            text: $(el)
+              .find("td:eq(5) .postdetails")
+              .contents()
+              .filter(function () {
+                return this.nodeType == 3;
+              })
+              .text()
+              .trim(),
+            user: {
+              title: $(el).find("td:eq(5) .postdetails a").first().text(),
+              // href: $(el).find("td:eq(5) .postdetails a").first().attr("href"),
+            },
+            // latestReply: $(el)
+            //   .find("td:eq(5) .postdetails a")
+            //   .last()
+            //   .attr("href"),
+          },
+        });
+
+        return acc;
+      }, []),
   };
 };
 

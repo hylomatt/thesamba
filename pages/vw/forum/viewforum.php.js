@@ -22,7 +22,7 @@ export default function ForumDetail({ data }) {
       <HeaderNav items={data.nav} selected="Forums" />
 
       <main className="main p-4">
-        <Box
+        {/* <Box
           classes="py-2 px-4 grid w-full bg-medium-blue text-white"
           styles={{ gridTemplateColumns: "auto 60px 60px 130px" }}
         >
@@ -59,7 +59,7 @@ export default function ForumDetail({ data }) {
               ))}
             </Box>
           </Box>
-        ))}
+        ))} */}
       </main>
 
       <footer className=""></footer>

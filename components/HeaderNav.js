@@ -35,7 +35,7 @@ const HeaderNav = ({ items, selected = null }) => {
         ))}
       </div>
       {subNav && (
-        <div className="flex justify-center bg-medium-blue">
+        <div className="flex justify-center bg-medium-blue border-t border-solid border-dark-blue">
           {subNav.items.map((sub) => (
             <div
               className="px-4 py-2 text-white"
