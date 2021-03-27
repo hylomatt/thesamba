@@ -1,0 +1,177 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true,
+    "node": true,
+    "es6": true,
+    "jest": true
+  },
+  "extends": ["eslint:recommended", "plugin:react/recommended", "standard"],
+  "parserOptions": {
+    "ecmaFeatures": {
+      "globalReturn": true,
+      "jsx": true
+    },
+    "ecmaVersion": 12,
+    "sourceType": "module"
+  },
+  "plugins": ["react"],
+  "rules": {
+    // "indent": ["error", 2],
+    // "quotes": ["error", "double"],
+    "semi": ["error", "never"],
+
+
+
+    "arrow-body-style": [
+      2,
+      "always"
+    ],
+    "camelcase": [
+      2,
+      {
+        "properties": "never",
+        "ignoreDestructuring": true
+      }
+    ],
+    "comma-dangle": [
+      2,
+      "never"
+    ],
+    // "jsx-a11y/label-has-for": [
+    //   2,
+    //   {
+    //     "required": {
+    //       "every": [ "id"]
+    //     }
+    //   }
+    // ],
+    "jsx-quotes": [
+      2,
+      "prefer-double"
+    ],
+    "max-len": [
+      2,
+      250,
+      2,
+      {
+        "ignoreUrls": true,
+        "ignoreComments": true
+      }
+    ],
+    "no-multiple-empty-lines": [
+      2,
+      {
+        "max": 2,
+        "maxEOF": 1
+      }
+    ],
+    "no-param-reassign": [
+      2, 
+      {
+          "props": false
+      }
+    ],
+    "quotes": [
+      2,
+      "single"
+    ],
+    // "sort-class-members/sort-class-members": [
+    //   2,
+    //   {
+    //     "order": [
+    //       "[static-properties]",
+    //       "[static-methods]",
+    //       "[lifecycle]",
+    //       "/^on.*$/",
+    //       "[everything-else]",
+    //       "/^render.+$/",
+    //       "render"
+    //     ],
+    //     "groups": {
+    //       "lifecycle": [
+    //         "displayName",
+    //         "propTypes",
+    //         "contextTypes",
+    //         "childContextTypes",
+    //         "mixins",
+    //         "statics",
+    //         "defaultProps",
+    //         "constructor",
+    //         "getDefaultProps",
+    //         "getInitialState",
+    //         "state",
+    //         "getChildContext",
+    //         "componentWillMount",
+    //         "componentDidMount",
+    //         "componentWillReceiveProps",
+    //         "shouldComponentUpdate",
+    //         "componentWillUpdate",
+    //         "componentDidUpdate",
+    //         "componentWillUnmount"
+    //       ]
+    //     }
+    //   }
+    // ],
+    "strict": [
+      2,
+      "never"
+    ],
+
+    "block-scoped-var": 1,
+    "dot-notation": 1,
+    "indent": [
+      1,
+      2,
+      {
+        "SwitchCase": 1,
+        "ignoreComments": true
+      }
+    ],
+    "max-statements": [
+      1,
+      20
+    ],
+    "no-else-return": 1,
+    "no-extra-bind": 1,
+    "no-lone-blocks": 1,
+    "no-loop-func": 1,
+    "no-undef": 1,
+    "no-unused-vars": 1,
+    "vars-on-top": 1,
+
+    "array-bracket-spacing": 0,
+    "func-names": 0,
+    "function-paren-newline": 0,
+    "import/no-cycle": 0,
+    "jsx-a11y/label-has-associated-control": 0,
+    "key-spacing": 0,
+    "no-console": 0,
+    "no-multi-spaces": 0,
+    "no-restricted-globals": 0,
+    "no-underscore-dangle": 0,
+    "object-curly-newline": 0,
+    "object-curly-spacing": 0,
+    "one-var": 0,
+    "operator-linebreak": 0,
+    "padded-blocks": 0,
+    "prefer-const": 1,
+    "prefer-destructuring": 0,
+    "prefer-promise-reject-errors": 0,
+    "react/button-has-type": 0,
+    "react/default-props-match-prop-types": 0,
+    "react/destructuring-assignment": 0,
+    "react/forbid-prop-types": 0,
+    "react/jsx-closing-tag-location": 0,
+    "react/jsx-filename-extension": 0,
+    "react/jsx-no-bind": 0,
+    "react/jsx-one-expression-per-line": 0,
+    "react/no-access-state-in-setstate": 0,
+    "react/no-unused-state": 0,
+    "react/prefer-stateless-function": 0,
+    "react/prop-types": 0,
+    "space-before-function-paren": 0,
+    "space-in-parens": 0,
+    "spaced-comment": 0
+  }
+}

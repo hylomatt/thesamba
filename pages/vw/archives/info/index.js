@@ -1,10 +1,10 @@
-import Head from "next/head";
-import { useEffect, useState } from "react";
+import Head from 'next/head'
+import React from 'react'
 
-import { getTechnical } from "../../../../utils/api";
-import HeaderTop from "../../../../components/HeaderTop";
-import Header from "../../../../components/Header";
-import HeaderNav from "../../../../components/HeaderNav";
+import { getTechnical } from '../../../../utils/api'
+import HeaderTop from '../../../../components/HeaderTop'
+import Header from '../../../../components/Header'
+import HeaderNav from '../../../../components/HeaderNav'
 
 export default function TechnicalIndex({ data }) {
   return (
@@ -23,13 +23,13 @@ export default function TechnicalIndex({ data }) {
 
       <footer className=""></footer>
     </div>
-  );
+  )
 }
 
 export async function getServerSideProps(context) {
   return {
     props: {
-      data: await getTechnical(context.req.url),
-    },
-  };
+      data: await getTechnical(context.req.url)
+    }
+  }
 }

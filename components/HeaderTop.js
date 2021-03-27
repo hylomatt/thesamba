@@ -1,28 +1,30 @@
-import Link from "next/link";
-import Image from "next/image";
+import React from 'react'
+import Link from 'next/link'
 
 const HeaderTop = ({ data, isLoggedIn }) => {
   return (
     <div className="flex bg-medium-grey py-2 px-3">
-      {isLoggedIn ? (
-        <>
-          <p className="mr-2">Hello,</p>
-          <Link href="/vw/forum/login.php?logout=true">
-            <a>Log out</a>
-          </Link>
-        </>
-      ) : (
-        <>
-          <p className="mr-2">Hello!</p>
-          <Link href="/vw/forum/login.php">
-            <a className="mr-2">Log in</a>
-          </Link>
-          <p className="mr-2">or</p>
-          <Link href="/vw/forum/profile.php?mode=register">
-            <a className="mr-2">Register</a>
-          </Link>
-        </>
-      )}
+      {isLoggedIn
+        ? (
+          <>
+            <p className="mr-2">Hello,</p>
+            <Link href="/vw/forum/login.php?logout=true">
+              <a>Log out</a>
+            </Link>
+          </>
+        )
+        : (
+          <>
+            <p className="mr-2">Hello!</p>
+            <Link href="/vw/forum/login.php">
+              <a className="mr-2">Log in</a>
+            </Link>
+            <p className="mr-2">or</p>
+            <Link href="/vw/forum/profile.php?mode=register">
+              <a className="mr-2">Register</a>
+            </Link>
+          </>
+        )}
       <p className="mr-2">|</p>
       <Link href="/vw/contact.php">
         <a className="mr-2">Help</a>
@@ -44,7 +46,7 @@ const HeaderTop = ({ data, isLoggedIn }) => {
         <a>Advertise on TheSamba.com</a>
       </Link>
     </div>
-  );
-};
+  )
+}
 
-export default HeaderTop;
+export default HeaderTop

@@ -1,15 +1,15 @@
-import Head from "next/head";
-import React, { useEffect, useState } from "react";
-import Link from "next/link";
+import Head from 'next/head'
+import React from 'react'
+// import Link from 'next/link'
 
-import { getForum } from "../../../utils/api";
-import HeaderTop from "../../../components/HeaderTop";
-import Header from "../../../components/Header";
-import HeaderNav from "../../../components/HeaderNav";
-import Box from "../../../components/Box";
+import { getForum } from '../../../utils/api'
+import HeaderTop from '../../../components/HeaderTop'
+import Header from '../../../components/Header'
+import HeaderNav from '../../../components/HeaderNav'
+// import Box from '../../../components/Box'
 
 export default function ForumDetail({ data }) {
-  console.log(data);
+  console.log(data)
 
   return (
     <div className="none:container mx-auto">
@@ -64,13 +64,13 @@ export default function ForumDetail({ data }) {
 
       <footer className=""></footer>
     </div>
-  );
+  )
 }
 
 export async function getServerSideProps(context) {
   return {
     props: {
-      data: await getForum(context.req.url),
-    },
-  };
+      data: await getForum(context.req.url)
+    }
+  }
 }

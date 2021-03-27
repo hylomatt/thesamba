@@ -1,10 +1,11 @@
-import UserContext from "../utils/providers/UserProvider";
-import Head from "next/head";
+import React from 'react'
+import UserContext from '../utils/providers/UserProvider'
+import Head from 'next/head'
 
-import "../styles/globals.css";
-import "tailwindcss/tailwind.css";
+import '../styles/globals.css'
+import 'tailwindcss/tailwind.css'
 
-function MyApp({ Component, pageProps }) {
+function MyApp ({ Component, pageProps }) {
   return (
     <UserContext>
       <Head>
@@ -13,7 +14,7 @@ function MyApp({ Component, pageProps }) {
       </Head>
       <Component {...pageProps} />
     </UserContext>
-  );
+  )
 }
 
-export default MyApp;
+export default MyApp

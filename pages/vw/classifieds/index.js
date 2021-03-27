@@ -1,10 +1,10 @@
-import Head from "next/head";
-import { useEffect, useState } from "react";
+import Head from 'next/head'
+import React from 'react'
 
-import { getClassifieds } from "../../../utils/api";
-import HeaderTop from "../../../components/HeaderTop";
-import Header from "../../../components/Header";
-import HeaderNav from "../../../components/HeaderNav";
+import { getClassifieds } from '../../../utils/api'
+import HeaderTop from '../../../components/HeaderTop'
+import Header from '../../../components/Header'
+import HeaderNav from '../../../components/HeaderNav'
 
 export default function ClassifiedIndex({ data }) {
   return (
@@ -23,13 +23,13 @@ export default function ClassifiedIndex({ data }) {
 
       <footer className=""></footer>
     </div>
-  );
+  )
 }
 
 export async function getServerSideProps(context) {
   return {
     props: {
-      data: await getClassifieds(context.req.url),
-    },
-  };
+      data: await getClassifieds(context.req.url)
+    }
+  }
 }

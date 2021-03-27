@@ -1,3 +1,3 @@
 export default {
-  baseUrl: "https://www.thesamba.com",
-};
+  baseUrl: 'https://www.thesamba.com'
+}
