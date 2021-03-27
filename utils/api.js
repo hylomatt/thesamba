@@ -1,4 +1,5 @@
 import fetch from "node-fetch";
+import xml2js from "xml2js";
 
 import constants from "./constants";
 import {
@@ -17,6 +18,29 @@ const getPage = async (path) => {
   const url = `${constants.baseUrl}${path}`;
   return await fetch(url)
     .then(async (r) => await r.text())
+    .catch((e) => {
+      console.error(e);
+      return null;
+    });
+};
+
+const getFeed = async (path) => {
+  // https://www.thesamba.com/vw/forum/viewforum.php?f=5
+  // https://www.thesamba.com/vw/forum/rss.php?f=5
+  const rssPath = path.replace("viewforum.php", "rss.php");
+  const url = `${constants.baseUrl}${rssPath}`;
+  return await fetch(url)
+    .then(async (r) => await r.text())
+    .then(async (xml) => {
+      const parser = new xml2js.Parser();
+      return await parser
+        .parseStringPromise(xml)
+        .then((result) => result)
+        .catch((err) => {
+          console.log("xm parse error:", err);
+          return null;
+        });
+    })
     .catch((e) => {
       console.error(e);
       return null;
