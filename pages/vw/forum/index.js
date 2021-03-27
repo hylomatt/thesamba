@@ -23,10 +23,7 @@ export default function ForumIndex({ data }) {
       <HeaderNav items={data.nav} selected="Forums" />
 
       <main className="main p-4">
-        <Box
-          classes="py-2 px-4 grid w-full bg-medium-blue text-white"
-          styles={{ gridTemplateColumns: 'auto 60px 60px 130px' }}
-        >
+        <Box classes="py-2 px-4 grid w-full bg-medium-blue text-white" styles={{ gridTemplateColumns: 'auto 60px 60px 130px' }}>
           <Box>Forum</Box>
           <Box classes="text-right">Topics</Box>
           <Box classes="text-right">Posts</Box>
@@ -43,11 +40,7 @@ export default function ForumIndex({ data }) {
               <Box classes="">
                 {el.items.map((subEl, subI) => {
                   return (
-                    <Box
-                      key={`forum-${i}-${subI}`}
-                      classes="py-2 px-4 grid w-full"
-                      styles={{ gridTemplateColumns: '30px auto 60px 60px 130px' }}
-                    >
+                    <Box key={`forum-${i}-${subI}`} classes="py-2 px-4 grid w-full" styles={{ gridTemplateColumns: '30px auto 60px 60px 130px' }}>
                       <Box>{subEl.newPosts ? '!' : ''}</Box>
                       <Box>
                         <Link href={`${router.asPath}${subEl.href}`}>

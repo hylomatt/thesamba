@@ -21,23 +21,17 @@
     // "quotes": ["error", "double"],
     "semi": ["error", "never"],
 
-
-
-    "arrow-body-style": [
-      2,
-      "always"
-    ],
-    "camelcase": [
-      2,
-      {
-        "properties": "never",
-        "ignoreDestructuring": true
-      }
-    ],
-    "comma-dangle": [
-      2,
-      "never"
-    ],
+    // "camelcase": [
+    //   2,
+    //   {
+    //     "properties": "never",
+    //     "ignoreDestructuring": true
+    //   }
+    // ],
+    // "comma-dangle": [
+    //   2,
+    //   "never"
+    // ],
     // "jsx-a11y/label-has-for": [
     //   2,
     //   {
@@ -46,10 +40,7 @@
     //     }
     //   }
     // ],
-    "jsx-quotes": [
-      2,
-      "prefer-double"
-    ],
+    "jsx-quotes": [2, "prefer-double"],
     "max-len": [
       2,
       250,
@@ -67,15 +58,12 @@
       }
     ],
     "no-param-reassign": [
-      2, 
+      2,
       {
-          "props": false
+        "props": false
       }
     ],
-    "quotes": [
-      2,
-      "single"
-    ],
+    "quotes": [2, "single"],
     // "sort-class-members/sort-class-members": [
     //   2,
     //   {
@@ -113,10 +101,7 @@
     //     }
     //   }
     // ],
-    "strict": [
-      2,
-      "never"
-    ],
+    "strict": [2, "never"],
 
     "block-scoped-var": 1,
     "dot-notation": 1,
@@ -128,10 +113,7 @@
         "ignoreComments": true
       }
     ],
-    "max-statements": [
-      1,
-      20
-    ],
+    "max-statements": [1, 20],
     "no-else-return": 1,
     "no-extra-bind": 1,
     "no-lone-blocks": 1,

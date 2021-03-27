@@ -6,7 +6,7 @@ import HeaderTop from '../../components/HeaderTop'
 import Header from '../../components/Header'
 import HeaderNav from '../../components/HeaderNav'
 
-export default function Home ({ data }) {
+export default function Home({ data }) {
   return (
     <div className="none:container mx-auto">
       <Head>
@@ -26,7 +26,7 @@ export default function Home ({ data }) {
   )
 }
 
-export async function getServerSideProps (context) {
+export async function getServerSideProps(context) {
   console.log('=== home:', context.req.url)
   return {
     props: {
