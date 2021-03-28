@@ -3,65 +3,108 @@ import React from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 
+import { makeStyles } from '@material-ui/core/styles'
+import { Box, Grid, Typography, Hidden } from '@material-ui/core'
+
 import { getForums } from '../../../utils/api'
 import HeaderTop from '../../../components/HeaderTop'
 import Header from '../../../components/Header'
-import HeaderNav from '../../../components/HeaderNav'
-import Box from '../../../components/Box'
+
+const useStyles = makeStyles({
+  root: {
+    color: 'white'
+  }
+})
 
 export default function ForumIndex({ data }) {
+  const classes = useStyles()
   const router = useRouter()
 
   return (
-    <div className="none:container mx-auto">
+    <Box p={{ xs: 0, sm: 1 }}>
       <Head>
         <title>{data.title}</title>
       </Head>
 
       <HeaderTop data={data.preHeader} loggedIn={data.loggedIn} />
-      <Header data={data.header} />
-      <HeaderNav items={data.nav} selected="Forums" />
+      <Header data={data.header} items={data.nav} selected="Home" />
 
-      <main className="main p-4">
-        <Box classes="py-2 px-4 grid w-full bg-medium-blue text-white" styles={{ gridTemplateColumns: 'auto 60px 60px 130px' }}>
-          <Box>Forum</Box>
-          <Box classes="text-right">Topics</Box>
-          <Box classes="text-right">Posts</Box>
-          <Box classes="text-right">Last Post</Box>
-        </Box>
-        {data.forumGroups.map((el, i) => {
-          return (
-            <Box classes="mb-4" key={`forumGroup-${i}`}>
-              <Box classes="p-2 bg-light-grey">
-                <Link href={`${router.asPath}${el.href}`}>
-                  <a>{el.title}</a>
-                </Link>
-              </Box>
-              <Box classes="">
-                {el.items.map((subEl, subI) => {
-                  return (
-                    <Box key={`forum-${i}-${subI}`} classes="py-2 px-4 grid w-full" styles={{ gridTemplateColumns: '30px auto 60px 60px 130px' }}>
-                      <Box>{subEl.newPosts ? '!' : ''}</Box>
-                      <Box>
-                        <Link href={`${router.asPath}${subEl.href}`}>
-                          <a className="font-semibold">{subEl.title}</a>
-                        </Link>
-                        <p>{subEl.description}</p>
-                      </Box>
-                      <Box classes="text-right">{subEl.topics}</Box>
-                      <Box classes="text-right">{subEl.posts}</Box>
-                      <Box classes="text-right">{subEl.lastPost.text}</Box>
-                    </Box>
-                  )
-                })}
-              </Box>
+      <Box px={{ xs: 1, sm: 0 }} py={1}>
+        <Hidden xsDown>
+          <Box bgcolor="primary.main">
+            <Grid container>
+              <Grid item xs={8}>
+                <Box p={1}>
+                  <Typography align="center" className={classes.root}>
+                    Forum
+                  </Typography>
+                </Box>
+              </Grid>
+              <Grid item xs={1}>
+                <Box p={1}>
+                  <Typography align="right" className={classes.root}>
+                    Topics
+                  </Typography>
+                </Box>
+              </Grid>
+              <Grid item xs={1}>
+                <Box p={1}>
+                  <Typography align="right" className={classes.root}>
+                    Posts
+                  </Typography>
+                </Box>
+              </Grid>
+              <Grid item xs={2}>
+                <Box p={1}>
+                  <Typography align="right" className={classes.root}>
+                    Last Post
+                  </Typography>
+                </Box>
+              </Grid>
+            </Grid>
+          </Box>
+        </Hidden>
+
+        {data.forumGroups.map((el, i) => (
+          <Box mb={2} key={`forumGroup-${i}`}>
+            <Box p={1} bgcolor="secondary.light">
+              <Link href={`${router.asPath}${el.href}`} passHref>
+                <Typography component="a" variant="subtitle1">
+                  {el.title}
+                </Typography>
+              </Link>
             </Box>
-          )
-        })}
-      </main>
+            {el.items.map((subEl, subI) => (
+              <Box py={1} px={1} mb={1} key={`forum-${i}-${subI}`}>
+                <Grid container>
+                  <Grid item xs={12} sm={8}>
+                    <Box mb={{ xs: 1, sm: 0 }}>
+                      {/* {subEl.newPosts  ? '!' : '-'} */}
 
-      <footer className=""></footer>
-    </div>
+                      <Link href={`${router.asPath}${subEl.href}`} passHref>
+                        <Typography component="a" className="font-semibold">
+                          {subEl.title}
+                        </Typography>
+                      </Link>
+                      <Typography>{subEl.description}</Typography>
+                    </Box>
+                  </Grid>
+                  <Grid item xs={3} sm={1}>
+                    <Typography align="right">{subEl.topics}</Typography>
+                  </Grid>
+                  <Grid item xs={3} sm={1}>
+                    <Typography align="right">{subEl.posts}</Typography>
+                  </Grid>
+                  <Grid item xs={6} sm={2}>
+                    <Typography align="right">{subEl.lastPost.text}</Typography>
+                  </Grid>
+                </Grid>
+              </Box>
+            ))}
+          </Box>
+        ))}
+      </Box>
+    </Box>
   )
 }
 

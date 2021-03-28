@@ -2,62 +2,86 @@ import Head from 'next/head'
 import React from 'react'
 import Link from 'next/link'
 
+import { makeStyles } from '@material-ui/core/styles'
+import { Box, Grid, Typography } from '@material-ui/core'
+
 import { getTopic } from '../../../utils/api'
 import HeaderTop from '../../../components/HeaderTop'
 import Header from '../../../components/Header'
-import HeaderNav from '../../../components/HeaderNav'
-import Box from '../../../components/Box'
+
+const useStyles = makeStyles({
+  root: {
+    color: 'white'
+  }
+})
 
 export default function TopicDetail({ data }) {
   console.log(data)
 
+  const classes = useStyles()
+
   return (
-    <div className="none:container mx-auto">
+    <Box p={{ xs: 0, sm: 1 }}>
       <Head>
         <title>{data.title}</title>
       </Head>
 
       <HeaderTop data={data.preHeader} loggedIn={data.loggedIn} />
-      <Header data={data.header} />
-      <HeaderNav items={data.nav} selected="Forums" />
+      <Header data={data.header} items={data.nav} selected="Home" />
 
-      <main className="main p-4">
-        <Box>{data.title}</Box>
-        <Box classes="py-2 grid w-full bg-medium-blue text-white" styles={{ gridTemplateColumns: '150px auto' }}>
-          <Box classes="text-center">Author</Box>
-          <Box classes="text-center">Message</Box>
+      <Box px={{ xs: 1, sm: 0 }} py={1}>
+        <Box mb={2}>
+          <Typography variant="h4">{data.topic.title}</Typography>
         </Box>
-        {data.posts.map((el, i) => {
-          return (
-            <Box classes="mb-4 grid w-full" key={`topic-post-${i}`} styles={{ gridTemplateColumns: '150px auto' }}>
-              <Box classes="p-2 bg-light-grey">
-                <Link href={el.name.href || ''}>
-                  <a>{el.name.title}</a>
-                </Link>
-                <Box dangerouslySetInnerHTML={{ __html: el.posterDetails }}></Box>
-              </Box>
-              <Box classes="py-2 px-4">
-                <Box dangerouslySetInnerHTML={{ __html: el.postDetails }}></Box>
-                <Box dangerouslySetInnerHTML={{ __html: el.content }}></Box>
-                {/* <Box>{subEl.newPosts ? '!' : ''}</Box>
-                <Box>
-                  <Link href={subEl.href || ''}>
-                    <a className="font-semibold">{subEl.title}</a>
-                  </Link>
-                  <p>{subEl.description}</p>
-                </Box>
-                <Box classes="text-right">{subEl.replies}</Box>
-                <Box classes="text-right">{subEl.author.text}</Box>
-                <Box classes="text-right">{subEl.views}</Box>
-                <Box classes="text-right">{subEl.lastPost.text}</Box> */}
-              </Box>
-            </Box>
-          )
-        })}
-      </main>
+        <Box mb={2}>
+          {data.topic.nav.map((el, i) => (
+            <Link href={el.href} key={`topic-nav-${i}`} passHref>
+              <Typography component="a">{el.title}</Typography>
+            </Link>
+          ))}
+        </Box>
 
-      <footer className=""></footer>
-    </div>
+        <Box py={1} mb={2} bgcolor="primary.main">
+          <Grid container>
+            <Grid item xs={2}>
+              <Typography align="center" className={classes.root}>
+                Author
+              </Typography>
+            </Grid>
+            <Grid item xs={10}>
+              <Typography align="center" className={classes.root}>
+                Message
+              </Typography>
+            </Grid>
+          </Grid>
+        </Box>
+
+        {data.posts.map((el, i) => (
+          <Box mb={2} key={`topic-post-${i}`}>
+            <Grid container>
+              <Grid item xs={2}>
+                <Box p={1} bgcolor="secondary.light">
+                  <Link href={el.name.href || ''} passHref>
+                    <Typography component="a">{el.name.title}</Typography>
+                  </Link>
+                  <Box dangerouslySetInnerHTML={{ __html: el.posterDetails }}></Box>
+                </Box>
+              </Grid>
+              <Grid item xs={10}>
+                <Box pl={2}>
+                  <Box mb={1} p={1} bgcolor="secondary.light">
+                    <Typography dangerouslySetInnerHTML={{ __html: el.postDetails }} />
+                  </Box>
+                  <Box p={1}>
+                    <Typography dangerouslySetInnerHTML={{ __html: el.content }} />
+                  </Box>
+                </Box>
+              </Grid>
+            </Grid>
+          </Box>
+        ))}
+      </Box>
+    </Box>
   )
 }
 

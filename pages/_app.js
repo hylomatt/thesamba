@@ -1,18 +1,32 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import UserContext from '../utils/providers/UserProvider'
 import Head from 'next/head'
+import { ThemeProvider } from '@material-ui/core/styles'
+import CssBaseline from '@material-ui/core/CssBaseline'
+
+import theme from '../utils/theme'
 
 import '../styles/globals.css'
-import 'tailwindcss/tailwind.css'
+// import 'tailwindcss/tailwind.css'
 
 function MyApp({ Component, pageProps }) {
+  useEffect(() => {
+    const jssStyles = document.querySelector('#jss-server-side')
+    if (jssStyles) {
+      jssStyles.parentElement.removeChild(jssStyles)
+    }
+  }, [])
+
   return (
     <UserContext>
       <Head>
         <title>The Samba</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Component {...pageProps} />
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <Component {...pageProps} />
+      </ThemeProvider>
     </UserContext>
   )
 }
