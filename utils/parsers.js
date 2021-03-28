@@ -20,7 +20,7 @@ const getFQUrl = (basePath, href) => {
 const parseImage = (basePath, imgHtml) => {
   const $ = cheerio(imgHtml)
   return {
-    src: getFQUrl(basePath, $.attr('src')),
+    src: getFQUrl(basePath, $.attr('src')) || null,
     alt: $.attr('alt'),
     width: $.attr('width') || null,
     height: $.attr('height') || null
@@ -38,7 +38,7 @@ const parseBase = (basePath, $) => {
     preHeader: {},
     header: {
       logo: {
-        href: $(header).find('a').has('> img[src*="sambalogo"]').attr('href'),
+        href: $(header).find('a').has('> img[src*="sambalogo"]').attr('href') || null,
         ...parseImage(basePath, $(header).find('a > img[src*="sambalogo"]'))
       }
     },
@@ -47,13 +47,13 @@ const parseBase = (basePath, $) => {
       .map((idx, el) => {
         return {
           title: $(el).find('> a').text().trim(),
-          href: $(el).find('> a').attr('href'),
+          href: $(el).find('> a').attr('href') || null,
           items: $(el)
             .find('ul li a')
             .map((idx2, el2) => {
               return {
                 title: $(el2).text().trim(),
-                href: $(el2).attr('href')
+                href: $(el2).attr('href') || null
               }
             })
             .toArray()
@@ -68,7 +68,7 @@ export const parseHome = (basePath, html) => {
   return {
     ...parseBase(basePath, $),
     classifields: {
-      href: $('td > a[href^="/vw/classifieds/detail"]').attr('href'),
+      href: $('td > a[href^="/vw/classifieds/detail"]').attr('href') || null,
       img: parseImage(basePath, $('td > a[href^="/vw/classifieds/detail"] img')),
       title: $('td').has('> a[href^="/vw/classifieds/detail"]').text()
     }
