@@ -21,7 +21,7 @@ const parseImage = (basePath, imgHtml) => {
   const $ = cheerio(imgHtml)
   return {
     src: getFQUrl(basePath, $.attr('src')) || null,
-    alt: $.attr('alt'),
+    alt: $.attr('alt') || null,
     width: $.attr('width') || null,
     height: $.attr('height') || null
   }
@@ -65,13 +65,63 @@ const parseBase = (basePath, $) => {
 
 export const parseHome = (basePath, html) => {
   const $ = cheerio.load(html)
+
+  const mainContent = $('body > table:has(form[name="login_form"]) > tbody > tr')
+  const leftColumn = $(mainContent).find('> td:first-child')
+  const centerColumn = $(mainContent).find('> td:nth-child(2)')
+  const rightColumn = $(mainContent).find('> td:last-child')
+
   return {
     ...parseBase(basePath, $),
-    classifields: {
-      href: $('td > a[href^="/vw/classifieds/detail"]').attr('href') || null,
-      img: parseImage(basePath, $('td > a[href^="/vw/classifieds/detail"] img')),
-      title: $('td').has('> a[href^="/vw/classifieds/detail"]').text()
-    }
+    scams: $(leftColumn)
+      .find('> table:contains("Scam warnings") a')
+      .toArray()
+      .map((el) => ({
+        title: $(el).text(),
+        href: $(el).attr('href') || null
+      })),
+    classifieds: {
+      href: $(leftColumn).find('td > a[href^="/vw/classifieds/detail"]').attr('href') || null,
+      img: parseImage(basePath, $(leftColumn).find('td > a[href^="/vw/classifieds/detail"] img')),
+      title: $(leftColumn).find('td:has(> a[href^="/vw/classifieds/detail"])  ').text()
+    },
+    gallery: {
+      href: $(leftColumn).find('> table:contains("All Gallery") a:has(img[alt="Latest Photo"])').attr('href') || null,
+      img: parseImage(basePath, $(leftColumn).find('> table:contains("All Gallery") a img[alt="Latest Photo"]')),
+      title: $(leftColumn).find('> table:contains("All Gallery") td:has(a:has(img[alt="Latest Photo"]))').text()
+    },
+    fact: {
+      img: parseImage(basePath, $(centerColumn).find('>table:first-child img#randoms')),
+      content: $(centerColumn).find('>table:first-child span.gen').html()
+    },
+    featuredAds: $(centerColumn)
+      .find('span#ads td.genmed')
+      .toArray()
+      .map((el) => ({
+        title: $(el)
+          .contents()
+          .filter(function () {
+            return this.nodeType === 3
+          })
+          .text()
+          .trim(),
+        img: parseImage(basePath, $(el).find('img')),
+        href: $(el).find('a').attr('href') || null
+      })),
+    advertisement: {},
+    stolen: {
+      href: $(rightColumn).find('> table:contains("Stolen") a:has(img)').attr('href') || null,
+      img: parseImage(basePath, $(rightColumn).find('> table:contains("Stolen") a:has(img) img')),
+      title: $(rightColumn).find('> table:contains("Stolen") td:has(img)').text()
+    },
+    comingEvents:
+      $(rightColumn)
+        .find('#vmarquee')
+        .html()
+        .trim()
+        .replace(/<br>/g, '')
+        .replace(/<b>/g, '</div><div><b>')
+        .replace(/^<\/div>/, '') + '</div>'
   }
 }
 
