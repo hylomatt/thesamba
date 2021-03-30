@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { makeStyles } from '@material-ui/core/styles'
 import { Box, Grid, Typography, Hidden } from '@material-ui/core'
 
-import { getForum } from '../../../utils/api'
+import { getForum } from '../../../utils/getters'
 import HeaderTop from '../../../components/HeaderTop'
 import Header from '../../../components/Header'
 
@@ -117,9 +117,12 @@ export default function ForumDetail({ data }) {
 }
 
 export async function getServerSideProps(context) {
+  const { cookies, data } = await getForum(context.req)
+  context.res.setHeader('set-cookie', cookies || [])
+
   return {
     props: {
-      data: await getForum(context.req.url)
+      data
     }
   }
 }

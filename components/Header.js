@@ -1,10 +1,35 @@
 import React, { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { Box, Grid, Hidden, IconButton, Drawer, List, ListItem, ListItemText, Typography, Accordion, AccordionDetails, AccordionSummary, Button, MenuItem, Popper, ClickAwayListener, Grow, Paper, MenuList } from '@material-ui/core'
+import {
+  Box,
+  Grid,
+  Hidden,
+  IconButton,
+  Drawer,
+  List,
+  ListItem,
+  ListItemText,
+  ListItemIcon,
+  Typography,
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Button,
+  MenuItem,
+  Popper,
+  ClickAwayListener,
+  Grow,
+  Paper,
+  MenuList,
+  Divider
+} from '@material-ui/core'
 import MenuIcon from '@material-ui/icons/Menu'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import { makeStyles } from '@material-ui/core/styles'
+
+import InboxIcon from '@material-ui/icons/MoveToInbox'
+import MailIcon from '@material-ui/icons/Mail'
 
 import constants from '../utils/constants'
 
@@ -20,6 +45,7 @@ const useStyles = makeStyles((theme) => ({
     width: '100%'
   },
   heading: {
+    display: 'block',
     fontSize: theme.typography.pxToRem(15),
     flexShrink: 0
   },
@@ -30,6 +56,10 @@ const useStyles = makeStyles((theme) => ({
 
   menuItem: {
     justifyContent: 'center'
+  },
+
+  menuBtn: {
+    height: 64
   }
 }))
 
@@ -70,7 +100,7 @@ const Header = ({ data, items, selected = null }) => {
       <Box bgcolor="primary.dark">
         <Grid container justify="space-between" alignItems="center" wrap="nowrap">
           <Hidden mdUp>
-            <IconButton aria-label="menu" color="secondary" onClick={() => setMenu(true)}>
+            <IconButton className={classes.menuBtn} aria-label="menu" color="secondary" onClick={() => setMenu(true)}>
               <MenuIcon fontSize="large" color="secondary" />
             </IconButton>
             <Link href={data.logo.href}>
@@ -125,6 +155,19 @@ const Header = ({ data, items, selected = null }) => {
               </Accordion>
             ))}
           </div>
+
+          <Divider />
+          <List>
+            <ListItem button>
+              <ListItemText>
+                <Link href="/vw/forum/login.php?redirect=/vw/index.php" passHref>
+                  <Typography component="a" className={classes.heading}>
+                    Login
+                  </Typography>
+                </Link>
+              </ListItemText>
+            </ListItem>
+          </List>
         </div>
       </Drawer>
 

@@ -3,7 +3,7 @@ import React from 'react'
 
 import { Box, Typography } from '@material-ui/core'
 
-import { getArchives } from '../../../../utils/api'
+import { getArchives } from '../../../../utils/getters'
 import HeaderTop from '../../../../components/HeaderTop'
 import Header from '../../../../components/Header'
 
@@ -25,9 +25,12 @@ export default function TechnicalIndex({ data }) {
 }
 
 export async function getServerSideProps(context) {
+  const { cookies, data } = await getArchives(context.req)
+  context.res.setHeader('set-cookie', cookies || [])
+
   return {
     props: {
-      data: await getArchives(context.req.url)
+      data
     }
   }
 }

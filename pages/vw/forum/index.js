@@ -6,7 +6,7 @@ import { useRouter } from 'next/router'
 import { makeStyles } from '@material-ui/core/styles'
 import { Box, Grid, Typography, Hidden } from '@material-ui/core'
 
-import { getForums } from '../../../utils/api'
+import { getForums } from '../../../utils/getters'
 import HeaderTop from '../../../components/HeaderTop'
 import Header from '../../../components/Header'
 
@@ -109,9 +109,12 @@ export default function ForumIndex({ data }) {
 }
 
 export async function getServerSideProps(context) {
+  const { cookies, data } = await getForums(context.req)
+  context.res.setHeader('set-cookie', cookies || [])
+
   return {
     props: {
-      data: await getForums(context.req.url)
+      data
     }
   }
 }

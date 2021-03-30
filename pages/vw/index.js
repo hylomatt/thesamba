@@ -6,7 +6,7 @@ import Image from 'next/image'
 import { Box, Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 
-import { getHome } from '../../utils/api'
+import { getHome } from '../../utils/getters'
 import HeaderTop from '../../components/HeaderTop'
 import Header from '../../components/Header'
 
@@ -22,7 +22,6 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 export default function Home({ data }) {
-  console.log('=== home:', data)
   const classes = useStyles()
 
   return (
@@ -35,6 +34,7 @@ export default function Home({ data }) {
       <Header data={data.header} items={data.nav} selected="Home" />
 
       <Box px={{ xs: 1, md: 0 }} py={1}>
+        {/* scams */}
         <Box mb={1} border={1} borderColor="secondary.light">
           <Box bgcolor="secondary.light" p={1}>
             <Typography>Scam warnings</Typography>
@@ -50,6 +50,7 @@ export default function Home({ data }) {
           </Box>
         </Box>
 
+        {/* classifieds */}
         <Box mb={1} border={1} borderColor="secondary.light">
           <Box bgcolor="secondary.light" p={1}>
             <Typography>Classifieds</Typography>
@@ -58,10 +59,11 @@ export default function Home({ data }) {
             <div style={{ position: 'relative', width: '100%', paddingBottom: '20%' }}>
               <Image src={`${constants.baseUrl}${data.classifieds.img.src}`} alt={data.classifieds.img.alt} layout="fill" objectFit="contain" />
             </div>
-            <Typography>{data.classifieds.title}</Typography>
+            <Typography align="center">{data.classifieds.title}</Typography>
           </Box>
         </Box>
 
+        {/* gallery */}
         <Box mb={1} border={1} borderColor="secondary.light">
           <Box bgcolor="secondary.light" p={1}>
             <Typography>Gallery</Typography>
@@ -70,10 +72,11 @@ export default function Home({ data }) {
             <div style={{ position: 'relative', width: '100%', paddingBottom: '20%' }}>
               <Image src={`${constants.baseUrl}${data.gallery.img.src}`} alt={data.gallery.img.alt} layout="fill" objectFit="contain" />
             </div>
-            <Typography>{data.gallery.title}</Typography>
+            <Typography align="center">{data.gallery.title}</Typography>
           </Box>
         </Box>
 
+        {/* fact */}
         <Box mb={1} p={1} border={1} borderColor="secondary.light">
           <div style={{ position: 'relative', width: '100%', paddingBottom: '20%' }}>
             <Image src={`${constants.baseUrl}${data.fact.img.src}`} alt={data.fact.img.alt} layout="fill" objectFit="contain" />
@@ -81,6 +84,7 @@ export default function Home({ data }) {
           <Typography dangerouslySetInnerHTML={{ __html: data.fact.content }} />
         </Box>
 
+        {/* featured ads */}
         <Box mb={1} border={1} borderColor="secondary.light">
           <Box bgcolor="secondary.light" p={1}>
             <Typography>Featured Ads</Typography>
@@ -88,6 +92,7 @@ export default function Home({ data }) {
           <Box p={1}></Box>
         </Box>
 
+        {/* advertisement */}
         <Box mb={1} border={1} borderColor="secondary.light">
           <Box bgcolor="secondary.light" p={1}>
             <Typography>Advertisement</Typography>
@@ -95,6 +100,7 @@ export default function Home({ data }) {
           <Box p={1}></Box>
         </Box>
 
+        {/* stolen */}
         {data.stolen.href && (
           <Box mb={1} border={1} borderColor="secondary.light">
             <Box bgcolor="secondary.light" p={1}>
@@ -104,11 +110,12 @@ export default function Home({ data }) {
               <div style={{ position: 'relative', width: '100%', paddingBottom: '20%' }}>
                 <Image src={`${constants.baseUrl}${data.stolen.img.src}`} alt={data.stolen.img.alt} layout="fill" objectFit="contain" />
               </div>
-              <Typography>{data.stolen.title}</Typography>
+              <Typography align="center">{data.stolen.title}</Typography>
             </Box>
           </Box>
         )}
 
+        {/* upcoming events */}
         <Box mb={1} border={1} borderColor="secondary.light">
           <Box bgcolor="secondary.light" p={1}>
             <Typography>Coming Events</Typography>
@@ -121,9 +128,12 @@ export default function Home({ data }) {
 }
 
 export async function getServerSideProps(context) {
+  const { cookies, data } = await getHome(context.req)
+  context.res.setHeader('set-cookie', cookies || [])
+
   return {
     props: {
-      data: await getHome(context.req.url)
+      data
     }
   }
 }

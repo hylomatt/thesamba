@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { makeStyles } from '@material-ui/core/styles'
 import { Box, Grid, Typography } from '@material-ui/core'
 
-import { getTopic } from '../../../utils/api'
+import { getTopic } from '../../../utils/getters'
 import HeaderTop from '../../../components/HeaderTop'
 import Header from '../../../components/Header'
 
@@ -86,9 +86,12 @@ export default function TopicDetail({ data }) {
 }
 
 export async function getServerSideProps(context) {
+  const { cookies, data } = await getTopic(context.req)
+  context.res.setHeader('set-cookie', cookies || [])
+
   return {
     props: {
-      data: await getTopic(context.req.url)
+      data
     }
   }
 }

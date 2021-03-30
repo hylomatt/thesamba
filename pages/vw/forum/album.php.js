@@ -3,7 +3,7 @@ import React from 'react'
 
 import { Box, Typography } from '@material-ui/core'
 
-import { getGallery } from '../../../utils/api'
+import { getGallery } from '../../../utils/getters'
 import HeaderTop from '../../../components/HeaderTop'
 import Header from '../../../components/Header'
 
@@ -25,9 +25,12 @@ export default function ForumIndex({ data }) {
 }
 
 export async function getServerSideProps(context) {
+  const { cookies, data } = await getGallery(context.req)
+  context.res.setHeader('set-cookie', cookies || [])
+
   return {
     props: {
-      data: await getGallery(context.req.url)
+      data
     }
   }
 }

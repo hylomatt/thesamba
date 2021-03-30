@@ -3,7 +3,7 @@ import React from 'react'
 
 import { Box, Typography } from '@material-ui/core'
 
-import { getClassifieds } from '../../../utils/api'
+import { getClassifieds } from '../../../utils/getters'
 import HeaderTop from '../../../components/HeaderTop'
 import Header from '../../../components/Header'
 
@@ -25,9 +25,12 @@ export default function ClassifiedIndex({ data }) {
 }
 
 export async function getServerSideProps(context) {
+  const { cookies, data } = await getClassifieds(context.req)
+  context.res.setHeader('set-cookie', cookies || [])
+
   return {
     props: {
-      data: await getClassifieds(context.req.url)
+      data
     }
   }
 }

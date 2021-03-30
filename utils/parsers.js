@@ -34,8 +34,12 @@ const parseBase = (basePath, $) => {
 
   return {
     title: $('head title').text(),
-    isLoggedIn: !!$(preHeader).find('a[href*="login.php?logout=true"]').length,
-    preHeader: {},
+    loggedIn: !!$(preHeader).find('a[href*="login.php?logout=true"]').length,
+    preHeader: {
+      user: $(preHeader).find('span.genmedblack:has(a[href*="login.php?logout=true"]) > b:first-child').text() || null,
+      logoutLink: $(preHeader).find('a[href*="login.php?logout=true"]').attr('href') || null,
+      pms: $(preHeader).find('a[href*="privmsg"]').text() || null
+    },
     header: {
       logo: {
         href: $(header).find('a').has('> img[src*="sambalogo"]').attr('href') || null,
@@ -66,7 +70,7 @@ const parseBase = (basePath, $) => {
 export const parseHome = (basePath, html) => {
   const $ = cheerio.load(html)
 
-  const mainContent = $('body > table:has(form[name="login_form"]) > tbody > tr')
+  const mainContent = $('body > table:has(table.borderedhome) > tbody > tr')
   const leftColumn = $(mainContent).find('> td:first-child')
   const centerColumn = $(mainContent).find('> td:nth-child(2)')
   const rightColumn = $(mainContent).find('> td:last-child')
@@ -115,9 +119,7 @@ export const parseHome = (basePath, html) => {
       title: $(rightColumn).find('> table:contains("Stolen") td:has(img)').text()
     },
     comingEvents:
-      $(rightColumn)
-        .find('#vmarquee')
-        .html()
+      ($(rightColumn).find('#vmarquee').html() || '')
         .trim()
         .replace(/<br>/g, '')
         .replace(/<b>/g, '</div><div><b>')
@@ -316,6 +318,13 @@ export const parseArchives = (basePath, html) => {
 }
 
 export const parseAbout = (basePath, html) => {
+  const $ = cheerio.load(html)
+  return {
+    ...parseBase(basePath, $)
+  }
+}
+
+export const parseLogin = (basePath, html) => {
   const $ = cheerio.load(html)
   return {
     ...parseBase(basePath, $)
