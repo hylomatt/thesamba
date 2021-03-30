@@ -11,22 +11,23 @@ const HeaderTop = ({ data, loggedIn }) => {
             ? (
               <>
                 <Box>
-                  <Typography>Hello,</Typography>
-                  <Typography>{data.user}</Typography>
+                  <Typography>
+                  Hello, <strong>{data.user}</strong>
+                  </Typography>
                 </Box>
-                <Box mx={2} height={16}>
+                <Box mx={1} height={16}>
                   <Divider orientation="vertical" />
                 </Box>
                 <Link href={data.logoutLink}>
                   <a>Log out</a>
                 </Link>
-                <Box mx={2} height={16}>
+                <Box mx={1} height={16}>
                   <Divider orientation="vertical" />
                 </Box>
                 <Link href="/vw/forum/profile.php?mode=editprofile">
                   <a>Control Panel</a>
                 </Link>
-                <Box mx={2} height={16}>
+                <Box mx={1} height={16}>
                   <Divider orientation="vertical" />
                 </Box>
                 <Link href="/vw/forum/profile.php?mode=editprofile">
@@ -50,19 +51,19 @@ const HeaderTop = ({ data, loggedIn }) => {
                 </Link>
               </>
             )}
-          <Box mx={2} height={16}>
+          <Box mx={1} height={16}>
             <Divider orientation="vertical" />
           </Box>
           <Link href="/vw/contact.php">
             <a>Help</a>
           </Link>
-          <Box mx={2} height={16}>
+          <Box mx={1} height={16}>
             <Divider orientation="vertical" />
           </Box>
           <Link href="/vw/donate.php">
             <a>Donate</a>
           </Link>
-          <Box mx={2} height={16}>
+          <Box mx={1} height={16}>
             <Divider orientation="vertical" />
           </Box>
           <Link href="/vw/products/">
@@ -74,7 +75,7 @@ const HeaderTop = ({ data, loggedIn }) => {
           <Link href="/vw/allbanners.php">
             <a>See all banner ads</a>
           </Link>
-          <Box mx={2} height={16}>
+          <Box mx={1} height={16}>
             <Divider orientation="vertical" />
           </Box>
           <Link href="/vw/banners.php">

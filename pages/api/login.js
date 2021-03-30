@@ -21,7 +21,7 @@ export default async (req, res) => {
       status: r.status,
       statusText: r.statusText,
       cookies: getSetCookieHeaders(r.headers.get('set-cookie')),
-      redirect: (r.headers.get('location') || '').replace(/^.*\/vw/, '/vw').replace('/vw/forum/index.php', '/vw/forum/')
+      redirect: (r.headers.get('location') || '').replace(/^.*\/vw/, '/vw')
     }))
     .catch((e) => {
       console.log('login err:', e)

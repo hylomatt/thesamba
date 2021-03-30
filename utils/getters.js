@@ -3,7 +3,7 @@ import xml2js from 'xml2js'
 
 import constants from './constants'
 import { getSetCookieHeaders } from './cookies'
-import { parseHome, parseClassifieds, parseForums, parseForum, parseTopic, parseGallery, parseCommunity, parseTechnical, parseArchives, parseAbout, parseLogin } from './parsers'
+import { parseHome, parseClassifieds, parseClassifiedCategory, parseClassifiedDetail, parseForums, parseForum, parseTopic, parseGallery, parseCommunity, parseTechnical, parseArchives, parseAbout, parseLogin } from './parsers'
 
 const getPage = async (req) => {
   const url = `${constants.baseUrl}${req.url}`.replace(/\/_next\/.*\/vw/, '/vw').replace('.json', '')
@@ -55,6 +55,18 @@ export const getHome = async (req) => {
 export const getClassifieds = async (req) => {
   return await getPage(req).then((r) => {
     return { cookies: r.cookies, data: parseClassifieds(req.url, r.data) }
+  })
+}
+
+export const getClassifiedCategory = async (req) => {
+  return await getPage(req).then((r) => {
+    return { cookies: r.cookies, data: parseClassifiedCategory(req.url, r.data) }
+  })
+}
+
+export const getClassifiedDetail = async (req) => {
+  return await getPage(req).then((r) => {
+    return { cookies: r.cookies, data: parseClassifiedDetail(req.url, r.data) }
   })
 }
 

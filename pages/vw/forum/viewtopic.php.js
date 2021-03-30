@@ -16,8 +16,6 @@ const useStyles = makeStyles({
 })
 
 export default function TopicDetail({ data }) {
-  console.log(data)
-
   const classes = useStyles()
 
   return (

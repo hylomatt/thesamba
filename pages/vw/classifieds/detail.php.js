@@ -3,11 +3,11 @@ import React from 'react'
 
 import { Box, Typography } from '@material-ui/core'
 
-import { getClassifieds } from '../../../utils/getters'
+import { getClassifiedDetail } from '../../../utils/getters'
 import HeaderTop from '../../../components/HeaderTop'
 import Header from '../../../components/Header'
 
-export default function ClassifiedIndex({ data }) {
+export default function ClassifiedDetail({ data }) {
   console.log(data)
 
   return (
@@ -20,14 +20,14 @@ export default function ClassifiedIndex({ data }) {
       <Header data={data.header} items={data.nav} selected="Home" />
 
       <Box px={{ xs: 1, md: 0 }} py={1}>
-        <Typography>classifieds</Typography>
+        <Typography>classified detail</Typography>
       </Box>
     </Box>
   )
 }
 
 export async function getServerSideProps(context) {
-  const { cookies, data } = await getClassifieds(context.req)
+  const { cookies, data } = await getClassifiedDetail(context.req)
   context.res.setHeader('set-cookie', cookies || [])
 
   return {

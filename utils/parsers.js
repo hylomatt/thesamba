@@ -129,8 +129,159 @@ export const parseHome = (basePath, html) => {
 
 export const parseClassifieds = (basePath, html) => {
   const $ = cheerio.load(html)
+  const mainContent = $('body > table:has(table.forumline)')
   return {
-    ...parseBase(basePath, $)
+    ...parseBase(basePath, $),
+    categories: $(mainContent)
+      .find('table.forumline')
+      .first()
+      .find('> tbody > tr')
+      .toArray()
+      .reduce((acc, el) => {
+        if ($(el).find('th').length) return acc
+
+        if ($(el).find('.catLeft').length) {
+          acc.push({
+            title: $(el).find('.cattitle').text(),
+            items: []
+          })
+          return acc
+        }
+
+        acc[acc.length - 1].items.push({
+          title: $(el).find('a.forumlink').text(),
+          href: `/vw/classifieds/${$(el).find('a.forumlink').attr('href') || ''}`,
+          description: $(el).find('.row1 .gensmall').text(),
+          adCount: $(el).find('.row2 .gensmall').text()
+        })
+
+        return acc
+      }, []),
+    featuredAds: $(mainContent)
+      .find('table.forumline')
+      .last()
+      .find('> tbody > tr:nth-child(2) td.genmed')
+      .toArray()
+      .map((el) => {
+        return {
+          title: $(el)
+            .contents()
+            .filter(function () {
+              return this.nodeType === 3
+            })
+            .text()
+            .trim(),
+          href: $(el).find('a').attr('href') || null,
+          img: parseImage(basePath, $(el).find('img'))
+        }
+      }),
+    randomAds: $(mainContent)
+      .find('table.forumline')
+      .last()
+      .find('> tbody > tr:nth-child(4) td.genmed')
+      .toArray()
+      .map((el) => {
+        return {
+          title: $(el)
+            .contents()
+            .filter(function () {
+              return this.nodeType === 3
+            })
+            .text()
+            .trim(),
+          href: $(el).find('a').attr('href') || null,
+          img: parseImage(basePath, $(el).find('img'))
+        }
+      })
+  }
+}
+
+export const parseClassifiedCategory = (basePath, html) => {
+  const $ = cheerio.load(html)
+  return {
+    ...parseBase(basePath, $),
+    category: {
+      title: $('body > table .maintitle').text(),
+      href: `/vw/classifieds/${$('body > table .maintitle').attr('href') || ''}`,
+      pages: $('span.pages')
+        .first()
+        .find('b, a')
+        .toArray()
+        .map((el) => ({
+          title: $(el).text().trim(),
+          href: $(el).attr('href') || null
+        })),
+      nav: $('body > table:has(input#keywords) span.nav')
+        .contents()
+        .toArray()
+        .map((el) => ({
+          title: $(el).text().trim(),
+          href: $(el).attr('href') || null
+        })),
+      featuredAds: $('body > table:has(.forumline)')
+        .first()
+        .find('td:has(>a)')
+        .toArray()
+        .map((el) => ({
+          title: $(el)
+            .contents()
+            .filter(function () {
+              return this.nodeType === 3
+            })
+            .text()
+            .trim(),
+          href: $(el).find('a').attr('href') || null,
+          img: parseImage(basePath, $(el).find('img'))
+        })),
+      ads: $('body > table.forumline')
+        .first()
+        .find('> tbody > tr:has(td)')
+        .toArray()
+        .map((el) => ({
+          title: $(el).find('> td:nth-child(2) a').text(),
+          href: $(el).find('> td:nth-child(2) a').attr('href') || null,
+          isNew: !!$(el).find('> td:nth-child(2) > img').length,
+          img: parseImage(basePath, $(el).find('> td:first-child a img')),
+          price: $(el).find('> td:nth-child(3)').text().trim(),
+          date: $(el)
+            .find('> td:last-child')
+            .contents()
+            .filter((i, el) => el.nodeType === 3)
+            .text()
+            .trim(),
+          location: $(el)
+            .find('> td:last-child span')
+            .contents()
+            .filter((i, el) => el.nodeType === 3)
+            .text()
+            .trim(),
+          seller: {
+            title: $(el).find('> td:last-child span a').text(),
+            href: $(el).find('> td:last-child span a').attr('href') || null
+          }
+        }))
+    }
+  }
+}
+
+export const parseClassifiedDetail = (basePath, html) => {
+  const $ = cheerio.load(html)
+  const mainContent = $('body > table.forumline')
+  return {
+    ...parseBase(basePath, $),
+    detail: {
+      nav: $('body > table span.nav')
+        .first()
+        .contents()
+        .toArray()
+        .map((el) => ({
+          title: $(el).text().trim(),
+          href: $(el).attr('href') || null
+        })),
+
+      title: $(mainContent).find('> tbody > tr > th td').first().text().trim(),
+      adId: $(mainContent).find('> tbody > tr > th td a').last().text().trim()
+    }
   }
 }
 
