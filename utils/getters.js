@@ -6,7 +6,7 @@ import { getSetCookieHeaders } from './cookies'
 import { parseHome, parseClassifieds, parseForums, parseForum, parseTopic, parseGallery, parseCommunity, parseTechnical, parseArchives, parseAbout, parseLogin } from './parsers'
 
 const getPage = async (req) => {
-  const url = `${constants.baseUrl}${req.url}`.replace('/_next/data/development', '').replace('.json', '')
+  const url = `${constants.baseUrl}${req.url}`.replace(/\/_next\/.*\/vw/, '/vw').replace('.json', '')
   // console.log('==== url:', url)
   return await fetch(url, { headers: { cookie: req.headers.cookie } })
     .then(async (r) => ({
