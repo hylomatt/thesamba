@@ -235,7 +235,7 @@ export const parseClassifiedCategory = (basePath, html) => {
         })),
       ads: $('body > table.forumline')
         .first()
-        .find('> tbody > tr:has(td)')
+        .find('> tbody > tr:has(td:not(.catBottom))')
         .toArray()
         .map((el) => ({
           title: $(el).find('> td:nth-child(2) a').text(),
