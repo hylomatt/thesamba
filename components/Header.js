@@ -1,35 +1,10 @@
 import React, { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import {
-  Box,
-  Grid,
-  Hidden,
-  IconButton,
-  Drawer,
-  List,
-  ListItem,
-  ListItemText,
-  ListItemIcon,
-  Typography,
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
-  Button,
-  MenuItem,
-  Popper,
-  ClickAwayListener,
-  Grow,
-  Paper,
-  MenuList,
-  Divider
-} from '@material-ui/core'
+import { Box, Grid, Hidden, IconButton, Drawer, List, ListItem, ListItemText, Typography, Accordion, AccordionDetails, AccordionSummary, Button, MenuItem, Popper, ClickAwayListener, Grow, Paper, MenuList, Divider } from '@material-ui/core'
 import MenuIcon from '@material-ui/icons/Menu'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import { makeStyles } from '@material-ui/core/styles'
-
-import InboxIcon from '@material-ui/icons/MoveToInbox'
-import MailIcon from '@material-ui/icons/Mail'
 
 import constants from '../utils/constants'
 
