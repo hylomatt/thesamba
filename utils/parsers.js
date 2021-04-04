@@ -104,9 +104,7 @@ export const parseHome = (basePath, html) => {
       .map((el) => ({
         title: $(el)
           .contents()
-          .filter(function () {
-            return this.nodeType === 3
-          })
+          .filter((i, el) => el.nodeType === 3)
           .text()
           .trim(),
         img: parseImage(basePath, $(el).find('img')),
@@ -166,9 +164,7 @@ export const parseClassifieds = (basePath, html) => {
         return {
           title: $(el)
             .contents()
-            .filter(function () {
-              return this.nodeType === 3
-            })
+            .filter((i, el) => el.nodeType === 3)
             .text()
             .trim(),
           href: $(el).find('a').attr('href') || null,
@@ -184,9 +180,7 @@ export const parseClassifieds = (basePath, html) => {
         return {
           title: $(el)
             .contents()
-            .filter(function () {
-              return this.nodeType === 3
-            })
+            .filter((i, el) => el.nodeType === 3)
             .text()
             .trim(),
           href: $(el).find('a').attr('href') || null,
@@ -225,9 +219,7 @@ export const parseClassifiedCategory = (basePath, html) => {
         .map((el) => ({
           title: $(el)
             .contents()
-            .filter(function () {
-              return this.nodeType === 3
-            })
+            .filter((i, el) => el.nodeType === 3)
             .text()
             .trim(),
           href: $(el).find('a').attr('href') || null,
@@ -267,6 +259,8 @@ export const parseClassifiedCategory = (basePath, html) => {
 export const parseClassifiedDetail = (basePath, html) => {
   const $ = cheerio.load(html)
   const mainContent = $('body > table.forumline')
+  const classifiedsBody = $(mainContent).find('table > tbody:has(> tr > td > span.maintitle) > tr > td')
+  const bottomBodyBox = $(classifiedsBody[2]).find('> table > tbody > tr:has(td.row1)')
   return {
     ...parseBase(basePath, $),
     detail: {
@@ -275,12 +269,35 @@ export const parseClassifiedDetail = (basePath, html) => {
         .contents()
         .toArray()
         .map((el) => ({
-          title: $(el).text().trim(),
+          title: $(el)
+            .text()
+            .replace(/-(>|<)/g, '')
+            .trim(),
           href: $(el).attr('href') || null
         })),
-
       title: $(mainContent).find('> tbody > tr > th td').first().text().trim(),
-      adId: $(mainContent).find('> tbody > tr > th td a').last().text().trim()
+      adId: $(mainContent).find('> tbody > tr > th td a').last().text().trim(),
+      thumbnails: $(mainContent)
+        .find('img[src*="pix/thumbnails/"]')
+        .toArray()
+        .map((img) => parseImage(basePath, img)),
+      description: $(classifiedsBody[1]).find('span.gen').html(),
+      advertiserInfo: {
+        title: $(bottomBodyBox[0]).find('> td:first-child > table > tbody > tr:first-child > td:last-child a').text(),
+        href: $(bottomBodyBox[0]).find('> td:first-child > table > tbody > tr:first-child > td:last-child a').attr('href') || null,
+        memberSince: $(bottomBodyBox[0])
+          .find('> td:first-child > table > tbody > tr:first-child > td:last-child')
+          .contents()
+          .filter((i, el) => el.nodeType === 3)
+          .text()
+          .trim(),
+        phone: $(bottomBodyBox[0]).find('> td:first-child > table > tbody > tr:last-child span#ph').attr('data-ph') || null,
+        email: $(bottomBodyBox[0]).find('> td:first-child > table > tbody > tr:last-child a').attr('href') || null
+      },
+      adInfo: {
+        titles: $(bottomBodyBox[0]).find('> td:last-child td:first-child').html(),
+        values: $(bottomBodyBox[0]).find('> td:last-child td:last-child').html()
+      }
     }
   }
 }
@@ -316,9 +333,7 @@ export const parseForums = (basePath, html) => {
             text: $(el)
               .find('td:eq(4) .gensmall')
               .contents()
-              .filter(function () {
-                return this.nodeType === 3
-              })
+              .filter((i, el) => el.nodeType === 3)
               .text()
               .trim(),
             user: {
@@ -372,9 +387,7 @@ export const parseForum = (basePath, html) => {
             text: $(el)
               .find('td:eq(5) .postdetails')
               .contents()
-              .filter(function () {
-                return this.nodeType === 3
-              })
+              .filter((i, el) => el.nodeType === 3)
               .text()
               .trim(),
             user: {

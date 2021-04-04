@@ -1,16 +1,34 @@
 import React from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
+import Image from 'next/image'
 
-import { Box, Typography } from '@material-ui/core'
+import { Box, Typography, Paper, Button, Grid } from '@material-ui/core'
+import { withStyles } from '@material-ui/core/styles'
+import Carousel from 'react-material-ui-carousel'
 
 import { getClassifiedDetail } from '../../../utils/getters'
 import HeaderTop from '../../../components/HeaderTop'
 import Header from '../../../components/Header'
 
-export default function ClassifiedDetail({ data }) {
-  console.log(data)
-
+export default withStyles({
+  imageContainer: {
+    width: '100%',
+    maxWidth: '480px',
+    height: 'auto',
+    margin: '0 auto',
+    '& > div': {
+      position: 'unset !important',
+      height: 'auto'
+    }
+  },
+  image: {
+    objectFit: 'contain',
+    width: '100% !important',
+    position: 'relative !important',
+    height: 'unset !important'
+  }
+})(function ClassifiedDetail({ classes, data }) {
   return (
     <Box p={{ xs: 0, md: 1 }}>
       <Head>
@@ -34,16 +52,74 @@ export default function ClassifiedDetail({ data }) {
               )
             }
             return (
-              <Typography component="a" key={`topic-nav-${i}`}>
+              <Typography component="span" key={`topic-nav-${i}`}>
                 {el.title}
               </Typography>
             )
           })}
         </Box>
+        <Box mb={2}>
+          <Carousel
+            autoPlay={true}
+            interval="7000"
+            indicatorIconButtonProps={{
+              style: {
+                padding: '0 8px',
+                color: 'black'
+              }
+            }}
+            indicatorContainerProps={{
+              style: {
+                marginTop: '10px' // 5
+              }
+            }}
+          >
+            {data.detail.thumbnails.map((item, i) => (
+              <Image src={item.src.replace('thumbnails/', '')} alt={item.alt} width={640} height={480} layout="responsive" key={`detail-image-${data.detail.adId}-${i}`} />
+            ))}
+          </Carousel>
+        </Box>
+        <Box mb={2}>
+          <Typography dangerouslySetInnerHTML={{ __html: data.detail.description }} />
+        </Box>
+        <Box mb={1} border={1} borderColor="secondary.light">
+          <Box bgcolor="secondary.light" p={1}>
+            <Typography>Advertiser Information</Typography>
+          </Box>
+          <Box p={1}>
+            <Box>
+              <Typography component="span">Advertiser:</Typography>
+              <Link href={data.detail.advertiserInfo.href} passHref>
+                <Typography component="a">{data.detail.advertiserInfo.title}</Typography>
+              </Link>
+            </Box>
+            <Box>
+              <Typography component="span">Member since:</Typography>
+              <Typography component="span">{data.detail.advertiserInfo.memberSince}</Typography>
+            </Box>
+          </Box>
+        </Box>
+        <Box mb={1} border={1} borderColor="secondary.light">
+          <Box bgcolor="secondary.light" p={1}>
+            <Typography>Ad Information</Typography>
+          </Box>
+          <Box p={1}>
+            <Grid container>
+              <Grid item xs={5}>
+                <Box pr={1}>
+                  <Typography align="right" dangerouslySetInnerHTML={{ __html: data.detail.adInfo.titles }} />
+                </Box>
+              </Grid>
+              <Grid item xs={7}>
+                <Typography dangerouslySetInnerHTML={{ __html: data.detail.adInfo.values }} />
+              </Grid>
+            </Grid>
+          </Box>
+        </Box>
       </Box>
     </Box>
   )
-}
+})
 
 export async function getServerSideProps(context) {
   const { cookies, data } = await getClassifiedDetail(context.req)

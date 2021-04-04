@@ -1,5 +1,6 @@
 import fetch from 'node-fetch'
 import xml2js from 'xml2js'
+import iconv from 'iconv-lite'
 
 import constants from './constants'
 import { getSetCookieHeaders } from './cookies'
@@ -7,11 +8,10 @@ import { parseHome, parseClassifieds, parseClassifiedCategory, parseClassifiedDe
 
 const getPage = async (req) => {
   const url = `${constants.baseUrl}${req.url}`.replace(/\/_next\/.*\/vw/, '/vw').replace('.json', '')
-  // console.log('==== url:', url)
   return await fetch(url, { headers: { cookie: req.headers.cookie } })
     .then(async (r) => ({
       cookies: getSetCookieHeaders(r.headers.get('set-cookie')),
-      data: await r.text()
+      data: iconv.decode(Buffer.from(await r.arrayBuffer()), 'WINDOWS-1252')
     }))
     .catch((e) => {
       console.error(e)
