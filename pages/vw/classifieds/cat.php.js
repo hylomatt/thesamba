@@ -10,8 +10,6 @@ import { getClassifiedCategory } from '../../../utils/getters'
 import HeaderTop from '../../../components/HeaderTop'
 import Header from '../../../components/Header'
 
-import constants from '../../../utils/constants'
-
 const useStyles = makeStyles((theme) => ({
   root: {
     color: 'white'
@@ -50,7 +48,6 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 export default function ClassifiedCategory({ data }) {
-  console.log(data)
   const classes = useStyles()
 
   return (
