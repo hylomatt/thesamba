@@ -5,19 +5,34 @@ import { useRouter } from 'next/router'
 import { Box, Button, Typography, TextField, FormControl, InputLabel, OutlinedInput, InputAdornment, IconButton } from '@material-ui/core'
 import Visibility from '@material-ui/icons/Visibility'
 import VisibilityOff from '@material-ui/icons/VisibilityOff'
+import { withStyles } from '@material-ui/styles'
 
 import { getLogin } from '../../../utils/getters'
 import HeaderTop from '../../../components/HeaderTop'
 import Header from '../../../components/Header'
 
-export default function ForumIndex({ data }) {
+export default withStyles({
+  root: {
+    color: '#fff'
+  }
+})(function ForumIndex({ data, classes }) {
   const router = useRouter()
 
   const [values, setValues] = useState({
     username: '',
     password: '',
-    showPassword: false
+    showPassword: false,
+    failed: false
   })
+
+  let failureMessage
+  const loginFailed = () => {
+    setValues({ ...values, failed: true })
+    clearTimeout(failureMessage)
+    failureMessage = setTimeout(() => {
+      setValues({ ...values, failed: false })
+    }, 5000)
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -40,6 +55,7 @@ export default function ForumIndex({ data }) {
           router.push((await r.json()).redirect)
         } else {
           console.log('login failed')
+          loginFailed()
         }
       })
       .catch((e) => {
@@ -104,12 +120,18 @@ export default function ForumIndex({ data }) {
             <Button type="submit" variant="contained" disableElevation>
               Log in
             </Button>
+
+            {values.failed && (
+              <Box mt={2} p={1} borderRadius={4} bgcolor="error.dark">
+                <Typography className={classes.root}>Login failed</Typography>
+              </Box>
+            )}
           </form>
         </Box>
       </Box>
     </Box>
   )
-}
+})
 
 export async function getServerSideProps(context) {
   const { cookies, data } = await getLogin(context.req)

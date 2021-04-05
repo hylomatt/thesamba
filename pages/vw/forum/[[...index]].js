@@ -9,6 +9,7 @@ import { withStyles } from '@material-ui/core/styles'
 import { getForums } from '../../../utils/getters'
 import HeaderTop from '../../../components/HeaderTop'
 import Header from '../../../components/Header'
+import theme from '../../../utils/theme'
 
 export default withStyles({
   root: {
@@ -72,7 +73,7 @@ export default withStyles({
               </Link>
             </Box>
             {el.items.map((subEl, subI) => (
-              <Box py={1} px={1} mb={{ xs: 0, sm: 1 }} borderBottom={1} borderColor="secondary.light" key={`forum-${i}-${subI}`}>
+              <Box py={1} px={1} mb={{ xs: 0, sm: 1 }} borderBottom={1} style={{ borderColor: theme.palette.secondary.light }} key={`forum-${i}-${subI}`}>
                 <Grid container>
                   <Grid item xs={12} sm={8}>
                     <Box mb={{ xs: 0, sm: 0 }}>
