@@ -4,7 +4,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 
 import { Box, Typography } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
+import { withStyles } from '@material-ui/core/styles'
 
 import { getHome } from '../../utils/getters'
 import HeaderTop from '../../components/HeaderTop'
@@ -12,18 +12,14 @@ import Header from '../../components/Header'
 
 import constants from '../../utils/constants'
 
-const useStyles = makeStyles((theme) => ({
+export default withStyles({
   events: {
     '& > div': {
       marginBottom: '8px',
       fontSize: 13
     }
   }
-}))
-
-export default function Home({ data }) {
-  const classes = useStyles()
-
+})(function Home({ data, classes }) {
   return (
     <Box p={{ xs: 0, md: 1 }}>
       <Head>
@@ -125,7 +121,7 @@ export default function Home({ data }) {
       </Box>
     </Box>
   )
-}
+})
 
 export async function getServerSideProps(context) {
   const { cookies, data } = await getHome(context.req)

@@ -2,22 +2,18 @@ import Head from 'next/head'
 import React from 'react'
 import Link from 'next/link'
 
-import { makeStyles } from '@material-ui/core/styles'
 import { Box, Grid, Typography } from '@material-ui/core'
+import { withStyles } from '@material-ui/core/styles'
 
 import { getTopic } from '../../../utils/getters'
 import HeaderTop from '../../../components/HeaderTop'
 import Header from '../../../components/Header'
 
-const useStyles = makeStyles({
+export default withStyles({
   root: {
     color: 'white'
   }
-})
-
-export default function TopicDetail({ data }) {
-  const classes = useStyles()
-
+})(function TopicDetail({ data, classes }) {
   return (
     <Box p={{ xs: 0, md: 1 }}>
       <Head>
@@ -81,7 +77,7 @@ export default function TopicDetail({ data }) {
       </Box>
     </Box>
   )
-}
+})
 
 export async function getServerSideProps(context) {
   const { cookies, data } = await getTopic(context.req)

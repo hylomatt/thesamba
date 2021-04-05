@@ -3,21 +3,18 @@ import React from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 
-import { makeStyles } from '@material-ui/core/styles'
 import { Box, Grid, Typography, Hidden, Divider } from '@material-ui/core'
+import { withStyles } from '@material-ui/core/styles'
 
 import { getForums } from '../../../utils/getters'
 import HeaderTop from '../../../components/HeaderTop'
 import Header from '../../../components/Header'
 
-const useStyles = makeStyles({
+export default withStyles({
   root: {
     color: 'white'
   }
-})
-
-export default function ForumIndex({ data }) {
-  const classes = useStyles()
+})(function ForumIndex({ data, classes }) {
   const router = useRouter()
 
   return (
@@ -128,7 +125,7 @@ export default function ForumIndex({ data }) {
       </Box>
     </Box>
   )
-}
+})
 
 export async function getServerSideProps(context) {
   const { cookies, data } = await getForums(context.req)

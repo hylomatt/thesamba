@@ -4,7 +4,7 @@ import Link from 'next/link'
 
 import { Box, Typography, Grid, Accordion, AccordionSummary, AccordionDetails, List, ListItem, ListItemText, Hidden } from '@material-ui/core'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-import { makeStyles } from '@material-ui/core/styles'
+import { withStyles } from '@material-ui/core/styles'
 
 import { getClassifieds } from '../../../utils/getters'
 import HeaderTop from '../../../components/HeaderTop'
@@ -12,7 +12,7 @@ import Header from '../../../components/Header'
 
 import constants from '../../../utils/constants'
 
-const useStyles = makeStyles((theme) => ({
+export default withStyles((theme) => ({
   root: {
     color: 'white'
   },
@@ -40,11 +40,7 @@ const useStyles = makeStyles((theme) => ({
   menuBtn: {
     height: 64
   }
-}))
-
-export default function ClassifiedIndex({ data }) {
-  const classes = useStyles()
-
+}))(function ClassifiedIndex({ data, classes }) {
   return (
     <Box p={{ xs: 0, md: 1 }}>
       <Head>
@@ -179,7 +175,7 @@ export default function ClassifiedIndex({ data }) {
       </Box>
     </Box>
   )
-}
+})
 
 export async function getServerSideProps(context) {
   const { cookies, data } = await getClassifieds(context.req)

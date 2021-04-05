@@ -5,13 +5,23 @@ import Image from 'next/image'
 
 import { Box, Typography, Grid, Hidden } from '@material-ui/core'
 import { Skeleton } from '@material-ui/lab'
-import { makeStyles } from '@material-ui/core/styles'
+import { withStyles } from '@material-ui/core/styles'
 
 import { getClassifiedCategory } from '../../../utils/getters'
 import HeaderTop from '../../../components/HeaderTop'
 import Header from '../../../components/Header'
 
-const useStyles = makeStyles((theme) => ({
+// const formatter = new Intl.NumberFormat('en-US', {
+//   style: 'currency',
+//   currency: 'USD'
+
+//   // These options are needed to round to whole numbers if that's what you want.
+//   //minimumFractionDigits: 0, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
+//   //maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
+// })
+// {!isNaN(el.price) ? formatter.format(el.price.replace(/\$|,/g, '')) : el.price}
+
+export default withStyles((theme) => ({
   root: {
     color: 'white'
   },
@@ -46,19 +56,7 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: '100%',
     maxHeight: '120px'
   }
-}))
-
-// const formatter = new Intl.NumberFormat('en-US', {
-//   style: 'currency',
-//   currency: 'USD'
-
-//   // These options are needed to round to whole numbers if that's what you want.
-//   //minimumFractionDigits: 0, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
-//   //maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
-// })
-// {!isNaN(el.price) ? formatter.format(el.price.replace(/\$|,/g, '')) : el.price}
-
-export default function ClassifiedCategory({ data }) {
+}))(function ClassifiedCategory({ data }) {
   const classes = useStyles()
 
   return (
@@ -187,7 +185,7 @@ export default function ClassifiedCategory({ data }) {
       </Box>
     </Box>
   )
-}
+})
 
 export async function getServerSideProps(context) {
   const { cookies, data } = await getClassifiedCategory(context.req)
