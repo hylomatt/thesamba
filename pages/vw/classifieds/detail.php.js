@@ -61,7 +61,7 @@ export default withStyles({
         </Box>
         <Box mb={2}>
           <Carousel
-            autoPlay={true}
+            autoPlay={false}
             interval="7000"
             indicatorIconButtonProps={{
               style: {
