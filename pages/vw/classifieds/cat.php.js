@@ -4,6 +4,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 
 import { Box, Typography, Grid, Hidden } from '@material-ui/core'
+import { Skeleton } from '@material-ui/lab'
 import { makeStyles } from '@material-ui/core/styles'
 
 import { getClassifiedCategory } from '../../../utils/getters'
@@ -46,6 +47,16 @@ const useStyles = makeStyles((theme) => ({
     maxHeight: '120px'
   }
 }))
+
+// const formatter = new Intl.NumberFormat('en-US', {
+//   style: 'currency',
+//   currency: 'USD'
+
+//   // These options are needed to round to whole numbers if that's what you want.
+//   //minimumFractionDigits: 0, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
+//   //maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
+// })
+// {!isNaN(el.price) ? formatter.format(el.price.replace(/\$|,/g, '')) : el.price}
 
 export default function ClassifiedCategory({ data }) {
   const classes = useStyles()
@@ -117,30 +128,49 @@ export default function ClassifiedCategory({ data }) {
           <Box bgcolor={i % 2 ? 'white' : 'secondary.light'} key={`classifies-ad-${i}`}>
             <Grid container>
               <Grid item xs={6} sm={4} md={2}>
-                <Box p={1}>
+                <Box p={1} height="100%">
                   <Link href={el.href} passHref>
-                    <a>
-                      <div style={{ position: 'relative', width: '100%', height: '120px', paddingBottom: '20%' }}>
-                        <Image src={el.img.src} alt={el.img.alt} layout="fill" objectFit="contain" />
-                      </div>
-                      {/* <img src={el.img.src} className={classes.classifiedImage} /> */}
+                    <a style={{ display: 'block', height: '100%' }}>
+                      {!el.img.src.includes('blank.gif')
+                        ? (
+                          <div style={{ position: 'relative', width: '100%', height: '120px', paddingBottom: '20%' }}>
+                            <Image src={el.img.src} alt={el.img.alt} layout="fill" objectFit="cover" />
+                          </div>
+                        )
+                        : (
+                          <Skeleton variant="rect" height="100%" animation="wave" />
+                        )}
                     </a>
                   </Link>
                 </Box>
               </Grid>
-              <Grid item xs={4} sm={6} md={5}>
-                <Box p={1} px={1}>
-                  <Link href={el.href} passHref>
-                    <Typography component="a">{el.title}</Typography>
-                  </Link>
-                </Box>
-              </Grid>
-              <Grid item xs={2}>
-                <Box p={1} px={{ xs: 1, md: 2 }}>
-                  <Typography align="center">{el.price}</Typography>
-                </Box>
+              <Grid item xs={6} sm={6} md={5} container direction="column">
+                <Grid item style={{ flex: 'auto' }}>
+                  <Box p={1} px={1}>
+                    <Link href={el.href} passHref>
+                      <Typography component="a">{el.title}</Typography>
+                    </Link>
+                  </Box>
+                </Grid>
+                <Grid item>
+                  <Box p={1} px={1}>
+                    <Typography align="right">{el.price}</Typography>
+                  </Box>
+                </Grid>
               </Grid>
               <Hidden smDown>
+                <Grid item xs={6} sm={6} md={5}>
+                  <Box p={1} px={1}>
+                    <Link href={el.href} passHref>
+                      <Typography component="a">{el.title}</Typography>
+                    </Link>
+                  </Box>
+                </Grid>
+                <Grid item xs={2}>
+                  <Box p={1} px={{ xs: 1, md: 2 }}>
+                    <Typography align="center">{el.price}</Typography>
+                  </Box>
+                </Grid>
                 <Grid item xs={3}>
                   <Box p={1} px={2} align="right">
                     <Typography display="block">{el.date}</Typography>

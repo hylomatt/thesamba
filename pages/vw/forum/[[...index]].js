@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 
 import { makeStyles } from '@material-ui/core/styles'
-import { Box, Grid, Typography, Hidden } from '@material-ui/core'
+import { Box, Grid, Typography, Hidden, Divider } from '@material-ui/core'
 
 import { getForums } from '../../../utils/getters'
 import HeaderTop from '../../../components/HeaderTop'
@@ -75,10 +75,10 @@ export default function ForumIndex({ data }) {
               </Link>
             </Box>
             {el.items.map((subEl, subI) => (
-              <Box py={1} px={1} mb={1} key={`forum-${i}-${subI}`}>
+              <Box py={1} px={1} mb={{ xs: 0, sm: 1 }} borderBottom={1} borderColor="secondary.light" key={`forum-${i}-${subI}`}>
                 <Grid container>
                   <Grid item xs={12} sm={8}>
-                    <Box mb={{ xs: 1, sm: 0 }}>
+                    <Box mb={{ xs: 0, sm: 0 }}>
                       {/* {subEl.newPosts  ? '!' : '-'} */}
 
                       <Link href={`${router.asPath}${subEl.href}`} passHref>
@@ -86,18 +86,40 @@ export default function ForumIndex({ data }) {
                           {subEl.title}
                         </Typography>
                       </Link>
-                      <Typography>{subEl.description}</Typography>
+                      <Hidden xsDown>
+                        <Typography>{subEl.description}</Typography>
+                      </Hidden>
                     </Box>
                   </Grid>
-                  <Grid item xs={3} sm={1}>
-                    <Typography align="right">{subEl.topics}</Typography>
-                  </Grid>
-                  <Grid item xs={3} sm={1}>
-                    <Typography align="right">{subEl.posts}</Typography>
-                  </Grid>
-                  <Grid item xs={6} sm={2}>
-                    <Typography align="right">{subEl.lastPost.text}</Typography>
-                  </Grid>
+                  <Hidden smUp>
+                    <Grid item xs={12} container justify="flex-end">
+                      <Typography align="right">T: {subEl.topics}</Typography>
+                      <Box mx={1} height={16}>
+                        <Divider orientation="vertical" />
+                      </Box>
+                      <Typography align="right">P: {subEl.posts}</Typography>
+                      <Grid item xs={12}>
+                        <Typography align="right">LP: {subEl.lastPost.text}</Typography>
+                      </Grid>
+                    </Grid>
+                  </Hidden>
+                  <Hidden xsDown>
+                    <Grid item xs={3} sm={1}>
+                      <Box pl={1}>
+                        <Typography align="right">{subEl.topics}</Typography>
+                      </Box>
+                    </Grid>
+                    <Grid item xs={3} sm={1}>
+                      <Box pl={1}>
+                        <Typography align="right">{subEl.posts}</Typography>
+                      </Box>
+                    </Grid>
+                    <Grid item xs={6} sm={2}>
+                      <Box pl={1}>
+                        <Typography align="right">{subEl.lastPost.text}</Typography>
+                      </Box>
+                    </Grid>
+                  </Hidden>
                 </Grid>
               </Box>
             ))}

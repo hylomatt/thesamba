@@ -363,7 +363,7 @@ export const parseForum = (basePath, html) => {
         if ($(el).find('td.catHead  ').length) {
           acc.push({
             title: $(el).find('.cattitle:not(:has(a)), .cattitle a').text(),
-            href: $(el).find('.cattitle a').attr('href') || null,
+            // href: $(el).find('.cattitle a').attr('href') || null,
             items: []
           })
           return acc

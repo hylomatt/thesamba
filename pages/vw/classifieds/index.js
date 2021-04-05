@@ -134,7 +134,7 @@ export default function ClassifiedIndex({ data }) {
                 <Grid container justify="center" alignItems="flex-start">
                   {data.featuredAds.map((el, i) => (
                     <Grid item xs={6} sm={4} md={2} key={`classifieds-random-ads-${i}`}>
-                      <Box align="center">
+                      <Box px={2} pb={2} align="center">
                         <Link href={el.href} key={`classifieds-featured-ads-${i}`}>
                           <a>
                             <div>
@@ -159,7 +159,7 @@ export default function ClassifiedIndex({ data }) {
                 <Grid container justify="center" alignItems="flex-start">
                   {data.randomAds.map((el, i) => (
                     <Grid item xs={6} sm={4} md={2} key={`classifieds-random-ads-${i}`}>
-                      <Box align="center">
+                      <Box px={2} pb={2} align="center">
                         <Link href={el.href}>
                           <a>
                             <div>

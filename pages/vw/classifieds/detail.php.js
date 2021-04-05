@@ -10,6 +10,7 @@ import Carousel from 'react-material-ui-carousel'
 import { getClassifiedDetail } from '../../../utils/getters'
 import HeaderTop from '../../../components/HeaderTop'
 import Header from '../../../components/Header'
+import theme from '../../../utils/theme'
 
 export default withStyles({
   imageContainer: {
@@ -64,8 +65,13 @@ export default withStyles({
             interval="7000"
             indicatorIconButtonProps={{
               style: {
-                padding: '0 8px',
-                color: 'black'
+                padding: '0 10px 10px',
+                color: theme.palette.secondary.main
+              }
+            }}
+            activeIndicatorIconButtonProps={{
+              style: {
+                color: theme.palette.primary.main
               }
             }}
             indicatorContainerProps={{
@@ -87,16 +93,20 @@ export default withStyles({
             <Typography>Advertiser Information</Typography>
           </Box>
           <Box p={1}>
-            <Box>
-              <Typography component="span">Advertiser:</Typography>
-              <Link href={data.detail.advertiserInfo.href} passHref>
-                <Typography component="a">{data.detail.advertiserInfo.title}</Typography>
-              </Link>
-            </Box>
-            <Box>
-              <Typography component="span">Member since:</Typography>
-              <Typography component="span">{data.detail.advertiserInfo.memberSince}</Typography>
-            </Box>
+            <Grid container>
+              <Grid item xs={5}>
+                <Box pr={1} align="right">
+                  <Typography>Advertiser:</Typography>
+                  <Typography>Member since:</Typography>
+                </Box>
+              </Grid>
+              <Grid item xs={7}>
+                <Link href={data.detail.advertiserInfo.href} passHref>
+                  <Typography component="a">{data.detail.advertiserInfo.title}</Typography>
+                </Link>
+                <Typography>{data.detail.advertiserInfo.memberSince}</Typography>
+              </Grid>
+            </Grid>
           </Box>
         </Box>
         <Box mb={1} border={1} borderColor="secondary.light">
