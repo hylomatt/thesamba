@@ -1,14 +1,15 @@
 import React, { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
+
 import { Box, Grid, Hidden, IconButton, Drawer, List, ListItem, ListItemText, Typography, Accordion, AccordionDetails, AccordionSummary, Button, MenuItem, Popper, ClickAwayListener, Grow, Paper, MenuList, Divider } from '@material-ui/core'
 import MenuIcon from '@material-ui/icons/Menu'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-import { makeStyles } from '@material-ui/core/styles'
+import { withStyles } from '@material-ui/core/styles'
 
 import constants from '../utils/constants'
 
-const useStyles = makeStyles((theme) => ({
+export default withStyles((theme) => ({
   root: {
     color: 'white'
   },
@@ -36,10 +37,7 @@ const useStyles = makeStyles((theme) => ({
   menuBtn: {
     height: 64
   }
-}))
-
-const Header = ({ data, items, selected = null }) => {
-  const classes = useStyles()
+}))(function Header({ data, classes, items, selected = null }) {
   const [menu, setMenu] = useState(false)
   const [expanded, setExpanded] = useState(false)
 
@@ -188,6 +186,4 @@ const Header = ({ data, items, selected = null }) => {
       </Hidden>
     </>
   )
-}
-
-export default Header
+})

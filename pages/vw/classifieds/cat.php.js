@@ -11,16 +11,6 @@ import { getClassifiedCategory } from '../../../utils/getters'
 import HeaderTop from '../../../components/HeaderTop'
 import Header from '../../../components/Header'
 
-// const formatter = new Intl.NumberFormat('en-US', {
-//   style: 'currency',
-//   currency: 'USD'
-
-//   // These options are needed to round to whole numbers if that's what you want.
-//   //minimumFractionDigits: 0, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
-//   //maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
-// })
-// {!isNaN(el.price) ? formatter.format(el.price.replace(/\$|,/g, '')) : el.price}
-
 export default withStyles((theme) => ({
   root: {
     color: 'white'
@@ -56,9 +46,7 @@ export default withStyles((theme) => ({
     maxWidth: '100%',
     maxHeight: '120px'
   }
-}))(function ClassifiedCategory({ data }) {
-  const classes = useStyles()
-
+}))(function ClassifiedCategory({ data, classes }) {
   return (
     <Box p={{ xs: 0, md: 1 }}>
       <Head>
