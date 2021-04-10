@@ -100,6 +100,7 @@ export const parseHome = (basePath, html) => {
       title: $(leftColumn).find('> table:contains("All Gallery") td:has(a:has(img[alt="Latest Photo"]))').text()
     },
     fact: {
+      href: `/vw/${$(centerColumn).find('>table:first-child a:has(img#randoms)').attr('href') || ''}`,
       img: parseImage(basePath, $(centerColumn).find('>table:first-child img#randoms')),
       content: $(centerColumn).find('>table:first-child span.gen').html()
     },

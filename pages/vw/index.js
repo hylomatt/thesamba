@@ -20,6 +20,8 @@ export default withStyles({
     }
   }
 })(({ data, classes }) => {
+  console.log(data)
+
   return (
     <Box p={{ xs: 0, md: 1 }}>
       <Head>
@@ -54,9 +56,13 @@ export default withStyles({
                 <Typography>Classifieds</Typography>
               </Box>
               <Box p={1}>
-                <div style={{ position: 'relative', width: '100%', height: '100px', paddingBottom: '20%' }}>
-                  <Image src={`${constants.baseUrl}${data.classifieds.img.src}`} alt={data.classifieds.img.alt} layout="fill" objectFit="contain" />
-                </div>
+                <Link href={data.classifieds.href}>
+                  <a>
+                    <div style={{ position: 'relative', width: '100%', height: '100px', paddingBottom: '20%' }}>
+                      <Image src={`${constants.baseUrl}${data.classifieds.img.src}`} alt={data.classifieds.img.alt} layout="fill" objectFit="contain" />
+                    </div>
+                  </a>
+                </Link>
                 <Box pt={1}>
                   <Typography align="center">{data.classifieds.title}</Typography>
                 </Box>
@@ -70,9 +76,13 @@ export default withStyles({
                 <Typography>Gallery</Typography>
               </Box>
               <Box p={1}>
-                <div style={{ position: 'relative', width: '100%', height: '100px', paddingBottom: '20%' }}>
-                  <Image src={`${constants.baseUrl}${data.gallery.img.src}`} alt={data.gallery.img.alt} layout="fill" objectFit="contain" />
-                </div>
+                <Link href={data.gallery.href}>
+                  <a>
+                    <div style={{ position: 'relative', width: '100%', height: '100px', paddingBottom: '20%' }}>
+                      <Image src={`${constants.baseUrl}${data.gallery.img.src}`} alt={data.gallery.img.alt} layout="fill" objectFit="contain" />
+                    </div>
+                  </a>
+                </Link>
                 <Box pt={1}>
                   <Typography align="center">{data.gallery.title}</Typography>
                 </Box>
@@ -83,8 +93,14 @@ export default withStyles({
 
         {/* fact */}
         <Box mb={1} p={1} border={1} borderColor="secondary.light">
-          <Box mb={2} position="relative" width="100%" style={{ paddingBottom: '20%' }}>
-            <Image src={`${constants.baseUrl}${data.fact.img.src}`} alt={data.fact.img.alt} layout="fill" objectFit="contain" />
+          <Box mb={2}>
+            <Link href={data.fact.href}>
+              <a>
+                <Box position="relative" width="100%" height="80px" style={{ paddingBottom: '20%' }}>
+                  <Image src={`${constants.baseUrl}${data.fact.img.src}`} alt={data.fact.img.alt} layout="fill" objectFit="contain" />
+                </Box>
+              </a>
+            </Link>
           </Box>
           <Typography dangerouslySetInnerHTML={{ __html: data.fact.content }} />
         </Box>
