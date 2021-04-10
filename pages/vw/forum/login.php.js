@@ -8,7 +8,6 @@ import VisibilityOff from '@material-ui/icons/VisibilityOff'
 import { withStyles } from '@material-ui/styles'
 
 import { getLogin } from '../../../utils/getters'
-import HeaderTop from '../../../components/HeaderTop'
 import Header from '../../../components/Header'
 
 export default withStyles({
@@ -51,8 +50,9 @@ export default withStyles({
     })
       .then(async (r) => {
         if (r.status === 302) {
-          console.log('login succeeded')
-          router.push((await r.json()).redirect)
+          const redirectUrl = (await r.json()).redirect
+          console.log('login succeeded:', redirectUrl)
+          router.push(redirectUrl)
         } else {
           console.log('login failed')
           loginFailed()
@@ -81,8 +81,7 @@ export default withStyles({
         <title>{data.title}</title>
       </Head>
 
-      <HeaderTop data={data.preHeader} loggedIn={data.loggedIn} />
-      <Header data={data.header} items={data.nav} selected="Home" />
+      <Header data={data} selected="Home" />
 
       <Box px={{ xs: 1, md: 0 }} py={1}>
         <Typography variant="h5" paragraph={true}>
@@ -134,8 +133,13 @@ export default withStyles({
 })
 
 export async function getServerSideProps(context) {
-  const { cookies, data } = await getLogin(context.req)
-  context.res.setHeader('set-cookie', cookies || [])
+  const { data, ...rest } = await getLogin(context.req)
+  context.res.setHeader('set-cookie', rest.cookies || [])
+  if (rest.redirect) {
+    context.res.statusCode = 302
+    context.res.setHeader('location', rest.redirect)
+    context.res.end()
+  }
 
   return {
     props: {

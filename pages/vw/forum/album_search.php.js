@@ -8,7 +8,6 @@ import { Box, Typography, Grid } from '@material-ui/core'
 import { withStyles } from '@material-ui/core/styles'
 
 import { getGallerySearch } from '../../../utils/getters'
-import HeaderTop from '../../../components/HeaderTop'
 import Header from '../../../components/Header'
 
 export default withStyles({
@@ -19,10 +18,7 @@ export default withStyles({
     wordBreak: 'break-word'
   }
 })(({ data, classes }) => {
-  console.log(data)
-
   const handleCopy = (e) => {
-    console.log(e.target.dataset.copy)
     copy(e.target.dataset.copy, {
       debug: true,
       message: 'Press #{key} to copy'
@@ -35,8 +31,7 @@ export default withStyles({
         <title>{data.title}</title>
       </Head>
 
-      <HeaderTop data={data.preHeader} loggedIn={data.loggedIn} />
-      <Header data={data.header} items={data.nav} selected="Home" />
+      <Header data={data} selected="Home" />
 
       <Box px={{ xs: 1, md: 0 }} py={1}>
         <Box mb={2}>
@@ -79,12 +74,12 @@ export default withStyles({
                       </div>
                     </a>
                   </Link>
-                  <Typography dangerouslySetInnerHTML={{ __html: el.imgInfo }} className={classes.itemContent} />
+                  <Typography component="div" dangerouslySetInnerHTML={{ __html: el.imgInfo }} className={classes.itemContent} />
                 </Box>
               </Grid>
               <Grid item xs={6} sm={6} md={5} container direction="column">
                 <Box p={1} px={1}>
-                  <Typography dangerouslySetInnerHTML={{ __html: el.info }} className={classes.itemContent} />
+                  <Typography component="div" dangerouslySetInnerHTML={{ __html: el.info }} className={classes.itemContent} />
                 </Box>
               </Grid>
               <Grid item xs={12} sm={6} md={5}>
@@ -103,8 +98,8 @@ export default withStyles({
 })
 
 export async function getServerSideProps(context) {
-  const { cookies, data } = await getGallerySearch(context.req)
-  context.res.setHeader('set-cookie', cookies || [])
+  const { data, ...rest } = await getGallerySearch(context.req)
+  context.res.setHeader('set-cookie', rest.cookies || [])
 
   return {
     props: {

@@ -4,7 +4,6 @@ import React from 'react'
 import { Box, Typography } from '@material-ui/core'
 
 import { getTechnical } from '../../../../utils/getters'
-import HeaderTop from '../../../../components/HeaderTop'
 import Header from '../../../../components/Header'
 
 export default function TechnicalIndex({ data }) {
@@ -14,8 +13,7 @@ export default function TechnicalIndex({ data }) {
         <title>{data.title}</title>
       </Head>
 
-      <HeaderTop data={data.preHeader} loggedIn={data.loggedIn} />
-      <Header data={data.header} items={data.nav} selected="Home" />
+      <Header data={data} selected="Home" />
 
       <Box px={{ xs: 1, md: 0 }} py={1}>
         <Typography>Dealer Listings</Typography>
@@ -25,8 +23,8 @@ export default function TechnicalIndex({ data }) {
 }
 
 export async function getServerSideProps(context) {
-  const { cookies, data } = await getTechnical(context.req)
-  context.res.setHeader('set-cookie', cookies || [])
+  const { data, ...rest } = await getTechnical(context.req)
+  context.res.setHeader('set-cookie', rest.cookies || [])
 
   return {
     props: {

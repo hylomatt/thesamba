@@ -7,7 +7,6 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import { withStyles } from '@material-ui/core/styles'
 
 import { getForum } from '../../../utils/getters'
-import HeaderTop from '../../../components/HeaderTop'
 import Header from '../../../components/Header'
 import { formatDate } from '../../../utils/formatters'
 
@@ -18,16 +17,13 @@ export default withStyles({
     color: 'white'
   }
 })(({ data, classes }) => {
-  console.log(data)
-
   return (
     <Box p={{ xs: 0, md: 1 }}>
       <Head>
         <title>{data.title}</title>
       </Head>
 
-      <HeaderTop data={data.preHeader} loggedIn={data.loggedIn} />
-      <Header data={data.header} items={data.nav} selected="Home" />
+      <Header data={data} selected="Home" />
 
       <Box px={{ xs: 1, md: 0 }} py={1}>
         <Hidden xsDown>
@@ -149,8 +145,8 @@ export default withStyles({
 })
 
 export async function getServerSideProps(context) {
-  const { cookies, data } = await getForum(context.req)
-  context.res.setHeader('set-cookie', cookies || [])
+  const { data, ...rest } = await getForum(context.req)
+  context.res.setHeader('set-cookie', rest.cookies || [])
 
   return {
     props: {

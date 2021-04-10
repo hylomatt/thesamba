@@ -37,7 +37,7 @@ export default withStyles((theme) => ({
   menuBtn: {
     height: 64
   }
-}))(function Header({ data, classes, items, selected = null }) {
+}))(({ data: { header, preHeader, loggedIn, nav }, classes, selected = null }) => {
   const [menu, setMenu] = useState(false)
   const [expanded, setExpanded] = useState(false)
 
@@ -70,23 +70,24 @@ export default withStyles((theme) => ({
 
   return (
     <>
+      <HeaderTop data={preHeader} loggedIn={loggedIn} />
       <Box bgcolor="primary.dark">
         <Grid container justify="space-between" alignItems="center" wrap="nowrap">
           <Hidden mdUp>
             <IconButton className={classes.menuBtn} aria-label="menu" color="secondary" onClick={() => setMenu(true)}>
               <MenuIcon fontSize="large" color="secondary" />
             </IconButton>
-            <Link href={data.logo.href}>
+            <Link href={header.logo.href}>
               <a>
-                <Image src={`${constants.baseUrl}${data.logo.src}`} alt="" width={213} height={40} />
+                <Image src={header.logo.src} alt="" width={213} height={40} />
               </a>
             </Link>
             <Box width={53.47}></Box>
           </Hidden>
           <Hidden smDown>
-            <Link href={data.logo.href}>
+            <Link href={header.logo.href}>
               <a>
-                <Image src={`${constants.baseUrl}${data.logo.src}`} alt="" width={320} height={60} />
+                <Image src={header.logo.src} alt="" width={320} height={60} />
               </a>
             </Link>
           </Hidden>
@@ -94,8 +95,16 @@ export default withStyles((theme) => ({
       </Box>
       <Drawer open={menu} onClose={() => setMenu(false)}>
         <div className={classes.list} role="presentation" /* onClick={() => setMenu(false)} */>
+          {loggedIn && (
+            <Box p={2}>
+              <Typography>
+                Hello, <strong>{preHeader.user}</strong>
+              </Typography>
+            </Box>
+          )}
+
           <div className={classes.accRoot}>
-            {items.map((el, i) => (
+            {nav.map((el, i) => (
               <Accordion square={true} expanded={expanded === `panel${i}`} onChange={handleChange(`panel${i}`)} key={`nav-item-${el.title.toLowerCase().replace(/[^a-z0-9]/, '-')}`}>
                 <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls={`panel${i}bh-content`} id={`panel${i}bh-header`}>
                   <Typography className={classes.heading}>{el.title}</Typography>
@@ -130,16 +139,45 @@ export default withStyles((theme) => ({
           </div>
 
           <Divider />
+
           <List>
-            <ListItem button>
-              <ListItemText>
-                <Link href="/vw/forum/login.php?redirect=/vw/index.php" passHref>
-                  <Typography component="a" className={classes.heading}>
-                    Login
-                  </Typography>
-                </Link>
-              </ListItemText>
-            </ListItem>
+            {!loggedIn
+              ? (
+                <ListItem button>
+                  <ListItemText>
+                    <Link href="/vw/forum/login.php?redirect=/vw/index.php" passHref>
+                      <Typography component="a" className={classes.heading}>
+                      Login
+                      </Typography>
+                    </Link>
+                  </ListItemText>
+                </ListItem>
+              )
+              : (
+                <>
+                  <ListItem button>
+                    <ListItemText>
+                      <Link href={preHeader.logoutLink}>
+                        <a>Log out</a>
+                      </Link>
+                    </ListItemText>
+                  </ListItem>
+                  <ListItem button>
+                    <ListItemText>
+                      <Link href="/vw/forum/profile.php?mode=editprofile">
+                        <a>Control Panel</a>
+                      </Link>
+                    </ListItemText>
+                  </ListItem>
+                  <ListItem button>
+                    <ListItemText>
+                      <Link href="/vw/forum/privmsg.php?folder=inbox">
+                        <a>PMs: {preHeader.pms}</a>
+                      </Link>
+                    </ListItemText>
+                  </ListItem>
+                </>
+              )}
           </List>
         </div>
       </Drawer>
@@ -147,7 +185,7 @@ export default withStyles((theme) => ({
       <Hidden smDown>
         <Box bgcolor="primary.main">
           <Grid container justify="center" alignItems="center">
-            {items.map((el, i) => (
+            {nav.map((el, i) => (
               <React.Fragment key={`nav-item-${el.title.toLowerCase().replace(/[^a-z0-9]/, '-')}`}>
                 <Box px={2} py={1}>
                   <Button className={classes.root} aria-haspopup="true" aria-controls={open === i ? 'menu-list-grow' : undefined} onClick={(e) => handleToggle(e, i)}>
@@ -187,3 +225,88 @@ export default withStyles((theme) => ({
     </>
   )
 })
+
+const HeaderTop = ({ data, loggedIn }) => {
+  return (
+    <Hidden smDown>
+      <Box bgcolor="secondary.main" py={1} px={1}>
+        <Grid container alignItems="center">
+          {loggedIn
+            ? (
+              <>
+                <Box>
+                  <Typography>
+                  Hello, <strong>{data.user}</strong>
+                  </Typography>
+                </Box>
+                <Box mx={1} height={16}>
+                  <Divider orientation="vertical" />
+                </Box>
+                <Link href={data.logoutLink}>
+                  <a>Log out</a>
+                </Link>
+                <Box mx={1} height={16}>
+                  <Divider orientation="vertical" />
+                </Box>
+                <Link href="/vw/forum/profile.php?mode=editprofile">
+                  <a>Control Panel</a>
+                </Link>
+                <Box mx={1} height={16}>
+                  <Divider orientation="vertical" />
+                </Box>
+                <Link href="/vw/forum/privmsg.php?folder=inbox">
+                  <a>PMs: {data.pms}</a>
+                </Link>
+              </>
+            )
+            : (
+              <>
+                <Box mr={2}>
+                  <Typography>Hello!</Typography>
+                </Box>
+                <Link href="/vw/forum/login.php">
+                  <a>Log in</a>
+                </Link>
+                <Box mx={1}>
+                  <Typography>or</Typography>
+                </Box>
+                <Link href="/vw/forum/profile.php?mode=register">
+                  <a>Register</a>
+                </Link>
+              </>
+            )}
+          <Box mx={1} height={16}>
+            <Divider orientation="vertical" />
+          </Box>
+          <Link href="/vw/contact.php">
+            <a>Help</a>
+          </Link>
+          <Box mx={1} height={16}>
+            <Divider orientation="vertical" />
+          </Box>
+          <Link href="/vw/donate.php">
+            <a>Donate</a>
+          </Link>
+          <Box mx={1} height={16}>
+            <Divider orientation="vertical" />
+          </Box>
+          <Link href="/vw/products/">
+            <a>Buy Shirts</a>
+          </Link>
+
+          <Box flex="auto"></Box>
+
+          <Link href="/vw/allbanners.php">
+            <a>See all banner ads</a>
+          </Link>
+          <Box mx={1} height={16}>
+            <Divider orientation="vertical" />
+          </Box>
+          <Link href="/vw/banners.php">
+            <a>Advertise on TheSamba.com</a>
+          </Link>
+        </Grid>
+      </Box>
+    </Hidden>
+  )
+}

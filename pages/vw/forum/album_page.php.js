@@ -8,7 +8,6 @@ import { Box, Typography, Grid } from '@material-ui/core'
 import { withStyles } from '@material-ui/core/styles'
 
 import { getGalleryPage } from '../../../utils/getters'
-import HeaderTop from '../../../components/HeaderTop'
 import Header from '../../../components/Header'
 
 export default withStyles({
@@ -20,10 +19,7 @@ export default withStyles({
     padding: '8px 0'
   }
 })(({ data, classes }) => {
-  console.log(data)
-
   const handleCopy = (e) => {
-    console.log(e.target.dataset.copy)
     copy(e.target.dataset.copy, {
       debug: true,
       message: 'Press #{key} to copy'
@@ -36,8 +32,7 @@ export default withStyles({
         <title>{data.title}</title>
       </Head>
 
-      <HeaderTop data={data.preHeader} loggedIn={data.loggedIn} />
-      <Header data={data.header} items={data.nav} selected="Home" />
+      <Header data={data} selected="Home" />
 
       <Box px={{ xs: 1, md: 0 }} py={1}>
         <Box mb={2}>
@@ -89,7 +84,7 @@ export default withStyles({
               </Box>
               <Box p={1}>
                 <Typography>{data.page.photo.title}</Typography>
-                <Typography dangerouslySetInnerHTML={{ __html: data.page.photo.description }} />
+                <Typography component="div" dangerouslySetInnerHTML={{ __html: data.page.photo.description }} />
               </Box>
             </Grid>
             <Grid item xs={12}>
@@ -101,7 +96,7 @@ export default withStyles({
                   <Typography>
                     <strong>{data.page.author.name}</strong>
                   </Typography>
-                  <Typography dangerouslySetInnerHTML={{ __html: data.page.author.info }} />
+                  <Typography component="div" dangerouslySetInnerHTML={{ __html: data.page.author.info }} />
                 </Box>
               </Box>
             </Grid>
@@ -113,8 +108,8 @@ export default withStyles({
 })
 
 export async function getServerSideProps(context) {
-  const { cookies, data } = await getGalleryPage(context.req)
-  context.res.setHeader('set-cookie', cookies || [])
+  const { data, ...rest } = await getGalleryPage(context.req)
+  context.res.setHeader('set-cookie', rest.cookies || [])
 
   return {
     props: {

@@ -7,7 +7,6 @@ import { Box, Typography, Grid } from '@material-ui/core'
 import { withStyles } from '@material-ui/core/styles'
 
 import { getHome } from '../../utils/getters'
-import HeaderTop from '../../components/HeaderTop'
 import Header from '../../components/Header'
 
 import constants from '../../utils/constants'
@@ -20,16 +19,13 @@ export default withStyles({
     }
   }
 })(({ data, classes }) => {
-  console.log(data)
-
   return (
     <Box p={{ xs: 0, md: 1 }}>
       <Head>
         <title>{data.title}</title>
       </Head>
 
-      <HeaderTop data={data.preHeader} loggedIn={data.loggedIn} />
-      <Header data={data.header} items={data.nav} selected="Home" />
+      <Header data={data} selected="Home" />
 
       <Box px={{ xs: 1, md: 0 }} py={1}>
         {/* scams */}
@@ -59,7 +55,7 @@ export default withStyles({
                 <Link href={data.classifieds.href}>
                   <a>
                     <div style={{ position: 'relative', width: '100%', height: '100px', paddingBottom: '20%' }}>
-                      <Image src={`${constants.baseUrl}${data.classifieds.img.src}`} alt={data.classifieds.img.alt} layout="fill" objectFit="contain" />
+                      <Image src={data.classifieds.img.src} alt={data.classifieds.img.alt} layout="fill" objectFit="contain" />
                     </div>
                   </a>
                 </Link>
@@ -79,7 +75,7 @@ export default withStyles({
                 <Link href={data.gallery.href}>
                   <a>
                     <div style={{ position: 'relative', width: '100%', height: '100px', paddingBottom: '20%' }}>
-                      <Image src={`${constants.baseUrl}${data.gallery.img.src}`} alt={data.gallery.img.alt} layout="fill" objectFit="contain" />
+                      <Image src={data.gallery.img.src} alt={data.gallery.img.alt} layout="fill" objectFit="contain" />
                     </div>
                   </a>
                 </Link>
@@ -97,12 +93,12 @@ export default withStyles({
             <Link href={data.fact.href}>
               <a>
                 <Box position="relative" width="100%" height="80px" style={{ paddingBottom: '20%' }}>
-                  <Image src={`${constants.baseUrl}${data.fact.img.src}`} alt={data.fact.img.alt} layout="fill" objectFit="contain" />
+                  <Image src={data.fact.img.src} alt={data.fact.img.alt} layout="fill" objectFit="contain" />
                 </Box>
               </a>
             </Link>
           </Box>
-          <Typography dangerouslySetInnerHTML={{ __html: data.fact.content }} />
+          <Typography component="div" dangerouslySetInnerHTML={{ __html: data.fact.content }} />
         </Box>
 
         {/* featured ads */}
@@ -129,7 +125,7 @@ export default withStyles({
             </Box>
             <Box p={1}>
               <div style={{ position: 'relative', width: '100%', paddingBottom: '20%' }}>
-                <Image src={`${constants.baseUrl}${data.stolen.img.src}`} alt={data.stolen.img.alt} layout="fill" objectFit="contain" />
+                <Image src={data.stolen.img.src} alt={data.stolen.img.alt} layout="fill" objectFit="contain" />
               </div>
               <Typography align="center">{data.stolen.title}</Typography>
             </Box>
@@ -149,8 +145,8 @@ export default withStyles({
 })
 
 export async function getServerSideProps(context) {
-  const { cookies, data } = await getHome(context.req)
-  context.res.setHeader('set-cookie', cookies || [])
+  const { data, ...rest } = await getHome(context.req)
+  context.res.setHeader('set-cookie', rest.cookies || [])
 
   return {
     props: {

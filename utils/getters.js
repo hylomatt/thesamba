@@ -30,7 +30,8 @@ const getPage = async (req) => {
   return await fetch(url, { headers: { cookie: req.headers.cookie } })
     .then(async (r) => ({
       cookies: getSetCookieHeaders(r.headers.get('set-cookie')),
-      data: iconv.decode(Buffer.from(await r.arrayBuffer()), 'WINDOWS-1252')
+      data: iconv.decode(Buffer.from(await r.arrayBuffer()), 'WINDOWS-1252'),
+      redirect: url !== r.url ? r.url.replace(constants.baseUrl, '') : null
     }))
     .catch((e) => {
       console.error(e)
@@ -67,108 +68,126 @@ const getPage = async (req) => {
 
 export const getHome = async (req) => {
   return await getPage(req).then((r) => {
-    return { cookies: r.cookies, data: parseHome(req.url, r.data) }
+    const basePath = req.url.replace(/\/_next\/.*\/vw/, '/vw').replace('.json', '')
+    return { ...r, data: parseHome(basePath, r.data) }
   })
 }
 
 export const getClassifieds = async (req) => {
   return await getPage(req).then((r) => {
-    return { cookies: r.cookies, data: parseClassifieds(req.url, r.data) }
+    const basePath = req.url.replace(/\/_next\/.*\/vw/, '/vw').replace('.json', '')
+    return { ...r, data: parseClassifieds(basePath, r.data) }
   })
 }
 
 export const getClassifiedCategory = async (req) => {
   return await getPage(req).then((r) => {
-    return { cookies: r.cookies, data: parseClassifiedCategory(req.url, r.data) }
+    const basePath = req.url.replace(/\/_next\/.*\/vw/, '/vw').replace('.json', '')
+    return { ...r, data: parseClassifiedCategory(basePath, r.data) }
   })
 }
 
 export const getClassifiedDetail = async (req) => {
   return await getPage(req).then((r) => {
-    return { cookies: r.cookies, data: parseClassifiedDetail(req.url, r.data) }
+    const basePath = req.url.replace(/\/_next\/.*\/vw/, '/vw').replace('.json', '')
+    return { ...r, data: parseClassifiedDetail(basePath, r.data) }
   })
 }
 
 export const getForums = async (req) => {
   return await getPage(req).then((r) => {
-    return { cookies: r.cookies, data: parseForums(req.url, r.data) }
+    const basePath = req.url.replace(/\/_next\/.*\/vw/, '/vw').replace('.json', '')
+    return { ...r, data: parseForums(basePath, r.data) }
   })
 }
 
 export const getForumSearch = async (req) => {
   return await getPage(req).then((r) => {
-    return { cookies: r.cookies, data: parseForumSearch(req.url, r.data) }
+    const basePath = req.url.replace(/\/_next\/.*\/vw/, '/vw').replace('.json', '')
+    return { ...r, data: parseForumSearch(basePath, r.data) }
   })
 }
 
 export const getForum = async (req) => {
   return await getPage(req).then((r) => {
-    return { cookies: r.cookies, data: parseForum(req.url, r.data) }
+    const basePath = req.url.replace(/\/_next\/.*\/vw/, '/vw').replace('.json', '')
+    return { ...r, data: parseForum(basePath, r.data) }
   })
 }
 
 export const getTopic = async (req) => {
   return await getPage(req).then((r) => {
-    return { cookies: r.cookies, data: parseTopic(req.url, r.data) }
+    const basePath = req.url.replace(/\/_next\/.*\/vw/, '/vw').replace('.json', '')
+    return { ...r, data: parseTopic(basePath, r.data) }
   })
 }
 
 export const getGallery = async (req) => {
   return await getPage(req).then((r) => {
-    return { cookies: r.cookies, data: parseGallery(req.url, r.data) }
+    const basePath = req.url.replace(/\/_next\/.*\/vw/, '/vw').replace('.json', '')
+    return { ...r, data: parseGallery(basePath, r.data) }
   })
 }
 
 export const getGalleryCategory = async (req) => {
   return await getPage(req).then((r) => {
-    return { cookies: r.cookies, data: parseGalleryCategory(req.url, r.data) }
+    const basePath = req.url.replace(/\/_next\/.*\/vw/, '/vw').replace('.json', '')
+    return { ...r, data: parseGalleryCategory(basePath, r.data) }
   })
 }
 
 export const getGallerySearch = async (req) => {
   return await getPage(req).then((r) => {
-    return { cookies: r.cookies, data: parseGallerySearch(req.url, r.data) }
+    const basePath = req.url.replace(/\/_next\/.*\/vw/, '/vw').replace('.json', '')
+    return { ...r, data: parseGallerySearch(basePath, r.data) }
   })
 }
 
 export const getGalleryPage = async (req) => {
   return await getPage(req).then((r) => {
-    return { cookies: r.cookies, data: parseGalleryPage(req.url, r.data) }
+    const basePath = req.url.replace(/\/_next\/.*\/vw/, '/vw').replace('.json', '')
+    return { ...r, data: parseGalleryPage(basePath, r.data) }
   })
 }
 
 export const getCommunity = async (req) => {
   return await getPage(req).then((r) => {
-    return { cookies: r.cookies, data: parseCommunity(req.url, r.data) }
+    const basePath = req.url.replace(/\/_next\/.*\/vw/, '/vw').replace('.json', '')
+    return { ...r, data: parseCommunity(basePath, r.data) }
   })
 }
 
 export const getTechnical = async (req) => {
   return await getPage(req).then((r) => {
-    return { cookies: r.cookies, data: parseTechnical(req.url, r.data) }
+    const basePath = req.url.replace(/\/_next\/.*\/vw/, '/vw').replace('.json', '')
+    return { ...r, data: parseTechnical(basePath, r.data) }
   })
 }
 
 export const getArchives = async (req) => {
   return await getPage(req).then((r) => {
-    return { cookies: r.cookies, data: parseArchives(req.url, r.data) }
+    const basePath = req.url.replace(/\/_next\/.*\/vw/, '/vw').replace('.json', '')
+    return { ...r, data: parseArchives(basePath, r.data) }
   })
 }
 
 export const getAbout = async (req) => {
   return await getPage(req).then((r) => {
-    return { cookies: r.cookies, data: parseAbout(req.url, r.data) }
+    const basePath = req.url.replace(/\/_next\/.*\/vw/, '/vw').replace('.json', '')
+    return { ...r, data: parseAbout(basePath, r.data) }
   })
 }
 
 export const getLogin = async (req) => {
   return await getPage(req).then((r) => {
-    return { cookies: r.cookies, data: parseLogin(req.url, r.data) }
+    const basePath = req.url.replace(/\/_next\/.*\/vw/, '/vw').replace('.json', '')
+    return { ...r, data: parseLogin(basePath, r.data) }
   })
 }
 
 export const getProfile = async (req) => {
   return await getPage(req).then((r) => {
-    return { cookies: r.cookies, data: parseProfile(req.url, r.data) }
+    const basePath = req.url.replace(/\/_next\/.*\/vw/, '/vw').replace('.json', '')
+    return { ...r, data: parseProfile(basePath, r.data) }
   })
 }

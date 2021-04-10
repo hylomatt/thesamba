@@ -6,7 +6,6 @@ import { Box, Grid, Typography } from '@material-ui/core'
 import { withStyles } from '@material-ui/core/styles'
 
 import { getTopic } from '../../../utils/getters'
-import HeaderTop from '../../../components/HeaderTop'
 import Header from '../../../components/Header'
 
 export default withStyles({
@@ -20,8 +19,7 @@ export default withStyles({
         <title>{data.title}</title>
       </Head>
 
-      <HeaderTop data={data.preHeader} loggedIn={data.loggedIn} />
-      <Header data={data.header} items={data.nav} selected="Home" />
+      <Header data={data} selected="Home" />
 
       <Box px={{ xs: 1, md: 0 }} py={1}>
         <Box mb={2}>
@@ -50,7 +48,7 @@ export default withStyles({
           </Grid>
         </Box>
 
-        {data.posts.map((el, i) => (
+        {data.topic.posts.map((el, i) => (
           <Box mb={2} key={`topic-post-${i}`}>
             <Grid container>
               <Grid item xs={2}>
@@ -64,10 +62,10 @@ export default withStyles({
               <Grid item xs={10}>
                 <Box pl={2}>
                   <Box mb={1} p={1} bgcolor="secondary.light">
-                    <Typography dangerouslySetInnerHTML={{ __html: el.postDetails }} />
+                    <Typography component="div" dangerouslySetInnerHTML={{ __html: el.postDetails }} />
                   </Box>
                   <Box p={1}>
-                    <Typography dangerouslySetInnerHTML={{ __html: el.content }} />
+                    <Typography component="div" dangerouslySetInnerHTML={{ __html: el.content }} />
                   </Box>
                 </Box>
               </Grid>
@@ -80,8 +78,8 @@ export default withStyles({
 })
 
 export async function getServerSideProps(context) {
-  const { cookies, data } = await getTopic(context.req)
-  context.res.setHeader('set-cookie', cookies || [])
+  const { data, ...rest } = await getTopic(context.req)
+  context.res.setHeader('set-cookie', rest.cookies || [])
 
   return {
     props: {

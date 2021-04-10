@@ -8,7 +8,6 @@ import { withStyles } from '@material-ui/core/styles'
 import Carousel from 'react-material-ui-carousel'
 
 import { getClassifiedDetail } from '../../../utils/getters'
-import HeaderTop from '../../../components/HeaderTop'
 import Header from '../../../components/Header'
 import theme from '../../../utils/theme'
 
@@ -36,8 +35,7 @@ export default withStyles({
         <title>{data.title}</title>
       </Head>
 
-      <HeaderTop data={data.preHeader} loggedIn={data.loggedIn} />
-      <Header data={data.header} items={data.nav} selected="Home" />
+      <Header data={data} selected="Home" />
 
       <Box px={{ xs: 1, md: 0 }} py={1}>
         <Box mb={2}>
@@ -86,7 +84,7 @@ export default withStyles({
           </Carousel>
         </Box>
         <Box mb={2}>
-          <Typography dangerouslySetInnerHTML={{ __html: data.detail.description }} />
+          <Typography component="div" dangerouslySetInnerHTML={{ __html: data.detail.description }} />
         </Box>
         <Box mb={1} border={1} borderColor="secondary.light">
           <Box bgcolor="secondary.light" p={1}>
@@ -117,11 +115,11 @@ export default withStyles({
             <Grid container>
               <Grid item xs={5}>
                 <Box pr={1}>
-                  <Typography align="right" dangerouslySetInnerHTML={{ __html: data.detail.adInfo.titles }} />
+                  <Typography component="div" align="right" dangerouslySetInnerHTML={{ __html: data.detail.adInfo.titles }} />
                 </Box>
               </Grid>
               <Grid item xs={7}>
-                <Typography dangerouslySetInnerHTML={{ __html: data.detail.adInfo.values }} />
+                <Typography component="div" dangerouslySetInnerHTML={{ __html: data.detail.adInfo.values }} />
               </Grid>
             </Grid>
           </Box>
@@ -132,8 +130,8 @@ export default withStyles({
 })
 
 export async function getServerSideProps(context) {
-  const { cookies, data } = await getClassifiedDetail(context.req)
-  context.res.setHeader('set-cookie', cookies || [])
+  const { data, ...rest } = await getClassifiedDetail(context.req)
+  context.res.setHeader('set-cookie', rest.cookies || [])
 
   return {
     props: {

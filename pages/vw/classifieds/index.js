@@ -7,7 +7,6 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import { withStyles } from '@material-ui/core/styles'
 
 import { getClassifieds } from '../../../utils/getters'
-import HeaderTop from '../../../components/HeaderTop'
 import Header from '../../../components/Header'
 
 import constants from '../../../utils/constants'
@@ -47,8 +46,7 @@ export default withStyles((theme) => ({
         <title>{data.title}</title>
       </Head>
 
-      <HeaderTop data={data.preHeader} loggedIn={data.loggedIn} />
-      <Header data={data.header} items={data.nav} selected="Home" />
+      <Header data={data} selected="Home" />
 
       <Box px={{ xs: 1, md: 0 }} py={1}>
         <Grid container>
@@ -178,8 +176,8 @@ export default withStyles((theme) => ({
 })
 
 export async function getServerSideProps(context) {
-  const { cookies, data } = await getClassifieds(context.req)
-  context.res.setHeader('set-cookie', cookies || [])
+  const { data, ...rest } = await getClassifieds(context.req)
+  context.res.setHeader('set-cookie', rest.cookies || [])
 
   return {
     props: {

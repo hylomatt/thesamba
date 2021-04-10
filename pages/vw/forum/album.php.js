@@ -6,7 +6,6 @@ import { Box, Typography, Grid, Hidden } from '@material-ui/core'
 import { withStyles } from '@material-ui/core/styles'
 
 import { getGallery } from '../../../utils/getters'
-import HeaderTop from '../../../components/HeaderTop'
 import Header from '../../../components/Header'
 
 export default withStyles({
@@ -14,16 +13,13 @@ export default withStyles({
     color: 'white'
   }
 })(({ data, classes }) => {
-  console.log(data)
-
   return (
     <Box p={{ xs: 0, md: 1 }}>
       <Head>
         <title>{data.title}</title>
       </Head>
 
-      <HeaderTop data={data.preHeader} loggedIn={data.loggedIn} />
-      <Header data={data.header} items={data.nav} selected="Home" />
+      <Header data={data} selected="Home" />
 
       <Box px={{ xs: 1, md: 0 }} py={1}>
         <Grid container>
@@ -41,7 +37,7 @@ export default withStyles({
                   </a>
                 </Link>
                 <Typography>{data.gallery.latestEntry.topictitle}</Typography>
-                <Typography dangerouslySetInnerHTML={{ __html: data.gallery.latestEntry.postbody }} />
+                <Typography component="div" dangerouslySetInnerHTML={{ __html: data.gallery.latestEntry.postbody }} />
               </Box>
             </Box>
           </Grid>
@@ -60,7 +56,7 @@ export default withStyles({
                   </a>
                 </Link>
                 <Typography>{data.gallery.stolen.topictitle}</Typography>
-                <Typography dangerouslySetInnerHTML={{ __html: data.gallery.stolen.postbody }} />
+                <Typography component="div" dangerouslySetInnerHTML={{ __html: data.gallery.stolen.postbody }} />
               </Box>
             </Box>
           </Grid>
@@ -130,8 +126,8 @@ export default withStyles({
 })
 
 export async function getServerSideProps(context) {
-  const { cookies, data } = await getGallery(context.req)
-  context.res.setHeader('set-cookie', cookies || [])
+  const { data, ...rest } = await getGallery(context.req)
+  context.res.setHeader('set-cookie', rest.cookies || [])
 
   return {
     props: {

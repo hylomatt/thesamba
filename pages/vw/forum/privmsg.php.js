@@ -1,22 +1,17 @@
 import React from 'react'
 import Head from 'next/head'
-import Link from 'next/link'
 import Image from 'next/image'
 
 import { Box, Typography, Grid } from '@material-ui/core'
+import { Skeleton } from '@material-ui/lab'
 import { withStyles } from '@material-ui/core/styles'
 
-import { getHome } from '../../utils/getters'
-import Header from '../../components/Header'
-
-import constants from '../../utils/constants'
+import { getHome } from '../../../utils/getters'
+import Header from '../../../components/Header'
 
 export default withStyles({
-  events: {
-    '& > div': {
-      marginBottom: '8px',
-      fontSize: 13
-    }
+  root: {
+    color: 'white'
   }
 })(({ data, classes }) => {
   return (
@@ -28,7 +23,7 @@ export default withStyles({
       <Header data={data} selected="Home" />
 
       <Box px={{ xs: 1, md: 0 }} py={1}>
-        <Typography>Donate</Typography>
+        <Typography>Private messages</Typography>
       </Box>
     </Box>
   )

@@ -7,7 +7,6 @@ import { Skeleton } from '@material-ui/lab'
 import { withStyles } from '@material-ui/core/styles'
 
 import { getProfile } from '../../../utils/getters'
-import HeaderTop from '../../../components/HeaderTop'
 import Header from '../../../components/Header'
 
 export default withStyles({
@@ -15,17 +14,13 @@ export default withStyles({
     color: 'white'
   }
 })(({ data, classes }) => {
-  console.log(data)
-  console.log(data.profile.avatar.img.src)
-
   return (
     <Box p={{ xs: 0, md: 1 }}>
       <Head>
         <title>{data.title}</title>
       </Head>
 
-      <HeaderTop data={data.preHeader} loggedIn={data.loggedIn} />
-      <Header data={data.header} items={data.nav} selected="Home" />
+      <Header data={data} selected="Home" />
 
       <Box px={{ xs: 1, md: 0 }} py={1}>
         <Box mb={1} border={1} borderColor="primary.main">
@@ -65,7 +60,7 @@ export default withStyles({
                     <Typography>{el[0]}</Typography>
                   </Grid>
                   <Grid item xs={6}>
-                    <Typography dangerouslySetInnerHTML={{ __html: el[1] }} />
+                    <Typography component="div" dangerouslySetInnerHTML={{ __html: el[1] }} />
                   </Grid>
                 </React.Fragment>
               ))}
@@ -85,7 +80,7 @@ export default withStyles({
                     <Typography>{el[0]}</Typography>
                   </Grid>
                   <Grid item xs={6}>
-                    <Typography dangerouslySetInnerHTML={{ __html: el[1] }} />
+                    <Typography component="div" dangerouslySetInnerHTML={{ __html: el[1] }} />
                   </Grid>
                 </React.Fragment>
               ))}
@@ -98,7 +93,7 @@ export default withStyles({
             <Typography align="center">Signature</Typography>
           </Box>
           <Box p={1}>
-            <Typography dangerouslySetInnerHTML={{ __html: data.profile.signature }} />
+            <Typography component="div" dangerouslySetInnerHTML={{ __html: data.profile.signature }} />
           </Box>
         </Box>
       </Box>
@@ -107,8 +102,8 @@ export default withStyles({
 })
 
 export async function getServerSideProps(context) {
-  const { cookies, data } = await getProfile(context.req)
-  context.res.setHeader('set-cookie', cookies || [])
+  const { data, ...rest } = await getProfile(context.req)
+  context.res.setHeader('set-cookie', rest.cookies || [])
 
   return {
     props: {
