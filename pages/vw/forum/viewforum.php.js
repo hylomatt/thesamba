@@ -17,7 +17,7 @@ export default withStyles({
   root: {
     color: 'white'
   }
-})(function ForumDetail({ data, classes }) {
+})(({ data, classes }) => {
   console.log(data)
 
   return (

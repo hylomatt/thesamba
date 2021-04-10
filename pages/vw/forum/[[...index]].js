@@ -15,7 +15,7 @@ export default withStyles({
   root: {
     color: 'white'
   }
-})(function ForumIndex({ data, classes }) {
+})(({ data, classes }) => {
   const router = useRouter()
 
   return (

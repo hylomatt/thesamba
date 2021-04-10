@@ -13,7 +13,7 @@ export default withStyles({
   root: {
     color: 'white'
   }
-})(function TopicDetail({ data, classes }) {
+})(({ data, classes }) => {
   return (
     <Box p={{ xs: 0, md: 1 }}>
       <Head>

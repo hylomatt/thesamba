@@ -29,7 +29,7 @@ export default withStyles({
     position: 'relative !important',
     height: 'unset !important'
   }
-})(function ClassifiedDetail({ classes, data }) {
+})(({ classes, data }) => {
   return (
     <Box p={{ xs: 0, md: 1 }}>
       <Head>

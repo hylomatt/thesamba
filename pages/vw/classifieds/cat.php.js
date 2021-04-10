@@ -46,7 +46,7 @@ export default withStyles((theme) => ({
     maxWidth: '100%',
     maxHeight: '120px'
   }
-}))(function ClassifiedCategory({ data, classes }) {
+}))(({ data, classes }) => {
   return (
     <Box p={{ xs: 0, md: 1 }}>
       <Head>

@@ -3,7 +3,7 @@ import Head from 'next/head'
 import Link from 'next/link'
 import Image from 'next/image'
 
-import { Box, Typography } from '@material-ui/core'
+import { Box, Typography, Grid } from '@material-ui/core'
 import { withStyles } from '@material-ui/core/styles'
 
 import { getHome } from '../../utils/getters'
@@ -19,7 +19,7 @@ export default withStyles({
       fontSize: 13
     }
   }
-})(function Home({ data, classes }) {
+})(({ data, classes }) => {
   return (
     <Box p={{ xs: 0, md: 1 }}>
       <Head>
@@ -46,37 +46,46 @@ export default withStyles({
           </Box>
         </Box>
 
-        {/* classifieds */}
-        <Box mb={1} border={1} borderColor="secondary.light">
-          <Box bgcolor="secondary.light" p={1}>
-            <Typography>Classifieds</Typography>
-          </Box>
-          <Box p={1}>
-            <div style={{ position: 'relative', width: '100%', paddingBottom: '20%' }}>
-              <Image src={`${constants.baseUrl}${data.classifieds.img.src}`} alt={data.classifieds.img.alt} layout="fill" objectFit="contain" />
-            </div>
-            <Typography align="center">{data.classifieds.title}</Typography>
-          </Box>
-        </Box>
-
-        {/* gallery */}
-        <Box mb={1} border={1} borderColor="secondary.light">
-          <Box bgcolor="secondary.light" p={1}>
-            <Typography>Gallery</Typography>
-          </Box>
-          <Box p={1}>
-            <div style={{ position: 'relative', width: '100%', paddingBottom: '20%' }}>
-              <Image src={`${constants.baseUrl}${data.gallery.img.src}`} alt={data.gallery.img.alt} layout="fill" objectFit="contain" />
-            </div>
-            <Typography align="center">{data.gallery.title}</Typography>
-          </Box>
-        </Box>
+        <Grid container>
+          <Grid item xs={6}>
+            {/* classifieds */}
+            <Box mb={1} border={1} borderColor="secondary.light">
+              <Box bgcolor="secondary.light" p={1}>
+                <Typography>Classifieds</Typography>
+              </Box>
+              <Box p={1}>
+                <div style={{ position: 'relative', width: '100%', height: '100px', paddingBottom: '20%' }}>
+                  <Image src={`${constants.baseUrl}${data.classifieds.img.src}`} alt={data.classifieds.img.alt} layout="fill" objectFit="contain" />
+                </div>
+                <Box pt={1}>
+                  <Typography align="center">{data.classifieds.title}</Typography>
+                </Box>
+              </Box>
+            </Box>
+          </Grid>
+          <Grid item xs={6}>
+            {/* gallery */}
+            <Box mb={1} border={1} borderColor="secondary.light">
+              <Box bgcolor="secondary.light" p={1}>
+                <Typography>Gallery</Typography>
+              </Box>
+              <Box p={1}>
+                <div style={{ position: 'relative', width: '100%', height: '100px', paddingBottom: '20%' }}>
+                  <Image src={`${constants.baseUrl}${data.gallery.img.src}`} alt={data.gallery.img.alt} layout="fill" objectFit="contain" />
+                </div>
+                <Box pt={1}>
+                  <Typography align="center">{data.gallery.title}</Typography>
+                </Box>
+              </Box>
+            </Box>
+          </Grid>
+        </Grid>
 
         {/* fact */}
         <Box mb={1} p={1} border={1} borderColor="secondary.light">
-          <div style={{ position: 'relative', width: '100%', paddingBottom: '20%' }}>
+          <Box mb={2} position="relative" width="100%" style={{ paddingBottom: '20%' }}>
             <Image src={`${constants.baseUrl}${data.fact.img.src}`} alt={data.fact.img.alt} layout="fill" objectFit="contain" />
-          </div>
+          </Box>
           <Typography dangerouslySetInnerHTML={{ __html: data.fact.content }} />
         </Box>
 

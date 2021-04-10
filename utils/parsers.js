@@ -1,8 +1,7 @@
 const cheerio = require('cheerio')
-// const url = require('url')
-// const { URL } = require("url");
+const { URL } = require('url')
 
-// const constants = require('./constants').default
+const constants = require('./constants').default
 
 // const getAbsoluteUrl = (basePath, href) => {
 //   return href
@@ -10,11 +9,17 @@ const cheerio = require('cheerio')
 // }
 
 const getFQUrl = (basePath, href) => {
+  if (!href) return href
+
+  if (!href.startsWith('/')) {
+    const resolvedUrl = new URL(href, new URL(`${constants.baseUrl}${basePath}`, 'resolve://'))
+    return resolvedUrl.href
+    // } else if (href.startsWith('/')) {
+    //   const resolvedUrl = new URL(`${constants.baseUrl}${href}`)
+    //   return resolvedUrl.href
+  }
+
   return href
-  // return new url.URL(
-  //   getAbsoluteUrl(basePath, href),
-  //   constants.baseUrl
-  // ).toString();
 }
 
 const parseImage = (basePath, imgHtml) => {
@@ -349,6 +354,13 @@ export const parseForums = (basePath, html) => {
   }
 }
 
+export const parseForumSearch = (basePath, html) => {
+  const $ = cheerio.load(html)
+  return {
+    ...parseBase(basePath, $)
+  }
+}
+
 export const parseForum = (basePath, html) => {
   const $ = cheerio.load(html)
   return {
@@ -455,8 +467,157 @@ export const parseTopic = (basePath, html) => {
 
 export const parseGallery = (basePath, html) => {
   const $ = cheerio.load(html)
+
+  const topBoxes = $('body > table.forumline').first().find('>tbody>tr>td>table>tbody>tr')
+  const categoriesTable = $('body > table.forumline').last().find('>tbody>tr:has(td:not(.catLeft))')
+
   return {
-    ...parseBase(basePath, $)
+    ...parseBase(basePath, $),
+    gallery: {
+      latestEntry: {
+        href: `/vw/forum/${$(topBoxes[0]).find('>td:first-child a').attr('href') || ''}`,
+        img: parseImage(basePath, $(topBoxes[0]).find('>td:first-child a img')),
+        topictitle: $(topBoxes[0]).find('>td:last-child span.topictitle').text(),
+        postbody: $(topBoxes[0]).find('>td:last-child span.postbody').html()
+      },
+      stolen: {
+        href: `/vw/forum/${$(topBoxes[1]).find('>td:first-child a').attr('href') || ''}`,
+        img: parseImage(basePath, $(topBoxes[1]).find('>td:first-child a img')),
+        topictitle: $(topBoxes[1]).find('>td:last-child span.topictitle').text(),
+        postbody: $(topBoxes[1]).find('>td:last-child span.postbody').html()
+      },
+      categories: categoriesTable.toArray().map((el) => ({
+        title: $(el).find('>td:first-child a.forumlink').text(),
+        href: `/vw/forum/${$(el).find('>td:first-child a.forumlink').attr('href') || ''}`,
+        subTitle: $(el).find('>td:first-child > span.genmed').text().trim(),
+        pics: $(el).find('>td:nth-child(2) > span.gensmall').text(),
+        lastPic: $(el).find('>td:last-child > span.gensmall').html()
+      }))
+    }
+  }
+}
+
+export const parseGalleryCategory = (basePath, html) => {
+  const $ = cheerio.load(html)
+
+  return {
+    ...parseBase(basePath, $),
+    category: {
+      title: $('body > table .maintitle').text(),
+      href: `/vw/forum/${$('body > table .maintitle').attr('href') || ''}`,
+      pages: $('span.pages')
+        .first()
+        .find('b, a')
+        .toArray()
+        .map((el) => ({
+          title: $(el).text().trim(),
+          href: `/vw/forum/${$(el).attr('href') || ''}`
+        })),
+      nav: $('body > table:has(input#search_keywords) span.nav')
+        .contents()
+        .toArray()
+        .map((el) => ({
+          title: $(el).text().trim(),
+          href: `/vw/forum/${$(el).attr('href') || ''}`
+        })),
+      entries: $('body > table.forumline > tbody > tr > td > table > tbody > tr')
+        .toArray()
+        .map((el) => ({
+          info: $(el).find('> td:nth-child(2)').html().trim(),
+          href: `/vw/forum/${$(el).find('> td:first-child a:has(img)').attr('href') || ''}`,
+          img: parseImage(basePath, $(el).find('> td:first-child a img')),
+          imgInfo: $(el)
+            .find('> td:first-child .gensmall')
+            .contents()
+            .filter((i, el) => el.nodeType === 3)
+            .toArray()
+            .reduce((acc, el) => {
+              const splitter = 'Views:'
+              console.log(el.data)
+              if (el.data.includes(splitter)) {
+                const splitData = el.data.split(splitter)
+                acc.push(splitData[0].trim(), `Views: ${splitData[1]}`.trim())
+              } else {
+                acc.push(el.data.trim())
+              }
+              return acc
+            }, []),
+          forumCode: $(el).find('> td:last-child input').attr('value')
+        }))
+    }
+  }
+}
+
+export const parseGallerySearch = (basePath, html) => {
+  const $ = cheerio.load(html)
+
+  return {
+    ...parseBase(basePath, $),
+    category: {
+      title: $('body > table .maintitle').text(),
+      href: `/vw/forum/${$('body > table .maintitle').attr('href') || ''}`,
+      pages: $('span.pages')
+        .first()
+        .find('b, a')
+        .toArray()
+        .map((el) => ({
+          title: $(el).text().trim(),
+          href: `/vw/forum/${$(el).attr('href') || ''}`
+        })),
+      nav: $('body > table:has(input#search_keywords) span.nav')
+        .contents()
+        .toArray()
+        .map((el) => ({
+          title: $(el).text().trim(),
+          href: `/vw/forum/${$(el).attr('href') || ''}`
+        })),
+      entries: $('body > table.forumline > tbody > tr > td > table > tbody > tr')
+        .toArray()
+        .map((el) => ({
+          info: $(el).find('> td:nth-child(2)').html().trim(),
+          href: `/vw/forum/${$(el).find('> td:first-child a:has(img)').attr('href') || ''}`,
+          img: parseImage(basePath, $(el).find('> td:first-child a img')),
+          imgInfo: $(el).find('> td:first-child .gensmall').html().trim(),
+          forumCode: $(el).find('> td:last-child input').attr('value')
+        }))
+    }
+  }
+}
+
+export const parseGalleryPage = (basePath, html) => {
+  const $ = cheerio.load(html)
+
+  const contentContainer = $('body > table.forumline')
+
+  return {
+    ...parseBase(basePath, $),
+    page: {
+      // title: $('body > table .maintitle').text(),
+      // href: $('body > table .maintitle').attr('href') || null
+      nav: $(contentContainer)
+        .prev('table')
+        .find(' span.nav')
+        .contents()
+        .toArray()
+        .map((el) => ({
+          title: $(el).text().trim(),
+          href: $(el).attr('href') || null
+        })),
+
+      title: $(contentContainer).find('th.thTop').text(),
+      photoLink: $(contentContainer).find('> tbody > tr:nth-child(2) td table td:nth-child(2) input').attr('value') || null,
+      forumCode: $(contentContainer).find('> tbody > tr:nth-child(2) td table td:nth-child(4) input').attr('value') || null,
+      img: parseImage(basePath, $(contentContainer).find('> tbody > tr:nth-child(2) td > a img')),
+      href: $(contentContainer).find('> tbody > tr:nth-child(2) td > a:has(img)').attr('href') || null,
+      author: {
+        name: $(contentContainer).find('> tbody > tr:nth-child(3) table.forumline > tbody > tr:nth-child(2) td:first-child .name b').text(),
+        info: $(contentContainer).find('> tbody > tr:nth-child(3) table.forumline > tbody > tr:nth-child(2) td:first-child .postdetails').html()
+      },
+      photo: {
+        title: $(contentContainer).find('> tbody > tr:nth-child(3) table.forumline > tbody > tr:nth-child(2) td:last-child tr:first-child td:first-child .genmed b').text(),
+        description: $(contentContainer).find('> tbody > tr:nth-child(3) table.forumline > tbody > tr:nth-child(2) td:last-child tr:last-child .row2').html()
+      }
+    }
   }
 }
 
@@ -492,5 +653,32 @@ export const parseLogin = (basePath, html) => {
   const $ = cheerio.load(html)
   return {
     ...parseBase(basePath, $)
+  }
+}
+
+export const parseProfile = (basePath, html) => {
+  const $ = cheerio.load(html)
+  const container = $('body > table.forumline')
+  return {
+    ...parseBase(basePath, $),
+    profile: {
+      title: $(container).find('.thHead').text(),
+      avatar: {
+        img: parseImage(basePath, $(container).find('> tbody > tr:nth-child(3) > td:first-child > img'))
+      },
+      info: $(container)
+        .find('> tbody > tr:nth-child(3) > td:last-child tr')
+        .toArray()
+        .map((el) => {
+          return [$(el).find('td:first-child .gen').text().trim(), $(el).find('td:last-child .gen').html()]
+        }),
+      contact: $(container)
+        .find('> tbody > tr:nth-child(5) tr')
+        .toArray()
+        .map((el) => {
+          return [$(el).find('td:first-child .gen').text().trim(), $(el).find('td:last-child .gen').html()]
+        }),
+      signature: $(container).find('> tbody > tr:last-child > td').html()
+    }
   }
 }

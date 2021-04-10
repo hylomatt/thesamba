@@ -40,7 +40,7 @@ export default withStyles((theme) => ({
   menuBtn: {
     height: 64
   }
-}))(function ClassifiedIndex({ data, classes }) {
+}))(({ data, classes }) => {
   return (
     <Box p={{ xs: 0, md: 1 }}>
       <Head>

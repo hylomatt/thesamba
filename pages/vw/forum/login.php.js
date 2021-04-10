@@ -15,7 +15,7 @@ export default withStyles({
   root: {
     color: '#fff'
   }
-})(function ForumIndex({ data, classes }) {
+})(({ data, classes }) => {
   const router = useRouter()
 
   const [values, setValues] = useState({
