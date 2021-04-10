@@ -18,7 +18,7 @@ export default function ForumIndex({ data }) {
       <Header data={data.header} items={data.nav} selected="Home" />
 
       <Box px={{ xs: 1, md: 0 }} py={1}>
-        <Typography>Community</Typography>
+        <Typography>clubs</Typography>
       </Box>
     </Box>
   )
