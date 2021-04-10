@@ -1,16 +1,12 @@
 import Head from 'next/head'
 import React from 'react'
-import Link from 'next/link'
 
-import { Box, Typography, Grid, Accordion, AccordionSummary, AccordionDetails, List, ListItem, ListItemText, Hidden } from '@material-ui/core'
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
+import { Box, Typography } from '@material-ui/core'
 import { withStyles } from '@material-ui/core/styles'
 
 import { getHome } from '../../../utils/getters'
 import HeaderTop from '../../../components/HeaderTop'
 import Header from '../../../components/Header'
-
-import constants from '../../../utils/constants'
 
 export default withStyles((theme) => ({
   root: {

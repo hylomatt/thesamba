@@ -1,16 +1,12 @@
 import React from 'react'
 import Head from 'next/head'
-import Link from 'next/link'
-import Image from 'next/image'
 
-import { Box, Typography, Grid } from '@material-ui/core'
+import { Box, Typography } from '@material-ui/core'
 import { withStyles } from '@material-ui/core/styles'
 
 import { getHome } from '../../utils/getters'
 import HeaderTop from '../../components/HeaderTop'
 import Header from '../../components/Header'
-
-import constants from '../../utils/constants'
 
 export default withStyles({
   events: {
