@@ -3,13 +3,16 @@ import UserContext from '../utils/providers/UserProvider'
 import Head from 'next/head'
 import { ThemeProvider } from '@material-ui/core/styles'
 import CssBaseline from '@material-ui/core/CssBaseline'
+import usePageTracking from '../components/usePageTracking'
 
 import theme from '../utils/theme'
 
 import '../styles/globals.css'
 // import 'tailwindcss/tailwind.css'
 
-function MyApp({ Component, pageProps }) {
+function App({ Component, pageProps }) {
+  usePageTracking()
+
   useEffect(() => {
     const jssStyles = document.querySelector('#jss-server-side')
     if (jssStyles) {
@@ -31,4 +34,4 @@ function MyApp({ Component, pageProps }) {
   )
 }
 
-export default MyApp
+export default App

@@ -132,7 +132,7 @@ export default withStyles((theme) => ({
                         <Link href={el.href} key={`classifieds-featured-ads-${i}`}>
                           <a>
                             <div>
-                              <img src={`${constants.baseUrl}${el.img.src}`} />
+                              <img src={el.img.src} />
                             </div>
                             <Typography align="center">{el.title}</Typography>
                           </a>
@@ -157,7 +157,7 @@ export default withStyles((theme) => ({
                         <Link href={el.href}>
                           <a>
                             <div>
-                              <img src={`${constants.baseUrl}${el.img.src}`} />
+                              <img src={el.img.src} />
                             </div>
                             <Typography align="center">{el.title}</Typography>
                           </a>
