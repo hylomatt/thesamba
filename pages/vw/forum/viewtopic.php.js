@@ -2,7 +2,7 @@ import Head from 'next/head'
 import React from 'react'
 import Link from 'next/link'
 
-import { Box, Grid, Typography } from '@material-ui/core'
+import { Box, Grid, Typography, Hidden } from '@material-ui/core'
 import { withStyles } from '@material-ui/core/styles'
 
 import { getTopic } from '../../../utils/getters'
@@ -33,38 +33,54 @@ export default withStyles({
           ))}
         </Box>
 
-        <Box py={1} mb={2} bgcolor="primary.main">
-          <Grid container>
-            <Grid item xs={2}>
-              <Typography align="center" className={classes.root}>
-                Author
-              </Typography>
+        <Hidden smDown>
+          <Box py={1} mb={2} bgcolor="primary.main">
+            <Grid container>
+              <Grid item xs={2}>
+                <Typography align="center" className={classes.root}>
+                  Author
+                </Typography>
+              </Grid>
+              <Grid item xs={10}>
+                <Typography align="center" className={classes.root}>
+                  Message
+                </Typography>
+              </Grid>
             </Grid>
-            <Grid item xs={10}>
-              <Typography align="center" className={classes.root}>
-                Message
-              </Typography>
-            </Grid>
-          </Grid>
-        </Box>
+          </Box>
+        </Hidden>
 
         {data.topic.posts.map((el, i) => (
           <Box mb={2} key={`topic-post-${i}`}>
             <Grid container>
-              <Grid item xs={2}>
+              <Grid item xs={12} sm={12} md={2}>
                 <Box p={1} bgcolor="secondary.light">
-                  <Link href={el.name.href || ''} passHref>
-                    <Typography component="a">{el.name.title}</Typography>
-                  </Link>
-                  <Box dangerouslySetInnerHTML={{ __html: el.posterDetails }}></Box>
+                  <Grid container justify="space-between" alignItems="center">
+                    <Grid item>
+                      <Link href={el.name.href || ''} passHref>
+                        <Typography component="a">{el.name.title}</Typography>
+                      </Link>
+                    </Grid>
+                    <Hidden mdUp>
+                      <Grid item>
+                        <Typography variant="body2">{el.postDetails[0]}</Typography>
+                      </Grid>
+                    </Hidden>
+                  </Grid>
+                  <Hidden smDown>
+                    <Box dangerouslySetInnerHTML={{ __html: el.posterDetails }}></Box>
+                  </Hidden>
                 </Box>
               </Grid>
-              <Grid item xs={10}>
-                <Box pl={2}>
-                  <Box mb={1} p={1} bgcolor="secondary.light">
-                    <Typography component="div" dangerouslySetInnerHTML={{ __html: el.postDetails }} />
-                  </Box>
-                  <Box p={1}>
+              <Grid item xs={12} md={10}>
+                <Box pl={{ xs: 0, md: 1 }}>
+                  <Hidden smDown>
+                    <Box mb={1} p={1} bgcolor="secondary.light">
+                      <Typography component="div" dangerouslySetInnerHTML={{ __html: el.postDetails[0] }} />
+                      {/* <Typography component="div" dangerouslySetInnerHTML={{ __html: el.postDetails[1] }} /> */}
+                    </Box>
+                  </Hidden>
+                  <Box py={1} px={2}>
                     <Typography component="div" dangerouslySetInnerHTML={{ __html: el.content }} />
                   </Box>
                 </Box>

@@ -7,8 +7,6 @@ import MenuIcon from '@material-ui/icons/Menu'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import { withStyles } from '@material-ui/core/styles'
 
-import constants from '../utils/constants'
-
 export default withStyles((theme) => ({
   root: {
     color: 'white'
@@ -143,15 +141,72 @@ export default withStyles((theme) => ({
           <List>
             {!loggedIn
               ? (
-                <ListItem button>
-                  <ListItemText>
-                    <Link href="/vw/forum/login.php?redirect=/vw/index.php" passHref>
-                      <Typography component="a" className={classes.heading}>
-                      Login
-                      </Typography>
-                    </Link>
-                  </ListItemText>
-                </ListItem>
+                <>
+                  <ListItem button>
+                    <ListItemText>
+                      <Link href="/vw/forum/login.php?redirect=/vw/index.php" passHref>
+                        <Typography component="a" className={classes.heading}>
+                        Login
+                        </Typography>
+                      </Link>
+                    </ListItemText>
+                  </ListItem>
+                  <ListItem button>
+                    <ListItemText>
+                      <Link href="/vw/forum/profile.php?mode=register">
+                        <Typography component="a" className={classes.heading}>
+                        Register
+                        </Typography>
+                      </Link>
+                    </ListItemText>
+                  </ListItem>
+
+                  <ListItem button>
+                    <ListItemText>
+                      <Link href="/vw/contact.php">
+                        <Typography component="a" className={classes.heading}>
+                        Help
+                        </Typography>
+                      </Link>
+                    </ListItemText>
+                  </ListItem>
+                  <ListItem button>
+                    <ListItemText>
+                      <Link href="/vw/donate.php">
+                        <Typography component="a" className={classes.heading}>
+                        Donate
+                        </Typography>
+                      </Link>
+                    </ListItemText>
+                  </ListItem>
+                  <ListItem button>
+                    <ListItemText>
+                      <Link href="/vw/products/">
+                        <Typography component="a" className={classes.heading}>
+                        Buy Shirts
+                        </Typography>
+                      </Link>
+                    </ListItemText>
+                  </ListItem>
+                  <ListItem button>
+                    <ListItemText>
+                      <Link href="/vw/allbanners.php">
+                        <Typography component="a" className={classes.heading}>
+                        See all banner ads
+                        </Typography>
+                      </Link>
+                    </ListItemText>
+                  </ListItem>
+                  <ListItem button>
+                    <ListItemText>
+                      <Link href="/vw/banners.php">
+                        <Typography component="a" className={classes.heading}>
+                        Advertise on TheSamba.com
+                        </Typography>
+                      </Link>
+                    </ListItemText>
+                  </ListItem>
+                </>
               )
               : (
                 <>

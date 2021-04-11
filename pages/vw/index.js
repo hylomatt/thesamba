@@ -44,7 +44,7 @@ export default withStyles({
           </Box>
         </Box>
 
-        <Grid container>
+        <Grid container spacing={1}>
           <Grid item xs={6}>
             {/* classifieds */}
             <Box mb={1} border={1} borderColor="secondary.light">
@@ -124,10 +124,12 @@ export default withStyles({
               <Typography>Stolen</Typography>
             </Box>
             <Box p={1}>
-              <div style={{ position: 'relative', width: '100%', paddingBottom: '20%' }}>
+              <div style={{ position: 'relative', width: '100%', height: '100px', paddingBottom: '20%' }}>
                 <Image src={data.stolen.img.src} alt={data.stolen.img.alt} layout="fill" objectFit="contain" />
               </div>
-              <Typography align="center">{data.stolen.title}</Typography>
+              <Box pt={1}>
+                <Typography align="center">{data.stolen.title}</Typography>
+              </Box>
             </Box>
           </Box>
         )}

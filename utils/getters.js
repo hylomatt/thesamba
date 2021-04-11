@@ -22,7 +22,9 @@ import {
   parseArchives,
   parseAbout,
   parseLogin,
-  parseProfile
+  parseProfile,
+  parseProfileRegister,
+  parseProfileRegisterAgreed
 } from './parsers'
 
 const getPage = async (req) => {
@@ -189,5 +191,19 @@ export const getProfile = async (req) => {
   return await getPage(req).then((r) => {
     const basePath = req.url.replace(/\/_next\/.*\/vw/, '/vw').replace('.json', '')
     return { ...r, data: parseProfile(basePath, r.data) }
+  })
+}
+
+export const getProfileRegister = async (req) => {
+  return await getPage(req).then((r) => {
+    const basePath = req.url.replace(/\/_next\/.*\/vw/, '/vw').replace('.json', '')
+    return { ...r, data: parseProfileRegister(basePath, r.data) }
+  })
+}
+
+export const getProfileRegisterAgreed = async (req) => {
+  return await getPage(req).then((r) => {
+    const basePath = req.url.replace(/\/_next\/.*\/vw/, '/vw').replace('.json', '')
+    return { ...r, data: parseProfileRegisterAgreed(basePath, r.data) }
   })
 }

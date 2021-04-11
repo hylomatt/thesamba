@@ -390,7 +390,12 @@ export const parseForum = (basePath, html) => {
           pages: $(el).find('td:eq(1) span.gensmall').last().text().trim(),
           replies: $(el).find('td:eq(2) .postdetails').text(),
           author: {
-            text: $(el).find('td:eq(3) .postdetails').text(),
+            text: $(el)
+              .find('td:eq(3) .postdetails')
+              .contents()
+              .filter((i, el) => el.nodeType === 3)
+              .text()
+              .trim(),
             user: {
               title: $(el).find('td:eq(3) .postdetails a').first().text(),
               href: getAbsHref(basePath, $(el).find('td:eq(3) .postdetails a').first().attr('href'))
@@ -457,7 +462,12 @@ export const parseTopic = (basePath, html) => {
               href: getAbsHref(basePath, $(el).find('span.name b a').attr('href'))
             },
             posterDetails: $(el).find('> td > span.postdetails').html() || null,
-            postDetails: $(el).find('table span.postdetails').html() || null,
+            postDetails: $(el)
+              .find('table span.postdetails')
+              .contents()
+              .filter((i, el) => el.nodeType === 3)
+              .toArray()
+              .map((el) => $(el).text()),
             content: $(el).find('.postbody').html() || null
           })
 
@@ -680,6 +690,55 @@ export const parseProfile = (basePath, html) => {
           return [$(el).find('td:first-child .gen').text().trim(), $(el).find('td:last-child .gen').html()]
         }),
       signature: $(container).find('> tbody > tr:last-child > td').html()
+    }
+  }
+}
+
+export const parseProfileRegister = (basePath, html) => {
+  const $ = cheerio.load(html)
+  const container = $('body > table.forumline')
+  return {
+    ...parseBase(basePath, $),
+    register: {
+      title: $(container).find('.thHead').text(),
+      content: $(container).find('span.genmed').html()
+    }
+  }
+}
+
+export const parseProfileRegisterAgreed = (basePath, html) => {
+  const $ = cheerio.load(html)
+  const container = $('body form')
+  return {
+    ...parseBase(basePath, $),
+    registerAgreed: {
+      formAction: $(container).attr('action') || null,
+      encType: $(container).attr('enctype') || null,
+      confirmImage: parseImage(basePath, $(container).find('table tr td img[src*="profile.php?mode=confirm&id="]')),
+      boardLanguage: $(container)
+        .find('select[name="language"] option')
+        .toArray()
+        .map((el) => ({
+          text: $(el).text(),
+          value: $(el).attr('value'),
+          selected: $(el).attr('selected') || null
+        })),
+      timezones: $(container)
+        .find('select[name="timezone"] option')
+        .toArray()
+        .map((el) => ({
+          text: $(el).text(),
+          value: $(el).attr('value'),
+          selected: $(el).attr('selected') || null
+        })),
+      hiddenInputs: $(container)
+        .find('input[type="hidden"]')
+        .toArray()
+        .map((el) => ({
+          name: $(el).attr('name'),
+          value: $(el).attr('value')
+        })),
+      error: $('body > .forumline tr td span.gen').text()
     }
   }
 }

@@ -106,36 +106,45 @@ export default withStyles({
               <Box p={1} bgcolor="secondary.light">
                 <Typography variant="subtitle1">{el.title}</Typography>
               </Box>
-              {el.items.map((subEl, subI) => (
-                <Box py={1} px={1} mb={1} key={`forum-${i}-${subI}`}>
-                  <Grid container>
-                    <Grid item xs={12} sm={7}>
-                      <Box mb={{ xs: 1, sm: 0 }}>
-                        {/* {subEl.newPosts ? '!' : ''} */}
+              <Box py={1}>
+                {el.items.map((subEl, subI) => (
+                  <Box py={1} px={1} mb={0} key={`forum-${i}-${subI}`}>
+                    <Grid container>
+                      <Grid item xs={12} sm={7}>
+                        <Box mb={{ xs: 0, sm: 0 }}>
+                          {/* {subEl.newPosts ? '!' : ''} */}
 
-                        <Link href={subEl.href || ''} passHref>
-                          <Typography component="a" className="font-semibold">
-                            {subEl.title}
-                          </Typography>
-                        </Link>
-                        <Typography>{subEl.description}</Typography>
-                      </Box>
+                          <Link href={subEl.href || ''} passHref>
+                            <Typography component="a" className="font-semibold">
+                              {subEl.title}
+                            </Typography>
+                          </Link>
+                          <Typography>{subEl.description}</Typography>
+                        </Box>
+                      </Grid>
+                      <Hidden smDown>
+                        <Grid item xs={2} sm={1}>
+                          <Typography align="right">{subEl.replies}</Typography>
+                        </Grid>
+                        <Grid item xs={5} sm={1} align="right">
+                          <Typography align="right">{subEl.author.text}</Typography>
+                          <Link href={subEl.author.user.href}>
+                            <Typography component="a" align="right">
+                              {subEl.author.user.title}
+                            </Typography>
+                          </Link>
+                        </Grid>
+                        <Grid item xs={2} sm={1}>
+                          <Typography align="right">{subEl.views}</Typography>
+                        </Grid>
+                        <Grid item xs={3} sm={2}>
+                          <Typography align="right">{subEl.lastPost.text}</Typography>
+                        </Grid>
+                      </Hidden>
                     </Grid>
-                    <Grid item xs={3} sm={1}>
-                      <Typography align="right">{subEl.replies}</Typography>
-                    </Grid>
-                    <Grid item xs={3} sm={1}>
-                      <Typography align="right">{subEl.author.text}</Typography>
-                    </Grid>
-                    <Grid item xs={3} sm={1}>
-                      <Typography align="right">{subEl.views}</Typography>
-                    </Grid>
-                    <Grid item xs={3} sm={2}>
-                      <Typography align="right">{subEl.lastPost.text}</Typography>
-                    </Grid>
-                  </Grid>
-                </Box>
-              ))}
+                  </Box>
+                ))}
+              </Box>
             </Box>
           )
         })}
