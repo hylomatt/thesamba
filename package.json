@@ -27,7 +27,7 @@
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "react-ga": "^3.3.0",
-    "react-material-ui-carousel": "^2.2.2",
+    "react-slick": "^0.28.1",
     "set-cookie-parser": "^2.4.8",
     "tailwindcss": "^2.0.3",
     "xml2js": "^0.4.23"

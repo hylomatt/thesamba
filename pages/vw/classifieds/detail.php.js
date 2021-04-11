@@ -1,38 +1,37 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
-import Image from 'next/image'
+import Slider from 'react-slick'
 
-import { Box, Typography, Paper, Button, Grid } from '@material-ui/core'
+import { Box, Typography, Grid } from '@material-ui/core'
 import { withStyles } from '@material-ui/core/styles'
-import Carousel from 'react-material-ui-carousel'
 
 import { getClassifiedDetail } from '../../../utils/getters'
 import Header from '../../../components/Header'
-import theme from '../../../utils/theme'
 
-export default withStyles({
-  imageContainer: {
-    width: '100%',
-    maxWidth: '480px',
-    height: 'auto',
-    margin: '0 auto',
-    '& > div': {
-      position: 'unset !important',
-      height: 'auto'
-    }
-  },
-  image: {
-    objectFit: 'contain',
-    width: '100% !important',
-    position: 'relative !important',
-    height: 'unset !important'
+export default withStyles({})(({ classes, data }) => {
+  const sliderSettings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    arrows: false,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    adaptiveHeight: true
   }
-})(({ classes, data }) => {
+
+  const sliderRef = useRef()
+
+  const gotoNext = () => {
+    sliderRef.current.slickNext()
+  }
+
   return (
     <Box p={{ xs: 0, md: 1 }}>
       <Head>
         <title>{data.title}</title>
+        <link rel="stylesheet" type="text/css" charset="UTF-8" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css" />
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css" />
       </Head>
 
       <Header data={data} selected="Home" />
@@ -57,31 +56,14 @@ export default withStyles({
             )
           })}
         </Box>
-        <Box mb={2}>
-          <Carousel
-            autoPlay={false}
-            interval="7000"
-            indicatorIconButtonProps={{
-              style: {
-                padding: '0 10px 10px',
-                color: theme.palette.secondary.main
-              }
-            }}
-            activeIndicatorIconButtonProps={{
-              style: {
-                color: theme.palette.primary.main
-              }
-            }}
-            indicatorContainerProps={{
-              style: {
-                marginTop: '10px' // 5
-              }
-            }}
-          >
+        <Box mb={4}>
+          <Slider {...sliderSettings} ref={sliderRef}>
             {data.detail.thumbnails.map((item, i) => (
-              <Image src={item.src.replace('thumbnails/', '')} alt={item.alt} width={640} height={480} layout="responsive" key={`detail-image-${data.detail.adId}-${i}`} />
+              <Box key={`detail-image-${data.detail.adId}-${i}`} onClick={gotoNext}>
+                <img src={item.src.replace('thumbnails/', '')} alt={item.alt} width="100%" />
+              </Box>
             ))}
-          </Carousel>
+          </Slider>
         </Box>
         <Box mb={2}>
           <Typography component="div" dangerouslySetInnerHTML={{ __html: data.detail.description }} />
