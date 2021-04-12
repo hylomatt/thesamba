@@ -74,13 +74,13 @@ export default withStyles({
             </Grid>
             <Grid item xs={12}>
               <Box p={1}>
-                <Link href={data.page.href} passHref>
-                  <a style={{ display: 'block' }}>
-                    <div style={{ position: 'relative', width: '100%', height: '400px', paddingBottom: '20%' }}>
-                      <Image src={data.page.img.src} alt={data.page.img.alt} layout="fill" objectFit="cover" />
-                    </div>
-                  </a>
-                </Link>
+                {/* <Link href={data.page.href} passHref>
+                  <a style={{ display: 'block' }}> */}
+                <div style={{ position: 'relative', width: '100%', height: '400px', paddingBottom: '20%' }}>
+                  <Image src={data.page.img.src} alt={data.page.img.alt} layout="fill" objectFit="cover" />
+                </div>
+                {/* </a>
+                </Link> */}
               </Box>
               <Box p={1}>
                 <Typography>{data.page.photo.title}</Typography>

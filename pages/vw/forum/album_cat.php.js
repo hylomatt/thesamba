@@ -74,12 +74,14 @@ export default withStyles({
                       </div>
                     </a>
                   </Link>
-                  {el.imgInfo.map((infoLine, ii) => (
-                    <Typography key={`imginfo-${ii}`} className={classes.itemContent}>
-                      {infoLine}
-                    </Typography>
-                  ))}
-                  {/* <Typography dangerouslySetInnerHTML={{ __html: el.imgInfo }} className={classes.itemContent} /> */}
+                  <Box mt={1}>
+                    {el.imgInfo.map((infoLine, ii) => (
+                      <Typography key={`imginfo-${ii}`} variant="body2" className={classes.itemContent}>
+                        {infoLine}
+                      </Typography>
+                    ))}
+                    {/* <Typography dangerouslySetInnerHTML={{ __html: el.imgInfo }} className={classes.itemContent} /> */}
+                  </Box>
                 </Box>
               </Grid>
               <Grid item xs={6} sm={6} md={5} container direction="column">

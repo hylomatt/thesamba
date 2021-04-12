@@ -124,9 +124,13 @@ export default withStyles({
               <Typography>Stolen</Typography>
             </Box>
             <Box p={1}>
-              <div style={{ position: 'relative', width: '100%', height: '100px', paddingBottom: '20%' }}>
-                <Image src={data.stolen.img.src} alt={data.stolen.img.alt} layout="fill" objectFit="contain" />
-              </div>
+              <Link href={data.stolen.href}>
+                <a style={{ display: 'block' }}>
+                  <div style={{ position: 'relative', width: '100%', height: '100px', paddingBottom: '20%' }}>
+                    <Image src={data.stolen.img.src} alt={data.stolen.img.alt} layout="fill" objectFit="contain" />
+                  </div>
+                </a>
+              </Link>
               <Box pt={1}>
                 <Typography align="center">{data.stolen.title}</Typography>
               </Box>
