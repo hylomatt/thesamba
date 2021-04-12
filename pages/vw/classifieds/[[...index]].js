@@ -9,8 +9,6 @@ import { withStyles } from '@material-ui/core/styles'
 import { getClassifieds } from '../../../utils/getters'
 import Header from '../../../components/Header'
 
-import constants from '../../../utils/constants'
-
 export default withStyles((theme) => ({
   root: {
     color: 'white'
@@ -159,7 +157,9 @@ export default withStyles((theme) => ({
                             <div>
                               <img src={el.img.src} />
                             </div>
-                            <Typography align="center">{el.title}</Typography>
+                            <Typography component="div" align="center">
+                              <Box {...(el.heavyTitle && { fontWeight: 'fontWeightBold' })}>{el.title}</Box>
+                            </Typography>
                           </a>
                         </Link>
                       </Box>

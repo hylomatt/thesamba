@@ -10,6 +10,8 @@ import { getClassifiedDetail } from '../../../utils/getters'
 import Header from '../../../components/Header'
 
 export default withStyles({})(({ classes, data }) => {
+  console.log(data)
+
   const sliderSettings = {
     dots: true,
     infinite: true,
@@ -58,9 +60,19 @@ export default withStyles({})(({ classes, data }) => {
         </Box>
         <Box mb={4}>
           <Slider {...sliderSettings} ref={sliderRef}>
+            {!data.detail.thumbnails.length && (
+              <Box onClick={gotoNext}>
+                <img src={data.detail.mainPhoto.src} alt={data.detail.mainPhoto.alt} width="100%" />
+              </Box>
+            )}
             {data.detail.thumbnails.map((item, i) => (
               <Box key={`detail-image-${data.detail.adId}-${i}`} onClick={gotoNext}>
                 <img src={item.src.replace('thumbnails/', '')} alt={item.alt} width="100%" />
+                {item.label && (
+                  <Typography variant="body2" align="center">
+                    {item.label}
+                  </Typography>
+                )}
               </Box>
             ))}
           </Slider>

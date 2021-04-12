@@ -4,11 +4,15 @@ const { URL } = require('url')
 const constants = require('./constants').default
 
 const getAbsHref = (basePath, href = '') => {
-  let absUrl = getFQUrl(basePath, href)
-  absUrl = absUrl.replace(constants.baseUrl, '')
-  if (absUrl && !absUrl.startsWith('/vw/')) {
-    absUrl = `/vw/${absUrl}`
+  let basePathAlt = basePath
+  if (!basePathAlt.includes('.php') && !basePathAlt.endsWith('/')) {
+    basePathAlt = basePathAlt + '/'
   }
+  let absUrl = getFQUrl(basePathAlt, href)
+  absUrl = absUrl.replace(constants.baseUrl, '')
+  // if (absUrl && !absUrl.startsWith('/vw/')) {
+  //   absUrl = `/vw/${absUrl}`
+  // }
   absUrl = absUrl.replace('vw//', 'vw/')
   return absUrl
 }
@@ -180,12 +184,15 @@ export const parseClassifieds = (basePath, html) => {
       .find('> tbody > tr:nth-child(4) td.genmed')
       .toArray()
       .map((el) => {
+        const titleTest1 = $(el)
+          .contents()
+          .filter((i, el) => el.nodeType === 3)
+          .text()
+          .trim()
+        const titleTest2 = $(el).find('b').text().trim()
         return {
-          title: $(el)
-            .contents()
-            .filter((i, el) => el.nodeType === 3)
-            .text()
-            .trim(),
+          title: titleTest2 || titleTest1,
+          heavyTitle: !!titleTest2,
           href: getAbsHref(basePath, $(el).find('a').attr('href')),
           img: parseImage(basePath, $(el).find('img'))
         }
@@ -262,8 +269,10 @@ export const parseClassifiedCategory = (basePath, html) => {
 export const parseClassifiedDetail = (basePath, html) => {
   const $ = cheerio.load(html)
   const mainContent = $('body > table.forumline')
+  const photosContainer = $(mainContent).find('> tbody > tr:nth-child(2) > td table:has(#mainphoto)')
   const classifiedsBody = $(mainContent).find('table > tbody:has(> tr > td > span.maintitle) > tr > td')
   const bottomBodyBox = $(classifiedsBody[2]).find('> table > tbody > tr:has(td.row1)')
+  console.log('photosContainer:', $(photosContainer).find('img').length)
   return {
     ...parseBase(basePath, $),
     detail: {
@@ -280,10 +289,20 @@ export const parseClassifiedDetail = (basePath, html) => {
         })),
       title: $(mainContent).find('> tbody > tr > th td').first().text().trim(),
       adId: $(mainContent).find('> tbody > tr > th td a').last().text().trim(),
-      thumbnails: $(mainContent)
-        .find('img[src*="pix/thumbnails/"]')
+      mainPhoto: parseImage(basePath, $(photosContainer).find('img#mainphoto')),
+      thumbnails: $(photosContainer)
+        .find('a:has(img[src*="pix/thumbnails/"])')
         .toArray()
-        .map((img) => parseImage(basePath, img)),
+        .map((el) => ({
+          ...parseImage(basePath, $(el).find('img')),
+          label:
+            $(el)
+              .parent()
+              .contents()
+              .filter((i, el) => el.nodeType === 3)
+              .text()
+              .trim() || null
+        })),
       description: $(classifiedsBody[1]).find('span.gen').html(),
       advertiserInfo: {
         title: $(bottomBodyBox[0]).find('> td:first-child > table > tbody > tr:first-child > td:last-child a').text(),

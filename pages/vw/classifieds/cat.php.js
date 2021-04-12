@@ -109,7 +109,7 @@ export default withStyles((theme) => ({
         </Hidden>
 
         {data.category.ads.map((el, i) => (
-          <Box bgcolor={i % 2 ? 'white' : 'secondary.light'} key={`classifies-ad-${i}`}>
+          <Box bgcolor={i % 2 ? 'white' : 'secondary.light'} key={`classifies-ad-${el.title}-${i}`}>
             <Grid container>
               <Grid item xs={6} sm={4} md={2}>
                 <Box p={1} height="100%">
