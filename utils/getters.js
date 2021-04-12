@@ -22,7 +22,7 @@ import {
   parseArchives,
   parseAbout,
   parseLogin,
-  parseProfile,
+  parseProfileView,
   parseProfileRegister,
   parseProfileRegisterAgreed
 } from './parsers'
@@ -187,23 +187,43 @@ export const getLogin = async (req) => {
   })
 }
 
-export const getProfile = async (req) => {
+export const getProfile = async (req, query) => {
   return await getPage(req).then((r) => {
     const basePath = req.url.replace(/\/_next\/.*\/vw/, '/vw').replace('.json', '')
-    return { ...r, data: parseProfile(basePath, r.data) }
-  })
-}
 
-export const getProfileRegister = async (req) => {
-  return await getPage(req).then((r) => {
-    const basePath = req.url.replace(/\/_next\/.*\/vw/, '/vw').replace('.json', '')
-    return { ...r, data: parseProfileRegister(basePath, r.data) }
-  })
-}
+    const { mode, agreed } = query
+    const profileMode = (mode || '').toLowerCase()
 
-export const getProfileRegisterAgreed = async (req) => {
-  return await getPage(req).then((r) => {
-    const basePath = req.url.replace(/\/_next\/.*\/vw/, '/vw').replace('.json', '')
-    return { ...r, data: parseProfileRegisterAgreed(basePath, r.data) }
+    if (profileMode === 'editprofile') {
+      return { ...r, data: {} }
+    } else if (profileMode === 'viewprofile') {
+      return { ...r, data: parseProfileView(basePath, r.data) }
+    } else if (profileMode === 'register' && agreed === 'true') {
+      return { ...r, data: parseProfileRegisterAgreed(basePath, r.data) }
+    } else if (profileMode === 'register') {
+      return { ...r, data: parseProfileRegister(basePath, r.data) }
+    } else if (profileMode === 'watchlist_ads') {
+      return { ...r, data: {} }
+    } else if (profileMode === 'watchlist_album') {
+      return { ...r, data: {} }
+    } else if (profileMode === 'watchlist') {
+      return { ...r, data: {} }
+    } else if (profileMode === 'emaillist_ads') {
+      return { ...r, data: {} }
+    } else if (profileMode === 'watchlist_sellers') {
+      return { ...r, data: {} }
+    } else if (profileMode === 'foelist_class') {
+      return { ...r, data: {} }
+    } else if (profileMode === 'favorite_searches') {
+      return { ...r, data: {} }
+    } else if (profileMode === 'alerts') {
+      return { ...r, data: {} }
+    } else if (profileMode === 'bookmarks') {
+      return { ...r, data: {} }
+    } else if (profileMode === 'buddylist') {
+      return { ...r, data: {} }
+    } else if (profileMode === 'foelist') {
+      return { ...r, data: {} }
+    }
   })
 }

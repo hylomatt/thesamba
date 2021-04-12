@@ -10,8 +10,6 @@ import { getClassifiedDetail } from '../../../utils/getters'
 import Header from '../../../components/Header'
 
 export default withStyles({})(({ classes, data }) => {
-  console.log(data)
-
   const sliderSettings = {
     dots: true,
     infinite: true,

@@ -272,7 +272,6 @@ export const parseClassifiedDetail = (basePath, html) => {
   const photosContainer = $(mainContent).find('> tbody > tr:nth-child(2) > td table:has(#mainphoto)')
   const classifiedsBody = $(mainContent).find('table > tbody:has(> tr > td > span.maintitle) > tr > td')
   const bottomBodyBox = $(classifiedsBody[2]).find('> table > tbody > tr:has(td.row1)')
-  console.log('photosContainer:', $(photosContainer).find('img').length)
   return {
     ...parseBase(basePath, $),
     detail: {
@@ -686,7 +685,7 @@ export const parseLogin = (basePath, html) => {
   }
 }
 
-export const parseProfile = (basePath, html) => {
+export const parseProfileView = (basePath, html) => {
   const $ = cheerio.load(html)
   const container = $('body > table.forumline')
   return {
