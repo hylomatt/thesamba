@@ -132,8 +132,8 @@ export default withStyles((theme) => ({
                   </AccordionDetails>
                 </Accordion>
                 <Box position="absolute" right="0" top="0">
-                  <Paper variant="outlined">
-                    <IconButton aria-label="search" className={classes.searchBtn} size="small" variant="outlined" onClick={handleShowSearch}>
+                  <Paper variant="outlined" onClick={handleShowSearch}>
+                    <IconButton aria-label="search" className={classes.searchBtn} size="small" variant="outlined">
                       <SearchIcon fontSize="default" />
                     </IconButton>
                   </Paper>

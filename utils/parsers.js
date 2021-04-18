@@ -213,7 +213,8 @@ export const parseClassifiedSearch = (basePath, html) => {
   return {
     base: parseBase(basePath, $),
     page: {
-      title: $('body > table .maintitle').text(),
+      title: $('body > table .maintitle').first().text(),
+      title2: $('body > table .maintitle').last().text(),
       href: getAbsHref(basePath, $('body > table .maintitle').attr('href')),
       pages: $('span.pages')
         .first()
@@ -223,7 +224,8 @@ export const parseClassifiedSearch = (basePath, html) => {
           title: $(el).text().trim(),
           href: getAbsHref(basePath, $(el).attr('href'))
         })),
-      nav: $('body > table:has(input#keywords) span.nav')
+      nav: $('body > table:has(span.nav) span.nav')
+        .first()
         .contents()
         .toArray()
         .map((el) => ({

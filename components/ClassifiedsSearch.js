@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import range from 'lodash/range'
 // import uniq from 'lodash/uniq'
 import { format } from 'date-fns'
+import { useRouter } from 'next/router'
 
 import {
   Box,
@@ -10,12 +11,7 @@ import {
   Accordion,
   AccordionSummary,
   AccordionDetails,
-  // List,
-  // ListItem,
   ListItemText,
-  // Hidden,
-  // IconButton,
-  // Paper,
   Dialog,
   DialogTitle,
   DialogContent,
@@ -24,7 +20,6 @@ import {
   Button,
   TextField,
   MenuItem,
-  Input,
   OutlinedInput,
   FormControl,
   FormGroup,
@@ -56,10 +51,7 @@ export default withStyles((theme) => ({
     marginTop: theme.spacing(3)
   }
 }))(({ open, setOpen, classes }) => {
-  const handleSearch = () => {
-    setOpen(false)
-    return true
-  }
+  const router = useRouter()
 
   const searchModels = [
     { value: 'All', title: 'All' },
@@ -119,7 +111,7 @@ export default withStyles((theme) => ({
   ]
 
   const searchCategories = [
-    { value: '', title: 'All' },
+    { value: 'All', title: 'All' },
     { value: '65', title: 'Vehicles - Type 1/Bug - through 1957' },
     { value: '1', title: 'Vehicles - Type 1/Bug - 1958-67' },
     { value: '3', title: 'Vehicles - Type 1/Bug - 1968-up' },
@@ -168,6 +160,84 @@ export default withStyles((theme) => ({
     { value: '54', title: 'Other - Trades - VW-Related' }
   ]
 
+  const searchStates = [
+    { value: 'All', title: 'All' },
+    { value: 'Outside the USA', title: 'Outside the USA' },
+    { value: 'Alabama', title: 'Alabama' },
+    { value: 'Alaska', title: 'Alaska' },
+    { value: 'American Samoa', title: 'American Samoa' },
+    { value: 'Arizona', title: 'Arizona' },
+    { value: 'Arkansas', title: 'Arkansas' },
+    { value: 'California', title: 'California' },
+    { value: 'Colorado', title: 'Colorado' },
+    { value: 'Connecticut', title: 'Connecticut' },
+    { value: 'Delaware', title: 'Delaware' },
+    { value: 'District of Columbia', title: 'District of Columbia' },
+    { value: 'Federated States Miconesia', title: 'Federated States Miconesia' },
+    { value: 'Florida', title: 'Florida' },
+    { value: 'Georgia', title: 'Georgia' },
+    { value: 'Guam', title: 'Guam' },
+    { value: 'Hawaii', title: 'Hawaii' },
+    { value: 'Idaho', title: 'Idaho' },
+    { value: 'Illinois', title: 'Illinois' },
+    { value: 'Indiana', title: 'Indiana' },
+    { value: 'Iowa', title: 'Iowa' },
+    { value: 'Kansas', title: 'Kansas' },
+    { value: 'Kentucky', title: 'Kentucky' },
+    { value: 'Louisiana', title: 'Louisiana' },
+    { value: 'Maine', title: 'Maine' },
+    { value: 'Marshall Islands', title: 'Marshall Islands' },
+    { value: 'Maryland', title: 'Maryland' },
+    { value: 'Massachusetts', title: 'Massachusetts' },
+    { value: 'Michigan', title: 'Michigan' },
+    { value: 'Minnesota', title: 'Minnesota' },
+    { value: 'Mississippi', title: 'Mississippi' },
+    { value: 'Missouri', title: 'Missouri' },
+    { value: 'Montana', title: 'Montana' },
+    { value: 'Nebraska', title: 'Nebraska' },
+    { value: 'Nevada', title: 'Nevada' },
+    { value: 'New Hampshire', title: 'New Hampshire' },
+    { value: 'New Jersey', title: 'New Jersey' },
+    { value: 'New Mexico', title: 'New Mexico' },
+    { value: 'New York', title: 'New York' },
+    { value: 'North Carolina', title: 'North Carolina' },
+    { value: 'North Dakota', title: 'North Dakota' },
+    { value: 'Northern Mariana Islands', title: 'Northern Mariana Islands' },
+    { value: 'Ohio', title: 'Ohio' },
+    { value: 'Oklahoma', title: 'Oklahoma' },
+    { value: 'Oregon', title: 'Oregon' },
+    { value: 'Palau Island', title: 'Palau Island' },
+    { value: 'Pennsylvania', title: 'Pennsylvania' },
+    { value: 'Puerto Rico', title: 'Puerto Rico' },
+    { value: 'Rhode Island', title: 'Rhode Island' },
+    { value: 'South Carolina', title: 'South Carolina' },
+    { value: 'South Dakota', title: 'South Dakota' },
+    { value: 'Tennessee', title: 'Tennessee' },
+    { value: 'Texas', title: 'Texas' },
+    { value: 'Utah', title: 'Utah' },
+    { value: 'Vermont', title: 'Vermont' },
+    { value: 'Virgin Islands', title: 'Virgin Islands' },
+    { value: 'Virginia', title: 'Virginia' },
+    { value: 'Washington', title: 'Washington' },
+    { value: 'West Virginia', title: 'West Virginia' },
+    { value: 'Wisconsin', title: 'Wisconsin' },
+    { value: 'Wyoming', title: 'Wyoming' },
+    { value: '', title: '------------' },
+    { value: 'Alberta', title: 'Alberta' },
+    { value: 'British Columbia', title: 'British Columbia' },
+    { value: 'Manitoba', title: 'Manitoba' },
+    { value: 'New Brunswick', title: 'New Brunswick' },
+    { value: 'Newfoundland', title: 'Newfoundland' },
+    { value: 'Northwest Territories', title: 'Northwest Territories' },
+    { value: 'Nova Scotia', title: 'Nova Scotia' },
+    { value: 'Nunavut', title: 'Nunavut' },
+    { value: 'Ontario', title: 'Ontario' },
+    { value: 'Prince Edward Island', title: 'Prince Edward Island' },
+    { value: 'Quebec', title: 'Quebec' },
+    { value: 'Saskatchewan', title: 'Saskatchewan' },
+    { value: 'Yukon Territory', title: 'Yukon Territory' }
+  ]
+
   const ITEM_HEIGHT = 48
   const ITEM_PADDING_TOP = 8
   const MenuProps = {
@@ -181,6 +251,42 @@ export default withStyles((theme) => ({
 
   const [selectedModels, setSelectedModels] = useState(['All'])
   const [selectedCategories, setSelectedCategories] = useState(['All'])
+  const [selectedStates, setSelectedStates] = useState(['All'])
+  const [formVals, setFormVals] = useState({
+    submit: 'yes',
+    keywords: '',
+    type: 'text',
+    stype: 'all',
+    username: '',
+    yearfrom: '',
+    yearto: '',
+    pricefrom: '',
+    priceto: '',
+    // model: [],
+    // section: [],
+    wanted: 'hide',
+    zip: '',
+    zipdist: 0,
+    // state: [],
+    usaregion: '',
+    country: '',
+    sort: 'date',
+    sort_order: 'DESC',
+    submitButton: 'Search'
+  })
+
+  const handleSearch = (e) => {
+    e.preventDefault()
+    const qs = [
+      new URLSearchParams(formVals).toString(),
+      ...selectedModels.map((el) => `model[]=${el.replace('All', '')}`),
+      ...selectedCategories.map((el) => `section[]=${el.replace('All', '')}`),
+      ...selectedStates.map((el) => `state[]=${el.replace('All', '')}`)
+    ].join('&')
+    router.push(`search.php?${qs}`)
+    setOpen(false)
+    return false
+  }
 
   const handleModelChange = (event) => {
     const value = event.target.value.length ? event.target.value.slice(-1)[0] : 'All'
@@ -218,6 +324,24 @@ export default withStyles((theme) => ({
     })
   }
 
+  const handleStateChange = (event) => {
+    const value = event.target.value.length ? event.target.value.slice(-1)[0] : 'All'
+    setSelectedStates((oldValues) => {
+      let newValues = []
+      if (oldValues.includes(value)) {
+        newValues = oldValues.filter((el) => el !== value)
+      } else {
+        newValues = [...oldValues, value]
+      }
+      if (value === 'All') {
+        newValues = ['All']
+      } else {
+        newValues = newValues.filter((el) => el !== 'All')
+      }
+      return newValues
+    })
+  }
+
   return (
     <Dialog open={open} onClose={() => setOpen(false)} aria-labelledby="form-dialog-title">
       <DialogTitle id="form-dialog-title">Search Criteria</DialogTitle>
@@ -226,30 +350,29 @@ export default withStyles((theme) => ({
           <strong>Tips:</strong> Use * as a wildcard for partial matches, e.g. sema* would find all ads with semaphore.
         </DialogContentText>
 
-        <form method="get" action="search.php" id="search-form">
-          <input type="hidden" name="submit" value="yes" />
-          <TextField autoFocus margin="dense" name="keywords" label="Find" type="text" fullWidth variant="outlined" maxLength="50" />
+        <form id="search-form" action="search.php" method="get" onSubmit={handleSearch}>
+          <TextField autoFocus margin="dense" value={formVals.keywords} onChange={(e) => setFormVals({ ...formVals, keywords: e.target.value })} label="Find" type="text" fullWidth variant="outlined" maxLength="50" />
           <Grid container>
             <Grid item xs={6} style={{ paddingRight: '4px' }}>
-              <TextField select margin="dense" name="type" label="Search" value="text" variant="outlined" fullWidth>
+              <TextField select margin="dense" value={formVals.type} onChange={(e) => setFormVals({ ...formVals, type: e.target.value })} label="Search" variant="outlined" fullWidth>
                 <MenuItem value="text">Title only</MenuItem>
                 <MenuItem value="both">Title and Description</MenuItem>
               </TextField>
             </Grid>
             <Grid item xs={6} style={{ paddingLeft: '4px' }}>
-              <TextField select margin="dense" name="stype" label="Search Type" value="all" variant="outlined" fullWidth>
+              <TextField select margin="dense" value={formVals.stype} onChange={(e) => setFormVals({ ...formVals, stype: e.target.value })} label="Search Type" variant="outlined" fullWidth>
                 <MenuItem value="all">Find all</MenuItem>
                 <MenuItem value="any">Find any</MenuItem>
                 <MenuItem value="phrase">Find exact phrase</MenuItem>
               </TextField>
             </Grid>
           </Grid>
-          <TextField margin="dense" name="username" label="Username/Email" type="text" fullWidth variant="outlined" maxLength="50" />
+          <TextField margin="dense" value={formVals.username} onChange={(e) => setFormVals({ ...formVals, username: e.target.value })} label="Username/Email" type="text" fullWidth variant="outlined" maxLength="50" />
           <FormGroup>
-            <b>Years:&nbsp;</b>
+            <b>Years:</b>
             <Grid container>
               <Grid item xs={6} style={{ paddingRight: '4px' }}>
-                <TextField select margin="dense" name="yearfrom" label="From" variant="outlined" fullWidth>
+                <TextField select margin="dense" value={formVals.yearfrom} onChange={(e) => setFormVals({ ...formVals, yearfrom: e.target.value })} label="From" variant="outlined" fullWidth>
                   <MenuItem>All</MenuItem>
                   {range(1939, format(new Date(), 'yyyy')).map((yr, i) => (
                     <MenuItem key={`search-year-from-${i}`} value={yr}>
@@ -259,7 +382,7 @@ export default withStyles((theme) => ({
                 </TextField>
               </Grid>
               <Grid item xs={6} style={{ paddingLeft: '4px' }}>
-                <TextField select margin="dense" name="yearto" label="To" variant="outlined" fullWidth>
+                <TextField select margin="dense" value={formVals.yearto} onChange={(e) => setFormVals({ ...formVals, yearto: e.target.value })} label="To" variant="outlined" fullWidth>
                   <MenuItem>All</MenuItem>
                   {range(1939, format(new Date(), 'yyyy')).map((yr, i) => (
                     <MenuItem key={`search-year-to-${i}`} value={yr}>
@@ -271,13 +394,13 @@ export default withStyles((theme) => ({
             </Grid>
           </FormGroup>
           <FormGroup>
-            <b>Price:&nbsp;</b>
+            <b>Price:</b>
             <Grid container>
               <Grid item xs={6} style={{ paddingRight: '4px' }}>
-                <TextField margin="dense" name="pricefrom" label="From" type="text" fullWidth variant="outlined" maxLength="10" />
+                <TextField margin="dense" value={formVals.pricefrom} onChange={(e) => setFormVals({ ...formVals, pricefrom: e.target.value })} label="From" type="text" fullWidth variant="outlined" maxLength="10" />
               </Grid>
               <Grid item xs={6} style={{ paddingLeft: '4px' }}>
-                <TextField margin="dense" name="priceto" label="To" type="text" fullWidth variant="outlined" maxLength="10" />
+                <TextField margin="dense" value={formVals.priceto} onChange={(e) => setFormVals({ ...formVals, priceto: e.target.value })} label="To" type="text" fullWidth variant="outlined" maxLength="10" />
               </Grid>
             </Grid>
           </FormGroup>
@@ -286,6 +409,7 @@ export default withStyles((theme) => ({
             <Select
               labelId="search-models-label"
               multiple
+              name="model[]"
               value={selectedModels}
               onChange={handleModelChange}
               input={<OutlinedInput labelWidth={45} />}
@@ -306,6 +430,7 @@ export default withStyles((theme) => ({
             <Select
               labelId="search-cats-label"
               multiple
+              name="section[]"
               value={selectedCategories}
               onChange={handleCategoryChange}
               input={<OutlinedInput labelWidth={70} />}
@@ -321,7 +446,7 @@ export default withStyles((theme) => ({
             </Select>
           </FormControl>
 
-          <TextField select margin="dense" name="wanted" label="Wanted Ads" variant="outlined" fullWidth defaultValue="show">
+          <TextField select margin="dense" value={formVals.wanted} onChange={(e) => setFormVals({ ...formVals, wanted: e.target.value })} label="Wanted Ads" variant="outlined" fullWidth defaultValue="show">
             <MenuItem value="show">Show wanted ads</MenuItem>
             <MenuItem value="hide">Hide wanted ads</MenuItem>
             <MenuItem value="only">Wanted ads only</MenuItem>
@@ -343,8 +468,8 @@ export default withStyles((theme) => ({
                 <br />
                 <FormGroup>
                   <b>Zip/Distance:&nbsp;</b>
-                  <TextField margin="dense" name="zip" label="Zip" type="text" variant="outlined" maxLength="5" autoComplete="off" />
-                  <TextField select margin="dense" name="zipdist" label="Distance" variant="outlined" defaultValue="0">
+                  <TextField margin="dense" value={formVals.zip} onChange={(e) => setFormVals({ ...formVals, zip: e.target.value })} label="Zip" type="text" variant="outlined" maxLength="5" autoComplete="off" />
+                  <TextField select margin="dense" value={formVals.zipdist} onChange={(e) => setFormVals({ ...formVals, zipdist: e.target.value })} label="Distance" variant="outlined" defaultValue="0">
                     <MenuItem value="0">Exact Zip</MenuItem>
                     <MenuItem value="10">Within 10 miles</MenuItem>
                     <MenuItem value="25">Within 25 miles</MenuItem>
@@ -360,86 +485,31 @@ export default withStyles((theme) => ({
                 </FormGroup>
                 <b>OR</b>
                 <br />
-                <TextField select margin="dense" name="state[]" label="State/Province" variant="outlined" autoComplete="off" fullWidth>
-                  <MenuItem>All</MenuItem>
-                  <MenuItem value="Outside the USA">Outside the USA</MenuItem>
-                  <MenuItem value="Alabama">Alabama</MenuItem>
-                  <MenuItem value="Alaska">Alaska</MenuItem>
-                  <MenuItem value="American Samoa">American Samoa</MenuItem>
-                  <MenuItem value="Arizona">Arizona</MenuItem>
-                  <MenuItem value="Arkansas">Arkansas</MenuItem>
-                  <MenuItem value="California">California</MenuItem>
-                  <MenuItem value="Colorado">Colorado</MenuItem>
-                  <MenuItem value="Connecticut">Connecticut</MenuItem>
-                  <MenuItem value="Delaware">Delaware</MenuItem>
-                  <MenuItem value="District of Columbia">District of Columbia</MenuItem>
-                  <MenuItem value="Federated States Miconesia">Federated States Miconesia</MenuItem>
-                  <MenuItem value="Florida">Florida</MenuItem>
-                  <MenuItem value="Georgia">Georgia</MenuItem>
-                  <MenuItem value="Guam">Guam</MenuItem>
-                  <MenuItem value="Hawaii">Hawaii</MenuItem>
-                  <MenuItem value="Idaho">Idaho</MenuItem>
-                  <MenuItem value="Illinois">Illinois</MenuItem>
-                  <MenuItem value="Indiana">Indiana</MenuItem>
-                  <MenuItem value="Iowa">Iowa</MenuItem>
-                  <MenuItem value="Kansas">Kansas</MenuItem>
-                  <MenuItem value="Kentucky">Kentucky</MenuItem>
-                  <MenuItem value="Louisiana">Louisiana</MenuItem>
-                  <MenuItem value="Maine">Maine</MenuItem>
-                  <MenuItem value="Marshall Islands">Marshall Islands</MenuItem>
-                  <MenuItem value="Maryland">Maryland</MenuItem>
-                  <MenuItem value="Massachusetts">Massachusetts</MenuItem>
-                  <MenuItem value="Michigan">Michigan</MenuItem>
-                  <MenuItem value="Minnesota">Minnesota</MenuItem>
-                  <MenuItem value="Mississippi">Mississippi</MenuItem>
-                  <MenuItem value="Missouri">Missouri</MenuItem>
-                  <MenuItem value="Montana">Montana</MenuItem>
-                  <MenuItem value="Nebraska">Nebraska</MenuItem>
-                  <MenuItem value="Nevada">Nevada</MenuItem>
-                  <MenuItem value="New Hampshire">New Hampshire</MenuItem>
-                  <MenuItem value="New Jersey">New Jersey</MenuItem>
-                  <MenuItem value="New Mexico">New Mexico</MenuItem>
-                  <MenuItem value="New York">New York</MenuItem>
-                  <MenuItem value="North Carolina">North Carolina</MenuItem>
-                  <MenuItem value="North Dakota">North Dakota</MenuItem>
-                  <MenuItem value="Northern Mariana Islands">Northern Mariana Islands</MenuItem>
-                  <MenuItem value="Ohio">Ohio</MenuItem>
-                  <MenuItem value="Oklahoma">Oklahoma</MenuItem>
-                  <MenuItem value="Oregon">Oregon</MenuItem>
-                  <MenuItem value="Palau Island">Palau Island</MenuItem>
-                  <MenuItem value="Pennsylvania">Pennsylvania</MenuItem>
-                  <MenuItem value="Puerto Rico">Puerto Rico</MenuItem>
-                  <MenuItem value="Rhode Island">Rhode Island</MenuItem>
-                  <MenuItem value="South Carolina">South Carolina</MenuItem>
-                  <MenuItem value="South Dakota">South Dakota</MenuItem>
-                  <MenuItem value="Tennessee">Tennessee</MenuItem>
-                  <MenuItem value="Texas">Texas</MenuItem>
-                  <MenuItem value="Utah">Utah</MenuItem>
-                  <MenuItem value="Vermont">Vermont</MenuItem>
-                  <MenuItem value="Virgin Islands">Virgin Islands</MenuItem>
-                  <MenuItem value="Virginia">Virginia</MenuItem>
-                  <MenuItem value="Washington">Washington</MenuItem>
-                  <MenuItem value="West Virginia">West Virginia</MenuItem>
-                  <MenuItem value="Wisconsin">Wisconsin</MenuItem>
-                  <MenuItem value="Wyoming">Wyoming</MenuItem>
-                  <MenuItem value="">------------</MenuItem>
-                  <MenuItem value="Alberta">Alberta</MenuItem>
-                  <MenuItem value="British Columbia">British Columbia</MenuItem>
-                  <MenuItem value="Manitoba">Manitoba</MenuItem>
-                  <MenuItem value="New Brunswick">New Brunswick</MenuItem>
-                  <MenuItem value="Newfoundland">Newfoundland</MenuItem>
-                  <MenuItem value="Northwest Territories">Northwest Territories</MenuItem>
-                  <MenuItem value="Nova Scotia">Nova Scotia</MenuItem>
-                  <MenuItem value="Nunavut">Nunavut</MenuItem>
-                  <MenuItem value="Ontario">Ontario</MenuItem>
-                  <MenuItem value="Prince Edward Island">Prince Edward Island</MenuItem>
-                  <MenuItem value="Quebec">Quebec</MenuItem>
-                  <MenuItem value="Saskatchewan">Saskatchewan</MenuItem>
-                  <MenuItem value="Yukon Territory">Yukon Territory</MenuItem>
-                </TextField>
+                <FormControl margin="dense" variant="outlined" fullWidth>
+                  <InputLabel id="search-state-label">State/Province</InputLabel>
+                  <Select
+                    labelId="search-state-label"
+                    multiple
+                    name="state[]"
+                    value={selectedStates}
+                    onChange={handleStateChange}
+                    input={<OutlinedInput labelWidth={45} />}
+                    renderValue={(selected) => (selected.length && selected[0] === 'All' ? 'All' : `${selected.length} selected`)}
+                    MenuProps={MenuProps}
+                    autoComplete="off"
+                  >
+                    {searchStates.map((state) => (
+                      <MenuItem key={state.title} value={state.value}>
+                        <Checkbox checked={selectedStates.includes(state.value)} />
+                        <ListItemText primary={state.title} />
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+
                 <b>OR</b>
                 <br />
-                <TextField select margin="dense" name="usaregion" label="Region" variant="outlined" autoComplete="off" fullWidth>
+                <TextField select margin="dense" value={formVals.usaregion} onChange={(e) => setFormVals({ ...formVals, usaregion: e.target.value })} label="Region" variant="outlined" autoComplete="off" fullWidth>
                   <MenuItem>All</MenuItem>
                   <MenuItem value="Northeast">Northeast</MenuItem>
                   <MenuItem value="Mid-Atlantic">Mid-Atlantic</MenuItem>
@@ -459,7 +529,7 @@ export default withStyles((theme) => ({
                 </TextField>
                 <b>OR</b>
                 <br />
-                <TextField select margin="dense" name="country" label="Country" variant="outlined" autoComplete="off" fullWidth>
+                <TextField select margin="dense" value={formVals.country} onChange={(e) => setFormVals({ ...formVals, country: e.target.value })} label="Country" variant="outlined" autoComplete="off" fullWidth>
                   <MenuItem>All</MenuItem>
                   <MenuItem value="USA">USA</MenuItem>
                   <MenuItem value="United Kingdom">United Kingdom</MenuItem>
@@ -683,28 +753,26 @@ export default withStyles((theme) => ({
                 </TextField>
                 <br />
                 <br />
-                <TextField select margin="dense" name="sort" label="Sort By" variant="outlined" autoComplete="off" defaultValue="date" fullWidth>
+                <TextField select margin="dense" value={formVals.sort} onChange={(e) => setFormVals({ ...formVals, sort: e.target.value })} label="Sort By" variant="outlined" autoComplete="off" defaultValue="date" fullWidth>
                   <MenuItem value="date">Date Updated</MenuItem>
                   <MenuItem value="odate">Date Placed</MenuItem>
                   <MenuItem value="year">Year</MenuItem>
                   <MenuItem value="price">Price</MenuItem>
                 </TextField>
-                <TextField select margin="dense" name="sort_order" label="Sort Order" variant="outlined" autoComplete="off" defaultValue="DESC" fullWidth>
+                <TextField select margin="dense" value={formVals.sort_order} onChange={(e) => setFormVals({ ...formVals, sort_order: e.target.value })} label="Sort Order" variant="outlined" autoComplete="off" defaultValue="DESC" fullWidth>
                   <MenuItem value="DESC">Descending</MenuItem>
                   <MenuItem value="ASC">Ascending</MenuItem>
                 </TextField>
               </Box>
             </AccordionDetails>
           </Accordion>
-
-          <Input type="hidden" name="submitButton" value="Search" />
         </form>
       </DialogContent>
       <DialogActions>
         <Button onClick={() => setOpen(false)} color="primary">
           Cancel
         </Button>
-        <Button type="submit" form="search-form" onClick={handleSearch} color="primary">
+        <Button type="submit" form="search-form" color="primary">
           Search
         </Button>
       </DialogActions>

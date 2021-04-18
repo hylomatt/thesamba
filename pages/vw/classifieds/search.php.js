@@ -1,17 +1,16 @@
+import React, { useState } from 'react'
 import Head from 'next/head'
-import React from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 
-import { Box, Typography, Grid, Accordion, AccordionSummary, AccordionDetails, List, ListItem, ListItemText, Hidden } from '@material-ui/core'
+import { Box, Typography, Grid, Hidden, IconButton, Paper } from '@material-ui/core'
 import { Skeleton } from '@material-ui/lab'
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
+import SearchIcon from '@material-ui/icons/Search'
 import { withStyles } from '@material-ui/core/styles'
 
 import { getClassifiedSearch } from '../../../utils/getters'
 import Header from '../../../components/Header'
-
-import constants from '../../../utils/constants'
+import ClassifiedsSearch from '../../../components/ClassifiedsSearch'
 
 export default withStyles((theme) => ({
   root: {
@@ -40,9 +39,19 @@ export default withStyles((theme) => ({
 
   menuBtn: {
     height: 64
+  },
+
+  searchBtn: {
+    padding: '8px 0'
   }
 }))(({ data, classes }) => {
   console.log(data)
+
+  const [showSearch, setShowSearch] = useState(false)
+
+  const handleShowSearch = () => {
+    setShowSearch(!showSearch)
+  }
 
   return (
     <Box p={{ xs: 0, md: 1 }}>
@@ -55,6 +64,9 @@ export default withStyles((theme) => ({
       <Box px={{ xs: 1, md: 0 }} py={1}>
         <Box mb={2}>
           <Typography variant="h4">{data.page.title}</Typography>
+        </Box>
+        <Box mb={2}>
+          <Typography variant="h5">{data.page.title2}</Typography>
         </Box>
         <Box mb={2}>
           {data.page.nav.map((el, i) => {
@@ -71,6 +83,14 @@ export default withStyles((theme) => ({
               </Typography>
             )
           })}
+        </Box>
+
+        <Box align="center" mb={2}>
+          <Paper variant="outlined" onClick={handleShowSearch}>
+            <IconButton aria-label="search" className={classes.searchBtn} size="small" variant="outlined">
+              <SearchIcon fontSize="small" /> Revise search
+            </IconButton>
+          </Paper>
         </Box>
 
         <Hidden smDown>
@@ -167,6 +187,8 @@ export default withStyles((theme) => ({
           </Box>
         ))}
       </Box>
+
+      <ClassifiedsSearch open={showSearch} setOpen={setShowSearch} />
     </Box>
   )
 })
