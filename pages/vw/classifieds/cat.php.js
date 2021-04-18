@@ -49,17 +49,17 @@ export default withStyles((theme) => ({
   return (
     <Box p={{ xs: 0, md: 1 }}>
       <Head>
-        <title>{data.title}</title>
+        <title>{data.base.title}</title>
       </Head>
 
       <Header data={data} selected="Home" />
 
       <Box px={{ xs: 1, md: 0 }} py={1}>
         <Box mb={2}>
-          <Typography variant="h4">{data.category.title}</Typography>
+          <Typography variant="h4">{data.page.title}</Typography>
         </Box>
         <Box mb={2}>
-          {data.category.nav.map((el, i) => {
+          {data.page.nav.map((el, i) => {
             if (el.href) {
               return (
                 <Link href={el.href} key={`topic-nav-${i}`} passHref>
@@ -108,7 +108,7 @@ export default withStyles((theme) => ({
           </Box>
         </Hidden>
 
-        {data.category.ads.map((el, i) => (
+        {data.page.ads.map((el, i) => (
           <Box bgcolor={i % 2 ? 'white' : 'secondary.light'} key={`classifies-ad-${el.title}-${i}`}>
             <Grid container>
               <Grid item xs={6} sm={4} md={2}>

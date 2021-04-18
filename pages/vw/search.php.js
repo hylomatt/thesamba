@@ -22,7 +22,7 @@ export default withStyles({
   return (
     <Box p={{ xs: 0, md: 1 }}>
       <Head>
-        <title>{data.title}</title>
+        <title>{data.base.title}</title>
       </Head>
 
       <Header data={data} selected="Home" />

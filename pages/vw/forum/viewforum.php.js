@@ -20,7 +20,7 @@ export default withStyles({
   return (
     <Box p={{ xs: 0, md: 1 }}>
       <Head>
-        <title>{data.title}</title>
+        <title>{data.base.title}</title>
       </Head>
 
       <Header data={data} selected="Home" />
@@ -68,7 +68,7 @@ export default withStyles({
           </Box>
         </Hidden>
 
-        {data.forumGroups.map((el, i) => {
+        {data.page.forumGroups.map((el, i) => {
           if (el.title.toLowerCase().includes('sticky')) {
             return (
               <Box mb={2} key={`forumGroup-${i}`}>

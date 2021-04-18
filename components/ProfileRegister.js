@@ -18,7 +18,7 @@ export default function ProfileRegister({ data }) {
   return (
     <Box p={{ xs: 0, md: 1 }}>
       <Head>
-        <title>{data.title}</title>
+        <title>{data.base.title}</title>
       </Head>
 
       <Header data={data} selected="Home" />
@@ -27,12 +27,12 @@ export default function ProfileRegister({ data }) {
         <Box mb={1} border={1} borderColor="primary.main">
           <Box bgcolor="primary.main" p={1}>
             <Typography align="center" className={classes.root}>
-              {data.register.title}
+              {data.page.title}
             </Typography>
           </Box>
 
           <Box mb={1} p={2}>
-            <Typography component="div" dangerouslySetInnerHTML={{ __html: data.register.content }} />
+            <Typography component="div" dangerouslySetInnerHTML={{ __html: data.page.content }} />
           </Box>
         </Box>
       </Box>

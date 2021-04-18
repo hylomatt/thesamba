@@ -35,251 +35,259 @@ export default withStyles((theme) => ({
   menuBtn: {
     height: 64
   }
-}))(({ data: { header, preHeader, loggedIn, nav }, classes, selected = null }) => {
-  const [menu, setMenu] = useState(false)
-  const [expanded, setExpanded] = useState(false)
+}))(
+  ({
+    data: {
+      base: { header, preHeader, loggedIn, nav }
+    },
+    classes,
+    selected = null
+  }) => {
+    const [menu, setMenu] = useState(false)
+    const [expanded, setExpanded] = useState(false)
 
-  const [anchorEl, setAnchorEl] = useState(null)
-  const [open, setOpen] = useState(null)
+    const [anchorEl, setAnchorEl] = useState(null)
+    const [open, setOpen] = useState(null)
 
-  const handleChange = (panel) => (event, isExpanded) => {
-    setExpanded(isExpanded ? panel : false)
-  }
-
-  const handleToggle = (e, idx) => {
-    setAnchorEl(e.target.parentElement)
-    setOpen(idx)
-  }
-
-  const handleClose = (idx) => {
-    if (idx !== open) {
-      return
+    const handleChange = (panel) => (event, isExpanded) => {
+      setExpanded(isExpanded ? panel : false)
     }
 
-    setOpen(null)
-  }
-
-  function handleListKeyDown(event) {
-    if (event.key === 'Tab') {
-      event.preventDefault()
-      setOpen(false)
+    const handleToggle = (e, idx) => {
+      setAnchorEl(e.target.parentElement)
+      setOpen(idx)
     }
-  }
 
-  return (
-    <>
-      <HeaderTop data={preHeader} loggedIn={loggedIn} />
-      <Box bgcolor="primary.dark">
-        <Grid container justify="space-between" alignItems="center" wrap="nowrap">
-          <Hidden mdUp>
-            <IconButton className={classes.menuBtn} aria-label="menu" color="secondary" onClick={() => setMenu(true)}>
-              <MenuIcon fontSize="large" color="secondary" />
-            </IconButton>
-            <Link href={header.logo.href}>
-              <a>
-                <Image src={header.logo.src} alt="" width={213} height={40} />
-              </a>
-            </Link>
-            <Box width={53.47}></Box>
-          </Hidden>
-          <Hidden smDown>
-            <Link href={header.logo.href}>
-              <a>
-                <Image src={header.logo.src} alt="" width={320} height={60} />
-              </a>
-            </Link>
-          </Hidden>
-        </Grid>
-      </Box>
-      <Drawer open={menu} onClose={() => setMenu(false)}>
-        <div className={classes.list} role="presentation" /* onClick={() => setMenu(false)} */>
-          {loggedIn && (
-            <Box p={2}>
-              <Typography>
-                Hello, <strong>{preHeader.user}</strong>
-              </Typography>
-            </Box>
-          )}
+    const handleClose = (idx) => {
+      if (idx !== open) {
+        return
+      }
 
-          <div className={classes.accRoot}>
-            {nav.map((el, i) => (
-              <Accordion square={true} expanded={expanded === `panel${i}`} onChange={handleChange(`panel${i}`)} key={`nav-item-${el.title.toLowerCase().replace(/[^a-z0-9]/, '-')}`}>
-                <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls={`panel${i}bh-content`} id={`panel${i}bh-header`}>
-                  <Typography className={classes.heading}>{el.title}</Typography>
-                </AccordionSummary>
-                <AccordionDetails>
-                  <List disablePadding={true}>
+      setOpen(null)
+    }
+
+    function handleListKeyDown(event) {
+      if (event.key === 'Tab') {
+        event.preventDefault()
+        setOpen(false)
+      }
+    }
+
+    return (
+      <>
+        <HeaderTop data={preHeader} loggedIn={loggedIn} />
+        <Box bgcolor="primary.dark">
+          <Grid container justify="space-between" alignItems="center" wrap="nowrap">
+            <Hidden mdUp>
+              <IconButton className={classes.menuBtn} aria-label="menu" color="secondary" onClick={() => setMenu(true)}>
+                <MenuIcon fontSize="large" color="secondary" />
+              </IconButton>
+              <Link href={header.logo.href}>
+                <a>
+                  <Image src={header.logo.src} alt="" width={213} height={40} />
+                </a>
+              </Link>
+              <Box width={53.47}></Box>
+            </Hidden>
+            <Hidden smDown>
+              <Link href={header.logo.href}>
+                <a>
+                  <Image src={header.logo.src} alt="" width={320} height={60} />
+                </a>
+              </Link>
+            </Hidden>
+          </Grid>
+        </Box>
+        <Drawer open={menu} onClose={() => setMenu(false)}>
+          <div className={classes.list} role="presentation" /* onClick={() => setMenu(false)} */>
+            {loggedIn && (
+              <Box p={2}>
+                <Typography>
+                  Hello, <strong>{preHeader.user}</strong>
+                </Typography>
+              </Box>
+            )}
+
+            <div className={classes.accRoot}>
+              {nav.map((el, i) => (
+                <Accordion square={true} expanded={expanded === `panel${i}`} onChange={handleChange(`panel${i}`)} key={`nav-item-${el.title.toLowerCase().replace(/[^a-z0-9]/, '-')}`}>
+                  <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls={`panel${i}bh-content`} id={`panel${i}bh-header`}>
+                    <Typography className={classes.heading}>{el.title}</Typography>
+                  </AccordionSummary>
+                  <AccordionDetails>
+                    <List disablePadding={true}>
+                      <ListItem button>
+                        <ListItemText>
+                          <Link href={el.href} passHref>
+                            <Typography component="a" className={classes.heading}>
+                              {el.title} Index
+                            </Typography>
+                          </Link>
+                        </ListItemText>
+                      </ListItem>
+
+                      {el.items.map((sub, subIdx) => (
+                        <ListItem button key={`nav-mobile-subitem-${sub.title.toLowerCase().replace(/[^a-z0-9]/, '-')}`}>
+                          <ListItemText>
+                            <Link href={sub.href} passHref>
+                              <Typography component="a" className={classes.heading}>
+                                {sub.title}
+                              </Typography>
+                            </Link>
+                          </ListItemText>
+                        </ListItem>
+                      ))}
+                    </List>
+                  </AccordionDetails>
+                </Accordion>
+              ))}
+            </div>
+
+            <Divider />
+
+            <List>
+              {!loggedIn
+                ? (
+                  <>
                     <ListItem button>
                       <ListItemText>
-                        <Link href={el.href} passHref>
+                        <Link href="/vw/forum/login.php?redirect=/vw/index.php" passHref>
                           <Typography component="a" className={classes.heading}>
-                            {el.title} Index
+                          Login
+                          </Typography>
+                        </Link>
+                      </ListItemText>
+                    </ListItem>
+                    <ListItem button>
+                      <ListItemText>
+                        <Link href="/vw/forum/profile.php?mode=register">
+                          <Typography component="a" className={classes.heading}>
+                          Register
                           </Typography>
                         </Link>
                       </ListItemText>
                     </ListItem>
 
-                    {el.items.map((sub, subIdx) => (
-                      <ListItem button key={`nav-mobile-subitem-${sub.title.toLowerCase().replace(/[^a-z0-9]/, '-')}`}>
-                        <ListItemText>
-                          <Link href={sub.href} passHref>
-                            <Typography component="a" className={classes.heading}>
-                              {sub.title}
-                            </Typography>
-                          </Link>
-                        </ListItemText>
-                      </ListItem>
-                    ))}
-                  </List>
-                </AccordionDetails>
-              </Accordion>
-            ))}
+                    <ListItem button>
+                      <ListItemText>
+                        <Link href="/vw/contact.php">
+                          <Typography component="a" className={classes.heading}>
+                          Help
+                          </Typography>
+                        </Link>
+                      </ListItemText>
+                    </ListItem>
+                    <ListItem button>
+                      <ListItemText>
+                        <Link href="/vw/donate.php">
+                          <Typography component="a" className={classes.heading}>
+                          Donate
+                          </Typography>
+                        </Link>
+                      </ListItemText>
+                    </ListItem>
+                    <ListItem button>
+                      <ListItemText>
+                        <Link href="/vw/products/">
+                          <Typography component="a" className={classes.heading}>
+                          Buy Shirts
+                          </Typography>
+                        </Link>
+                      </ListItemText>
+                    </ListItem>
+                    <ListItem button>
+                      <ListItemText>
+                        <Link href="/vw/allbanners.php">
+                          <Typography component="a" className={classes.heading}>
+                          See all banner ads
+                          </Typography>
+                        </Link>
+                      </ListItemText>
+                    </ListItem>
+                    <ListItem button>
+                      <ListItemText>
+                        <Link href="/vw/banners.php">
+                          <Typography component="a" className={classes.heading}>
+                          Advertise on TheSamba.com
+                          </Typography>
+                        </Link>
+                      </ListItemText>
+                    </ListItem>
+                  </>
+                )
+                : (
+                  <>
+                    <ListItem button>
+                      <ListItemText>
+                        <Link href={preHeader.logoutLink}>
+                          <a>Log out</a>
+                        </Link>
+                      </ListItemText>
+                    </ListItem>
+                    <ListItem button>
+                      <ListItemText>
+                        <Link href="/vw/forum/profile.php?mode=editprofile">
+                          <a>Control Panel</a>
+                        </Link>
+                      </ListItemText>
+                    </ListItem>
+                    <ListItem button>
+                      <ListItemText>
+                        <Link href="/vw/forum/privmsg.php?folder=inbox">
+                          <a>PMs: {preHeader.pms}</a>
+                        </Link>
+                      </ListItemText>
+                    </ListItem>
+                  </>
+                )}
+            </List>
           </div>
+        </Drawer>
 
-          <Divider />
+        <Hidden smDown>
+          <Box bgcolor="primary.main">
+            <Grid container justify="center" alignItems="center">
+              {nav.map((el, i) => (
+                <React.Fragment key={`nav-item-${el.title.toLowerCase().replace(/[^a-z0-9]/, '-')}`}>
+                  <Box px={2} py={1}>
+                    <Button className={classes.root} aria-haspopup="true" aria-controls={open === i ? 'menu-list-grow' : undefined} onClick={(e) => handleToggle(e, i)}>
+                      {el.title}
+                    </Button>
+                  </Box>
 
-          <List>
-            {!loggedIn
-              ? (
-                <>
-                  <ListItem button>
-                    <ListItemText>
-                      <Link href="/vw/forum/login.php?redirect=/vw/index.php" passHref>
-                        <Typography component="a" className={classes.heading}>
-                        Login
-                        </Typography>
-                      </Link>
-                    </ListItemText>
-                  </ListItem>
-                  <ListItem button>
-                    <ListItemText>
-                      <Link href="/vw/forum/profile.php?mode=register">
-                        <Typography component="a" className={classes.heading}>
-                        Register
-                        </Typography>
-                      </Link>
-                    </ListItemText>
-                  </ListItem>
-
-                  <ListItem button>
-                    <ListItemText>
-                      <Link href="/vw/contact.php">
-                        <Typography component="a" className={classes.heading}>
-                        Help
-                        </Typography>
-                      </Link>
-                    </ListItemText>
-                  </ListItem>
-                  <ListItem button>
-                    <ListItemText>
-                      <Link href="/vw/donate.php">
-                        <Typography component="a" className={classes.heading}>
-                        Donate
-                        </Typography>
-                      </Link>
-                    </ListItemText>
-                  </ListItem>
-                  <ListItem button>
-                    <ListItemText>
-                      <Link href="/vw/products/">
-                        <Typography component="a" className={classes.heading}>
-                        Buy Shirts
-                        </Typography>
-                      </Link>
-                    </ListItemText>
-                  </ListItem>
-                  <ListItem button>
-                    <ListItemText>
-                      <Link href="/vw/allbanners.php">
-                        <Typography component="a" className={classes.heading}>
-                        See all banner ads
-                        </Typography>
-                      </Link>
-                    </ListItemText>
-                  </ListItem>
-                  <ListItem button>
-                    <ListItemText>
-                      <Link href="/vw/banners.php">
-                        <Typography component="a" className={classes.heading}>
-                        Advertise on TheSamba.com
-                        </Typography>
-                      </Link>
-                    </ListItemText>
-                  </ListItem>
-                </>
-              )
-              : (
-                <>
-                  <ListItem button>
-                    <ListItemText>
-                      <Link href={preHeader.logoutLink}>
-                        <a>Log out</a>
-                      </Link>
-                    </ListItemText>
-                  </ListItem>
-                  <ListItem button>
-                    <ListItemText>
-                      <Link href="/vw/forum/profile.php?mode=editprofile">
-                        <a>Control Panel</a>
-                      </Link>
-                    </ListItemText>
-                  </ListItem>
-                  <ListItem button>
-                    <ListItemText>
-                      <Link href="/vw/forum/privmsg.php?folder=inbox">
-                        <a>PMs: {preHeader.pms}</a>
-                      </Link>
-                    </ListItemText>
-                  </ListItem>
-                </>
-              )}
-          </List>
-        </div>
-      </Drawer>
-
-      <Hidden smDown>
-        <Box bgcolor="primary.main">
-          <Grid container justify="center" alignItems="center">
-            {nav.map((el, i) => (
-              <React.Fragment key={`nav-item-${el.title.toLowerCase().replace(/[^a-z0-9]/, '-')}`}>
-                <Box px={2} py={1}>
-                  <Button className={classes.root} aria-haspopup="true" aria-controls={open === i ? 'menu-list-grow' : undefined} onClick={(e) => handleToggle(e, i)}>
-                    {el.title}
-                  </Button>
-                </Box>
-
-                <Popper open={open === i} anchorEl={anchorEl} role={undefined} transition disablePortal placement="bottom" className={classes.popper}>
-                  {({ TransitionProps, placement }) => (
-                    <Grow {...TransitionProps} style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}>
-                      <Paper>
-                        <ClickAwayListener onClickAway={() => handleClose(i)}>
-                          <MenuList autoFocusItem={open === i} id="menu-list-grow" onKeyDown={handleListKeyDown}>
-                            <MenuItem onClick={() => handleClose(i)} className={classes.menuItem}>
-                              <Link href={el.href} passHref>
-                                <Typography component="a">{el.title}</Typography>
-                              </Link>
-                            </MenuItem>
-                            {el.items.map((sub) => (
-                              <MenuItem onClick={() => handleClose(i)} className={classes.menuItem} key={`nav-desktop-subitem-${sub.title.toLowerCase().replace(/[^a-z0-9]/, '-')}`}>
-                                <Link href={sub.href} passHref>
-                                  <Typography component="a">{sub.title}</Typography>
+                  <Popper open={open === i} anchorEl={anchorEl} role={undefined} transition disablePortal placement="bottom" className={classes.popper}>
+                    {({ TransitionProps, placement }) => (
+                      <Grow {...TransitionProps} style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}>
+                        <Paper>
+                          <ClickAwayListener onClickAway={() => handleClose(i)}>
+                            <MenuList autoFocusItem={open === i} id="menu-list-grow" onKeyDown={handleListKeyDown}>
+                              <MenuItem onClick={() => handleClose(i)} className={classes.menuItem}>
+                                <Link href={el.href} passHref>
+                                  <Typography component="a">{el.title}</Typography>
                                 </Link>
                               </MenuItem>
-                            ))}
-                          </MenuList>
-                        </ClickAwayListener>
-                      </Paper>
-                    </Grow>
-                  )}
-                </Popper>
-              </React.Fragment>
-            ))}
-          </Grid>
-        </Box>
-      </Hidden>
-    </>
-  )
-})
+                              {el.items.map((sub) => (
+                                <MenuItem onClick={() => handleClose(i)} className={classes.menuItem} key={`nav-desktop-subitem-${sub.title.toLowerCase().replace(/[^a-z0-9]/, '-')}`}>
+                                  <Link href={sub.href} passHref>
+                                    <Typography component="a">{sub.title}</Typography>
+                                  </Link>
+                                </MenuItem>
+                              ))}
+                            </MenuList>
+                          </ClickAwayListener>
+                        </Paper>
+                      </Grow>
+                    )}
+                  </Popper>
+                </React.Fragment>
+              ))}
+            </Grid>
+          </Box>
+        </Hidden>
+      </>
+    )
+  }
+)
 
 const HeaderTop = ({ data, loggedIn }) => {
   return (
@@ -291,13 +299,13 @@ const HeaderTop = ({ data, loggedIn }) => {
               <>
                 <Box>
                   <Typography>
-                  Hello, <strong>{data.user}</strong>
+                  Hello, <strong>{data.base.user}</strong>
                   </Typography>
                 </Box>
                 <Box mx={1} height={16}>
                   <Divider orientation="vertical" />
                 </Box>
-                <Link href={data.logoutLink}>
+                <Link href={data.base.logoutLink}>
                   <a>Log out</a>
                 </Link>
                 <Box mx={1} height={16}>
@@ -310,7 +318,7 @@ const HeaderTop = ({ data, loggedIn }) => {
                   <Divider orientation="vertical" />
                 </Box>
                 <Link href="/vw/forum/privmsg.php?folder=inbox">
-                  <a>PMs: {data.pms}</a>
+                  <a>PMs: {data.base.pms}</a>
                 </Link>
               </>
             )

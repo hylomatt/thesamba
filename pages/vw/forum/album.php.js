@@ -16,7 +16,7 @@ export default withStyles({
   return (
     <Box p={{ xs: 0, md: 1 }}>
       <Head>
-        <title>{data.title}</title>
+        <title>{data.base.title}</title>
       </Head>
 
       <Header data={data} selected="Home" />
@@ -31,13 +31,13 @@ export default withStyles({
                 </Typography>
               </Box>
               <Box p={1}>
-                <Link href={data.gallery.latestEntry.href}>
+                <Link href={data.page.latestEntry.href}>
                   <a>
-                    <img src={data.gallery.latestEntry.img.src} />
+                    <img src={data.page.latestEntry.img.src} />
                   </a>
                 </Link>
-                <Typography>{data.gallery.latestEntry.topictitle}</Typography>
-                <Typography component="div" dangerouslySetInnerHTML={{ __html: data.gallery.latestEntry.postbody }} />
+                <Typography>{data.page.latestEntry.topictitle}</Typography>
+                <Typography component="div" dangerouslySetInnerHTML={{ __html: data.page.latestEntry.postbody }} />
               </Box>
             </Box>
           </Grid>
@@ -50,13 +50,13 @@ export default withStyles({
                 </Typography>
               </Box>
               <Box p={1}>
-                <Link href={data.gallery.stolen.href}>
+                <Link href={data.page.stolen.href}>
                   <a>
-                    <img src={data.gallery.stolen.img.src} />
+                    <img src={data.page.stolen.img.src} />
                   </a>
                 </Link>
-                <Typography>{data.gallery.stolen.topictitle}</Typography>
-                <Typography component="div" dangerouslySetInnerHTML={{ __html: data.gallery.stolen.postbody }} />
+                <Typography>{data.page.stolen.topictitle}</Typography>
+                <Typography component="div" dangerouslySetInnerHTML={{ __html: data.page.stolen.postbody }} />
               </Box>
             </Box>
           </Grid>
@@ -104,7 +104,7 @@ export default withStyles({
             </Grid>
           </Box>
           <Box p={1} pt={2}>
-            {data.gallery.categories.map((cat, i) => (
+            {data.page.categories.map((cat, i) => (
               <Box mb={1} key={`mobile-categories-${i}`}>
                 <Grid container>
                   <Grid item xs={10}>

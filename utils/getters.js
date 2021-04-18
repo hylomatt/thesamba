@@ -7,6 +7,7 @@ import { getSetCookieHeaders } from './cookies'
 import {
   parseHome,
   parseClassifieds,
+  parseClassifiedSearch,
   parseClassifiedCategory,
   parseClassifiedDetail,
   parseForums,
@@ -24,7 +25,8 @@ import {
   parseLogin,
   parseProfileView,
   parseProfileRegister,
-  parseProfileRegisterAgreed
+  parseProfileRegisterAgreed,
+  parseWhatsNew
 } from './parsers'
 
 const getPage = async (req) => {
@@ -79,6 +81,13 @@ export const getClassifieds = async (req) => {
   return await getPage(req).then((r) => {
     const basePath = req.url.replace(/\/_next\/.*\/vw/, '/vw').replace('.json', '')
     return { ...r, data: parseClassifieds(basePath, r.data) }
+  })
+}
+
+export const getClassifiedSearch = async (req) => {
+  return await getPage(req).then((r) => {
+    const basePath = req.url.replace(/\/_next\/.*\/vw/, '/vw').replace('.json', '')
+    return { ...r, data: parseClassifiedSearch(basePath, r.data) }
   })
 }
 
@@ -225,5 +234,12 @@ export const getProfile = async (req, query) => {
     } else if (profileMode === 'foelist') {
       return { ...r, data: {} }
     }
+  })
+}
+
+export const getWhatsNew = async (req) => {
+  return await getPage(req).then((r) => {
+    const basePath = req.url.replace(/\/_next\/.*\/vw/, '/vw').replace('.json', '')
+    return { ...r, data: parseWhatsNew(basePath, r.data) }
   })
 }

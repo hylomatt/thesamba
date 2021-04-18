@@ -1,13 +1,15 @@
+import React, { useState } from 'react'
 import Head from 'next/head'
-import React from 'react'
 import Link from 'next/link'
 
-import { Box, Typography, Grid, Accordion, AccordionSummary, AccordionDetails, List, ListItem, ListItemText, Hidden } from '@material-ui/core'
+import { Box, Typography, Grid, Accordion, AccordionSummary, AccordionDetails, List, ListItem, ListItemText, Hidden, IconButton, Paper } from '@material-ui/core'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
+import SearchIcon from '@material-ui/icons/Search'
 import { withStyles } from '@material-ui/core/styles'
 
 import { getClassifieds } from '../../../utils/getters'
 import Header from '../../../components/Header'
+import ClassifiedsSearch from '../../../components/ClassifiedsSearch'
 
 export default withStyles((theme) => ({
   root: {
@@ -36,26 +38,38 @@ export default withStyles((theme) => ({
 
   menuBtn: {
     height: 64
+  },
+
+  searchBtn: {
+    width: '40px',
+    padding: '14px 0',
+    textAlign: 'center'
   }
 }))(({ data, classes }) => {
+  const [showSearch, setShowSearch] = useState(false)
+
+  const handleShowSearch = () => {
+    setShowSearch(!showSearch)
+  }
+
   return (
     <Box p={{ xs: 0, md: 1 }}>
       <Head>
-        <title>{data.title}</title>
+        <title>{data.base.title}</title>
       </Head>
 
       <Header data={data} selected="Home" />
 
       <Box px={{ xs: 1, md: 0 }} py={1}>
-        <Grid container>
+        <Grid container justify="space-between">
           <Hidden smDown>
-            <Grid item xs={12} md={3}>
+            <Grid item xs={11} md={3}>
               <Box mb={1} mr={{ md: 2 }} border={1} borderColor="secondary.light">
                 <Box bgcolor="secondary.light" p={1}>
                   <Typography>Categories</Typography>
                 </Box>
                 <Box p={1}>
-                  {data.categories.map((el, i) => (
+                  {data.page.categories.map((el, i) => (
                     <React.Fragment key={`classifieds-categories-${i}-desktop`}>
                       <Box mb={1}>
                         <Typography>{el.title}</Typography>
@@ -74,18 +88,23 @@ export default withStyles((theme) => ({
                 </Box>
               </Box>
             </Grid>
+            <Grid item xs={1}>
+              <IconButton aria-label="search" className={classes.margin} size="small">
+                <SearchIcon fontSize="inherit" />
+              </IconButton>
+            </Grid>
           </Hidden>
 
           <Hidden mdUp>
             <Grid item xs={12}>
-              <Box mb={2}>
+              <Box mb={2} pr={6} position="relative">
                 <Accordion square={true}>
                   <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                     <Typography className={classes.heading}>Categories</Typography>
                   </AccordionSummary>
                   <AccordionDetails direction="column">
                     <Box width="100%">
-                      {data.categories.map((el, i) => (
+                      {data.page.categories.map((el, i) => (
                         <Accordion square={true} key={`classifieds-categories-${i}-mobile`}>
                           <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls={`panel${i}bh-content`} id={`panel${i}bh-header`}>
                             <Typography className={classes.heading}>{el.title}</Typography>
@@ -112,6 +131,13 @@ export default withStyles((theme) => ({
                     </Box>
                   </AccordionDetails>
                 </Accordion>
+                <Box position="absolute" right="0" top="0">
+                  <Paper variant="outlined">
+                    <IconButton aria-label="search" className={classes.searchBtn} size="small" variant="outlined" onClick={handleShowSearch}>
+                      <SearchIcon fontSize="default" />
+                    </IconButton>
+                  </Paper>
+                </Box>
               </Box>
             </Grid>
           </Hidden>
@@ -124,7 +150,7 @@ export default withStyles((theme) => ({
               </Box>
               <Box p={1}>
                 <Grid container justify="center" alignItems="flex-start">
-                  {data.featuredAds.map((el, i) => (
+                  {data.page.featuredAds.map((el, i) => (
                     <Grid item xs={6} sm={4} md={2} key={`classifieds-random-ads-${i}`}>
                       <Box px={2} pb={2} align="center">
                         <Link href={el.href} key={`classifieds-featured-ads-${i}`}>
@@ -149,7 +175,7 @@ export default withStyles((theme) => ({
               </Box>
               <Box p={1}>
                 <Grid container justify="center" alignItems="flex-start">
-                  {data.randomAds.map((el, i) => (
+                  {data.page.randomAds.map((el, i) => (
                     <Grid item xs={6} sm={4} md={2} key={`classifieds-random-ads-${i}`}>
                       <Box px={2} pb={2} align="center">
                         <Link href={el.href}>
@@ -171,6 +197,8 @@ export default withStyles((theme) => ({
           </Grid>
         </Grid>
       </Box>
+
+      <ClassifiedsSearch open={showSearch} setOpen={setShowSearch} />
     </Box>
   )
 })

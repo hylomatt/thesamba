@@ -27,9 +27,9 @@ const useStyles = makeStyles((theme) => ({
 export default function ProfileRegisterAgreed({ data }) {
   const classes = useStyles()
 
-  // const [values, setValues] = useState(data.registerAgreed.hiddenInputs)
+  // const [values, setValues] = useState(data.page.hiddenInputs)
   const [values, setValues] = useState({
-    ...data.registerAgreed.hiddenInputs
+    ...data.page.hiddenInputs
   })
 
   const handleChange = (prop) => (event) => {
@@ -49,7 +49,7 @@ export default function ProfileRegisterAgreed({ data }) {
   return (
     <Box p={{ xs: 0, md: 1 }}>
       <Head>
-        <title>{data.title}</title>
+        <title>{data.base.title}</title>
       </Head>
 
       <Header data={data} selected="Home" />
@@ -96,7 +96,7 @@ export default function ProfileRegisterAgreed({ data }) {
                   If you are visually impaired or cannot otherwise read this code please contact the <a href="mailto:everettb@thesamba.com">Administrator</a> for help.
                 </Typography>
                 <Box mb={1} py={1}>
-                  <img src={data.registerAgreed.confirmImage.src} width="100%" />
+                  <img src={data.page.confirmImage.src} width="100%" />
                 </Box>
                 <FormControl fullWidth={true} className={classes.mb1}>
                   <TField label="Confirmation code" name="confirm_code" maxLength="6" required />
@@ -143,7 +143,7 @@ export default function ProfileRegisterAgreed({ data }) {
                     id: 'outlined-language-native-simple'
                   }}
                 >
-                  {data.registerAgreed.boardLanguage.map((el, i) => (
+                  {data.page.boardLanguage.map((el, i) => (
                     <option value={el.value} selected={el.selected} key={`register-form-language-${i}`}>
                       {el.text}
                     </option>
@@ -162,7 +162,7 @@ export default function ProfileRegisterAgreed({ data }) {
                     id: 'outlined-timezone-native-simple'
                   }}
                 >
-                  {data.registerAgreed.timezones.map((el, i) => (
+                  {data.page.timezones.map((el, i) => (
                     <option value={el.value} selected={el.selected} key={`register-form-tz-${i}`}>
                       {el.text}
                     </option>
@@ -172,7 +172,7 @@ export default function ProfileRegisterAgreed({ data }) {
             </Box>
           </Box>
 
-          {/* {data.registerAgreed.hiddenInputs.map((el, i) => (
+          {/* {data.page.hiddenInputs.map((el, i) => (
             <input type="hidden" name={el.name} value={el.value} key={`register-hidden-input-${i}`} />
           ))}
           <input type="hidden" name="mode" value="register" />

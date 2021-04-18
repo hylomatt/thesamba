@@ -16,17 +16,17 @@ export default withStyles({
   return (
     <Box p={{ xs: 0, md: 1 }}>
       <Head>
-        <title>{data.title}</title>
+        <title>{data.base.title}</title>
       </Head>
 
       <Header data={data} selected="Home" />
 
       <Box px={{ xs: 1, md: 0 }} py={1}>
         <Box mb={2}>
-          <Typography variant="h4">{data.topic.title}</Typography>
+          <Typography variant="h4">{data.page.title}</Typography>
         </Box>
         <Box mb={2}>
-          {data.topic.nav.map((el, i) => (
+          {data.page.nav.map((el, i) => (
             <Link href={el.href} key={`topic-nav-${i}`} passHref>
               <Typography component="a">{el.title}</Typography>
             </Link>
@@ -50,7 +50,7 @@ export default withStyles({
           </Box>
         </Hidden>
 
-        {data.topic.posts.map((el, i) => (
+        {data.page.posts.map((el, i) => (
           <Box mb={2} key={`topic-post-${i}`}>
             <Grid container>
               <Grid item xs={12} sm={12} md={2}>

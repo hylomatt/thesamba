@@ -19,10 +19,12 @@ export default withStyles({
     }
   }
 })(({ data, classes }) => {
+  console.log(data)
+
   return (
     <Box p={{ xs: 0, md: 1 }}>
       <Head>
-        <title>{data.title}</title>
+        <title>{data.base.title}</title>
       </Head>
 
       <Header data={data} selected="Home" />
@@ -34,7 +36,7 @@ export default withStyles({
             <Typography>Scam warnings</Typography>
           </Box>
           <Box p={1}>
-            {data.scams.map((el, i) => (
+            {data.page.scams.map((el, i) => (
               <Box key={`scam-warning-${i}`}>
                 <Link href={el.href} passHref>
                   <Typography component="a">{el.title}</Typography>
@@ -52,15 +54,15 @@ export default withStyles({
                 <Typography>Classifieds</Typography>
               </Box>
               <Box p={1}>
-                <Link href={data.classifieds.href}>
+                <Link href={data.page.classifieds.href}>
                   <a>
                     <div style={{ position: 'relative', width: '100%', height: '100px', paddingBottom: '20%' }}>
-                      <Image src={data.classifieds.img.src} alt={data.classifieds.img.alt} layout="fill" objectFit="contain" />
+                      <Image src={data.page.classifieds.img.src} alt={data.page.classifieds.img.alt} layout="fill" objectFit="contain" />
                     </div>
                   </a>
                 </Link>
                 <Box pt={1}>
-                  <Typography align="center">{data.classifieds.title}</Typography>
+                  <Typography align="center">{data.page.classifieds.title}</Typography>
                 </Box>
               </Box>
             </Box>
@@ -72,15 +74,15 @@ export default withStyles({
                 <Typography>Gallery</Typography>
               </Box>
               <Box p={1}>
-                <Link href={data.gallery.href}>
+                <Link href={data.page.gallery.href}>
                   <a>
                     <div style={{ position: 'relative', width: '100%', height: '100px', paddingBottom: '20%' }}>
-                      <Image src={data.gallery.img.src} alt={data.gallery.img.alt} layout="fill" objectFit="contain" />
+                      <Image src={data.page.gallery.img.src} alt={data.page.gallery.img.alt} layout="fill" objectFit="contain" />
                     </div>
                   </a>
                 </Link>
                 <Box pt={1}>
-                  <Typography align="center">{data.gallery.title}</Typography>
+                  <Typography align="center">{data.page.gallery.title}</Typography>
                 </Box>
               </Box>
             </Box>
@@ -90,15 +92,15 @@ export default withStyles({
         {/* fact */}
         <Box mb={1} p={1} border={1} borderColor="secondary.light">
           <Box mb={2}>
-            <Link href={data.fact.href}>
+            <Link href={data.page.fact.href}>
               <a>
                 <Box position="relative" width="100%" height="80px" style={{ paddingBottom: '20%' }}>
-                  <Image src={data.fact.img.src} alt={data.fact.img.alt} layout="fill" objectFit="contain" />
+                  <Image src={data.page.fact.img.src} alt={data.page.fact.img.alt} layout="fill" objectFit="contain" />
                 </Box>
               </a>
             </Link>
           </Box>
-          <Typography component="div" dangerouslySetInnerHTML={{ __html: data.fact.content }} />
+          <Typography component="div" dangerouslySetInnerHTML={{ __html: data.page.fact.content }} />
         </Box>
 
         {/* featured ads */}
@@ -118,21 +120,21 @@ export default withStyles({
         </Box>
 
         {/* stolen */}
-        {data.stolen.href && (
+        {data.page.stolen.href && (
           <Box mb={1} border={1} borderColor="secondary.light">
             <Box bgcolor="secondary.light" p={1}>
               <Typography>Stolen</Typography>
             </Box>
             <Box p={1}>
-              <Link href={data.stolen.href}>
+              <Link href={data.page.stolen.href}>
                 <a style={{ display: 'block' }}>
                   <div style={{ position: 'relative', width: '100%', height: '100px', paddingBottom: '20%' }}>
-                    <Image src={data.stolen.img.src} alt={data.stolen.img.alt} layout="fill" objectFit="contain" />
+                    <Image src={data.page.stolen.img.src} alt={data.page.stolen.img.alt} layout="fill" objectFit="contain" />
                   </div>
                 </a>
               </Link>
               <Box pt={1}>
-                <Typography align="center">{data.stolen.title}</Typography>
+                <Typography align="center">{data.page.stolen.title}</Typography>
               </Box>
             </Box>
           </Box>
@@ -143,7 +145,7 @@ export default withStyles({
           <Box bgcolor="secondary.light" p={1}>
             <Typography>Coming Events</Typography>
           </Box>
-          <Box p={1} className={classes.events} dangerouslySetInnerHTML={{ __html: data.comingEvents }} />
+          <Box p={1} className={classes.events} dangerouslySetInnerHTML={{ __html: data.page.comingEvents }} />
         </Box>
       </Box>
     </Box>
