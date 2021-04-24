@@ -11,6 +11,7 @@ import { withStyles } from '@material-ui/core/styles'
 import { getClassifiedSearch } from '../../../utils/getters'
 import Header from '../../../components/Header'
 import ClassifiedsSearch from '../../../components/ClassifiedsSearch'
+import Pagination from '../../../components/Pagination'
 
 export default withStyles((theme) => ({
   root: {
@@ -45,8 +46,6 @@ export default withStyles((theme) => ({
     padding: '8px 0'
   }
 }))(({ data, classes }) => {
-  console.log(data)
-
   const [showSearch, setShowSearch] = useState(false)
 
   const handleShowSearch = () => {
@@ -187,6 +186,8 @@ export default withStyles((theme) => ({
           </Box>
         ))}
       </Box>
+
+      <Pagination pages={data.page.pages} />
 
       <ClassifiedsSearch open={showSearch} setOpen={setShowSearch} />
     </Box>

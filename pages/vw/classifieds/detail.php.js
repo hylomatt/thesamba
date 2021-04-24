@@ -9,7 +9,18 @@ import { withStyles } from '@material-ui/core/styles'
 import { getClassifiedDetail } from '../../../utils/getters'
 import Header from '../../../components/Header'
 
-export default withStyles({})(({ classes, data }) => {
+export default withStyles({
+  slider: {
+    '& .slick-dots': {
+      position: 'static'
+    }
+  },
+  slideText: {
+    margin: '8px 0'
+  }
+})(({ classes, data }) => {
+  console.log(data)
+
   const sliderSettings = {
     dots: true,
     infinite: true,
@@ -56,8 +67,8 @@ export default withStyles({})(({ classes, data }) => {
             )
           })}
         </Box>
-        <Box mb={4}>
-          <Slider {...sliderSettings} ref={sliderRef}>
+        <Box mb={2}>
+          <Slider {...sliderSettings} ref={sliderRef} className={classes.slider}>
             {!data.page.thumbnails.length && (
               <Box onClick={gotoNext}>
                 <img src={data.page.mainPhoto.src} alt={data.page.mainPhoto.alt} width="100%" />
@@ -67,7 +78,7 @@ export default withStyles({})(({ classes, data }) => {
               <Box key={`detail-image-${data.page.adId}-${i}`} onClick={gotoNext}>
                 <img src={item.src.replace('thumbnails/', '')} alt={item.alt} width="100%" />
                 {item.label && (
-                  <Typography variant="body2" align="center">
+                  <Typography variant="body2" align="center" className={classes.slideText}>
                     {item.label}
                   </Typography>
                 )}

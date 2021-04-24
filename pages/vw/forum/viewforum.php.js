@@ -8,6 +8,7 @@ import { withStyles } from '@material-ui/core/styles'
 
 import { getForum } from '../../../utils/getters'
 import Header from '../../../components/Header'
+import Pagination from '../../../components/Pagination'
 import { formatDate } from '../../../utils/formatters'
 
 import theme from '../../../utils/theme'
@@ -17,6 +18,8 @@ export default withStyles({
     color: 'white'
   }
 })(({ data, classes }) => {
+  console.log(data)
+
   return (
     <Box p={{ xs: 0, md: 1 }}>
       <Head>
@@ -149,6 +152,8 @@ export default withStyles({
           )
         })}
       </Box>
+
+      <Pagination pages={data.page.pages} />
     </Box>
   )
 })

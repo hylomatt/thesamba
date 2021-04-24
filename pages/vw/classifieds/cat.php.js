@@ -9,6 +9,7 @@ import { withStyles } from '@material-ui/core/styles'
 
 import { getClassifiedCategory } from '../../../utils/getters'
 import Header from '../../../components/Header'
+import Pagination from '../../../components/Pagination'
 
 export default withStyles((theme) => ({
   root: {
@@ -169,6 +170,8 @@ export default withStyles((theme) => ({
           </Box>
         ))}
       </Box>
+
+      <Pagination pages={data.page.pages} />
     </Box>
   )
 })

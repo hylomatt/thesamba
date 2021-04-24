@@ -462,6 +462,14 @@ export const parseForum = (basePath, html) => {
   return {
     base: parseBase(basePath, $),
     page: {
+      pages: $('body > table span.pages b')
+        .first()
+        .find('b, a')
+        .toArray()
+        .map((el) => ({
+          title: $(el).text().trim(),
+          href: getAbsHref(basePath, $(el).attr('href'))
+        })),
       forumGroups: $('body > table.forumline')
         .first()
         .find('> tbody > tr')
