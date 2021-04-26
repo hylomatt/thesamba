@@ -27,6 +27,8 @@ export default withStyles({
     }
   }
 })(({ classes, data }) => {
+  console.log(data)
+
   const sliderSettings = {
     dots: true,
     infinite: true,
@@ -94,22 +96,25 @@ export default withStyles({
             <Typography>Advertiser Information</Typography>
           </Box>
           <Box p={1}>
-            <Grid container justify="center" alignItems="center">
-              <Grid item xs={5}>
-                <Box pr={1} align="right">
-                  <Typography>Advertiser:</Typography>
-                  <Typography>Member since:</Typography>
+            <Grid container alignItems="center">
+              <Grid item xs={4}>
+                <Box pr={1}>
+                  {data.page.advertiserInfo.labels.map((label, i) => (
+                    <Typography key={`advertiserInfo-label-${data.page.adId}-${i}`}>{label}</Typography>
+                  ))}
                 </Box>
               </Grid>
-              <Grid item xs={7}>
-                <Link href={data.page.advertiserInfo.href} passHref>
-                  <Typography component="a">{data.page.advertiserInfo.title}</Typography>
+              <Grid item xs={8}>
+                <Link href={data.page.advertiserInfo.memberHref} passHref>
+                  <Typography component="a">{data.page.advertiserInfo.member}</Typography>
                 </Link>
-                <Typography>{data.page.advertiserInfo.memberSince}</Typography>
+                {data.page.advertiserInfo.textValues.map((value, i) => (
+                  <Typography key={`advertiserInfo-textValue-${data.page.adId}-${i}`}>{value}</Typography>
+                ))}
               </Grid>
               {data.page.advertiserInfo.contactPhone && (
-                <Grid item xs={6}>
-                  <Box mt={2} pr={1} align="right">
+                <Grid item>
+                  <Box mt={2} pr={2}>
                     <Button variant="outlined" component="a" href={`tel:${data.page.advertiserInfo.contactPhone}`}>
                       Call
                     </Button>
@@ -117,8 +122,8 @@ export default withStyles({
                 </Grid>
               )}
               {data.page.advertiserInfo.contactEmail && (
-                <Grid item xs={6}>
-                  <Box mt={2} pl={1} align="left">
+                <Grid item>
+                  <Box mt={2}>
                     <Link href={data.page.advertiserInfo.contactEmail} passHref>
                       <Button variant="outlined" component="a">
                         Email
@@ -136,12 +141,12 @@ export default withStyles({
           </Box>
           <Box p={1}>
             <Grid container>
-              <Grid item xs={5}>
+              <Grid item>
                 <Box pr={1}>
-                  <Typography component="div" align="right" dangerouslySetInnerHTML={{ __html: data.page.adInfo.titles }} />
+                  <Typography component="div" dangerouslySetInnerHTML={{ __html: data.page.adInfo.titles }} />
                 </Box>
               </Grid>
-              <Grid item xs={7}>
+              <Grid item>
                 <Typography component="div" dangerouslySetInnerHTML={{ __html: data.page.adInfo.values }} />
               </Grid>
             </Grid>

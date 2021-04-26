@@ -390,14 +390,23 @@ export const parseClassifiedDetail = (basePath, html) => {
         })),
       description: $(classifiedsBody[1]).find('span.gen').html(),
       advertiserInfo: {
-        title: $(bottomBodyBox[0]).find('> td:first-child > table > tbody > tr:first-child > td:last-child a').text(),
-        href: getAbsHref(basePath, $(bottomBodyBox[0]).find('> td:first-child > table > tbody > tr:first-child > td:last-child a').attr('href')),
-        memberSince: $(bottomBodyBox[0])
+        labels: $(bottomBodyBox[0])
+          .find('> td:first-child > table > tbody > tr:first-child > td:first-child')
+          .contents()
+          .filter((i, el) => el.nodeType === 3)
+          .toArray()
+          .map((el) => $(el).text().trim())
+          .filter((el) => el.length),
+        textValues: $(bottomBodyBox[0])
           .find('> td:first-child > table > tbody > tr:first-child > td:last-child')
           .contents()
           .filter((i, el) => el.nodeType === 3)
-          .text()
-          .trim(),
+          .toArray()
+          .map((el) => $(el).text().trim())
+          .filter((el) => el.length),
+        member: $(bottomBodyBox[0]).find('> td:first-child > table > tbody > tr:first-child > td:last-child a:first-child').text(),
+        memberHref: getAbsHref(basePath, $(bottomBodyBox[0]).find('> td:first-child > table > tbody > tr:first-child > td:last-child a:first-child').attr('href')),
+        memberStatus: getAbsHref(basePath, $(bottomBodyBox[0]).find('> td:first-child > table > tbody > tr:first-child > td:last-child a:nth-child(2)').attr('href')),
         contactPhone: $(bottomBodyBox[0]).find('> td:first-child > table > tbody > tr:last-child span#ph').attr('data-ph') || null,
         contactEmail: getAbsHref(basePath, $(bottomBodyBox[0]).find('> td:first-child > table > tbody > tr:last-child a').attr('href'))
       },
