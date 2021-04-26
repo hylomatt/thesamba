@@ -3,11 +3,13 @@ import Head from 'next/head'
 import Link from 'next/link'
 import Slider from 'react-slick'
 
-import { Box, Typography, Grid } from '@material-ui/core'
+import { Box, Typography, Grid, Button, Divider } from '@material-ui/core'
 import { withStyles } from '@material-ui/core/styles'
+import { Skeleton } from '@material-ui/lab'
 
 import { getClassifiedDetail } from '../../../utils/getters'
 import Header from '../../../components/Header'
+import Breadcrumb from '../../../components/Breadcrumb'
 
 export default withStyles({
   slider: {
@@ -17,10 +19,14 @@ export default withStyles({
   },
   slideText: {
     margin: '8px 0'
+  },
+  slideBox: {
+    outline: 'none',
+    '&:focus': {
+      outline: 'none'
+    }
   }
 })(({ classes, data }) => {
-  console.log(data)
-
   const sliderSettings = {
     dots: true,
     infinite: true,
@@ -50,41 +56,35 @@ export default withStyles({
       <Box px={{ xs: 1, md: 0 }} py={1}>
         <Box mb={2}>
           <Typography variant="h4">{data.page.title}</Typography>
+          <Typography variant="h6">Price: {data.page.price}</Typography>
         </Box>
         <Box mb={2}>
-          {data.page.nav.map((el, i) => {
-            if (el.href) {
-              return (
-                <Link href={el.href} key={`topic-nav-${i}`} passHref>
-                  <Typography component="a">{el.title}</Typography>
-                </Link>
-              )
-            }
-            return (
-              <Typography component="span" key={`topic-nav-${i}`}>
-                {el.title}
-              </Typography>
-            )
-          })}
+          <Breadcrumb crumbs={data.page.nav} />
         </Box>
         <Box mb={2}>
-          <Slider {...sliderSettings} ref={sliderRef} className={classes.slider}>
-            {!data.page.thumbnails.length && (
-              <Box onClick={gotoNext}>
-                <img src={data.page.mainPhoto.src} alt={data.page.mainPhoto.alt} width="100%" />
-              </Box>
-            )}
-            {data.page.thumbnails.map((item, i) => (
-              <Box key={`detail-image-${data.page.adId}-${i}`} onClick={gotoNext}>
-                <img src={item.src.replace('thumbnails/', '')} alt={item.alt} width="100%" />
-                {item.label && (
-                  <Typography variant="body2" align="center" className={classes.slideText}>
-                    {item.label}
-                  </Typography>
+          {data.page.mainPhoto.src
+            ? (
+              <Slider {...sliderSettings} ref={sliderRef} className={classes.slider}>
+                {!data.page.thumbnails.length && (
+                  <Box onClick={gotoNext} className={classes.slideBox}>
+                    <img src={data.page.mainPhoto.src} alt={data.page.mainPhoto.alt} width="100%" />
+                  </Box>
                 )}
-              </Box>
-            ))}
-          </Slider>
+                {data.page.thumbnails.map((item, i) => (
+                  <Box key={`detail-image-${data.page.adId}-${i}`} onClick={gotoNext} className={classes.slideBox}>
+                    <img src={item.src.replace('thumbnails/', '')} alt={item.alt} width="100%" />
+                    {item.label && (
+                      <Typography variant="body2" align="center" className={classes.slideText}>
+                        {item.label}
+                      </Typography>
+                    )}
+                  </Box>
+                ))}
+              </Slider>
+            )
+            : (
+              <Divider />
+            )}
         </Box>
         <Box mb={2}>
           <Typography component="div" dangerouslySetInnerHTML={{ __html: data.page.description }} />
@@ -94,7 +94,7 @@ export default withStyles({
             <Typography>Advertiser Information</Typography>
           </Box>
           <Box p={1}>
-            <Grid container>
+            <Grid container justify="center" alignItems="center">
               <Grid item xs={5}>
                 <Box pr={1} align="right">
                   <Typography>Advertiser:</Typography>
@@ -107,6 +107,26 @@ export default withStyles({
                 </Link>
                 <Typography>{data.page.advertiserInfo.memberSince}</Typography>
               </Grid>
+              {data.page.advertiserInfo.contactPhone && (
+                <Grid item xs={6}>
+                  <Box mt={2} pr={1} align="right">
+                    <Button variant="outlined" component="a" href={`tel:${data.page.advertiserInfo.contactPhone}`}>
+                      Call
+                    </Button>
+                  </Box>
+                </Grid>
+              )}
+              {data.page.advertiserInfo.contactEmail && (
+                <Grid item xs={6}>
+                  <Box mt={2} pl={1} align="left">
+                    <Link href={data.page.advertiserInfo.contactEmail} passHref>
+                      <Button variant="outlined" component="a">
+                        Email
+                      </Button>
+                    </Link>
+                  </Box>
+                </Grid>
+              )}
             </Grid>
           </Box>
         </Box>

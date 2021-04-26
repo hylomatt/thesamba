@@ -12,6 +12,7 @@ import { getClassifiedSearch } from '../../../utils/getters'
 import Header from '../../../components/Header'
 import ClassifiedsSearch from '../../../components/ClassifiedsSearch'
 import Pagination from '../../../components/Pagination'
+import Breadcrumb from '../../../components/Breadcrumb'
 
 export default withStyles((theme) => ({
   root: {
@@ -68,20 +69,7 @@ export default withStyles((theme) => ({
           <Typography variant="h5">{data.page.title2}</Typography>
         </Box>
         <Box mb={2}>
-          {data.page.nav.map((el, i) => {
-            if (el.href) {
-              return (
-                <Link href={el.href} key={`topic-nav-${i}`} passHref>
-                  <Typography component="a">{el.title}</Typography>
-                </Link>
-              )
-            }
-            return (
-              <Typography component="a" key={`topic-nav-${i}`}>
-                {el.title}
-              </Typography>
-            )
-          })}
+          <Breadcrumb crumbs={data.page.nav} />
         </Box>
 
         <Box align="center" mb={2}>

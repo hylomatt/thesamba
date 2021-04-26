@@ -10,6 +10,7 @@ import {
   parseClassifiedSearch,
   parseClassifiedCategory,
   parseClassifiedDetail,
+  parseClassifiedContact,
   parseForums,
   parseForumSearch,
   parseForum,
@@ -102,6 +103,13 @@ export const getClassifiedDetail = async (req) => {
   return await getPage(req).then((r) => {
     const basePath = req.url.replace(/\/_next\/.*\/vw/, '/vw').replace('.json', '')
     return { ...r, data: parseClassifiedDetail(basePath, r.data) }
+  })
+}
+
+export const getClassifiedContact = async (req) => {
+  return await getPage(req).then((r) => {
+    const basePath = req.url.replace(/\/_next\/.*\/vw/, '/vw').replace('.json', '')
+    return { ...r, data: parseClassifiedContact(basePath, r.data) }
   })
 }
 

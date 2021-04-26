@@ -351,7 +351,7 @@ export default withStyles((theme) => ({
         </DialogContentText>
 
         <form id="search-form" action="search.php" method="get" onSubmit={handleSearch}>
-          <TextField autoFocus margin="dense" value={formVals.keywords} onChange={(e) => setFormVals({ ...formVals, keywords: e.target.value })} label="Find" type="text" fullWidth variant="outlined" maxLength="50" />
+          <TextField autoFocus margin="dense" value={formVals.keywords} onChange={(e) => setFormVals({ ...formVals, keywords: e.target.value })} label="Find" type="text" fullWidth variant="outlined" inputProps={{ maxLength: 50 }} />
           <Grid container>
             <Grid item xs={6} style={{ paddingRight: '4px' }}>
               <TextField select margin="dense" value={formVals.type} onChange={(e) => setFormVals({ ...formVals, type: e.target.value })} label="Search" variant="outlined" fullWidth>
@@ -367,7 +367,7 @@ export default withStyles((theme) => ({
               </TextField>
             </Grid>
           </Grid>
-          <TextField margin="dense" value={formVals.username} onChange={(e) => setFormVals({ ...formVals, username: e.target.value })} label="Username/Email" type="text" fullWidth variant="outlined" maxLength="50" />
+          <TextField margin="dense" value={formVals.username} onChange={(e) => setFormVals({ ...formVals, username: e.target.value })} label="Username/Email" type="text" fullWidth variant="outlined" inputProps={{ maxLength: 50 }} />
           <FormGroup>
             <b>Years:</b>
             <Grid container>
@@ -397,10 +397,10 @@ export default withStyles((theme) => ({
             <b>Price:</b>
             <Grid container>
               <Grid item xs={6} style={{ paddingRight: '4px' }}>
-                <TextField margin="dense" value={formVals.pricefrom} onChange={(e) => setFormVals({ ...formVals, pricefrom: e.target.value })} label="From" type="text" fullWidth variant="outlined" maxLength="10" />
+                <TextField margin="dense" value={formVals.pricefrom} onChange={(e) => setFormVals({ ...formVals, pricefrom: e.target.value })} label="From" type="text" fullWidth variant="outlined" inputProps={{ maxLength: 10 }} />
               </Grid>
               <Grid item xs={6} style={{ paddingLeft: '4px' }}>
-                <TextField margin="dense" value={formVals.priceto} onChange={(e) => setFormVals({ ...formVals, priceto: e.target.value })} label="To" type="text" fullWidth variant="outlined" maxLength="10" />
+                <TextField margin="dense" value={formVals.priceto} onChange={(e) => setFormVals({ ...formVals, priceto: e.target.value })} label="To" type="text" fullWidth variant="outlined" inputProps={{ maxLength: 10 }} />
               </Grid>
             </Grid>
           </FormGroup>
@@ -468,7 +468,7 @@ export default withStyles((theme) => ({
                 <br />
                 <FormGroup>
                   <b>Zip/Distance:&nbsp;</b>
-                  <TextField margin="dense" value={formVals.zip} onChange={(e) => setFormVals({ ...formVals, zip: e.target.value })} label="Zip" type="text" variant="outlined" maxLength="5" autoComplete="off" />
+                  <TextField margin="dense" value={formVals.zip} onChange={(e) => setFormVals({ ...formVals, zip: e.target.value })} label="Zip" type="text" variant="outlined" inputProps={{ maxLength: 5 }} autoComplete="off" />
                   <TextField select margin="dense" value={formVals.zipdist} onChange={(e) => setFormVals({ ...formVals, zipdist: e.target.value })} label="Distance" variant="outlined" defaultValue="0">
                     <MenuItem value="0">Exact Zip</MenuItem>
                     <MenuItem value="10">Within 10 miles</MenuItem>

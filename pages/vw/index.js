@@ -19,8 +19,6 @@ export default withStyles({
     }
   }
 })(({ data, classes }) => {
-  console.log(data)
-
   return (
     <Box p={{ xs: 0, md: 1 }}>
       <Head>

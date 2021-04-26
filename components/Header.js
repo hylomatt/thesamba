@@ -299,13 +299,13 @@ const HeaderTop = ({ data, loggedIn }) => {
               <>
                 <Box>
                   <Typography>
-                  Hello, <strong>{data.base.user}</strong>
+                  Hello, <strong>{data.user}</strong>
                   </Typography>
                 </Box>
                 <Box mx={1} height={16}>
                   <Divider orientation="vertical" />
                 </Box>
-                <Link href={data.base.logoutLink}>
+                <Link href={data.logoutLink}>
                   <a>Log out</a>
                 </Link>
                 <Box mx={1} height={16}>
@@ -318,7 +318,7 @@ const HeaderTop = ({ data, loggedIn }) => {
                   <Divider orientation="vertical" />
                 </Box>
                 <Link href="/vw/forum/privmsg.php?folder=inbox">
-                  <a>PMs: {data.base.pms}</a>
+                  <a>PMs: {data.pms}</a>
                 </Link>
               </>
             )

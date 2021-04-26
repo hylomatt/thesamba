@@ -1,7 +1,7 @@
 import React from 'react'
 import Head from 'next/head'
-import Link from 'next/link'
-import Image from 'next/image'
+// import Link from 'next/link'
+// import Image from 'next/image'
 import copy from 'copy-to-clipboard'
 
 import { Box, Typography, Grid } from '@material-ui/core'
@@ -9,6 +9,7 @@ import { withStyles } from '@material-ui/core/styles'
 
 import { getGalleryPage } from '../../../utils/getters'
 import Header from '../../../components/Header'
+import Breadcrumb from '../../../components/Breadcrumb'
 
 export default withStyles({
   root: {
@@ -17,6 +18,11 @@ export default withStyles({
   topLinkSpacing: {
     marginTop: '8px',
     padding: '8px 0'
+  },
+  image: {
+    width: 'auto',
+    maxWidth: '100%',
+    height: 'auto'
   }
 })(({ data, classes }) => {
   const handleCopy = (e) => {
@@ -36,20 +42,7 @@ export default withStyles({
 
       <Box px={{ xs: 1, md: 0 }} py={1}>
         <Box mb={2}>
-          {data.page.nav.map((el, i) => {
-            if (el.href) {
-              return (
-                <Link href={el.href} key={`topic-nav-${i}`} passHref>
-                  <Typography component="a">{el.title}</Typography>
-                </Link>
-              )
-            }
-            return (
-              <Typography component="a" key={`topic-nav-${i}`}>
-                {el.title}
-              </Typography>
-            )
-          })}
+          <Breadcrumb crumbs={data.page.nav} />
         </Box>
 
         <Box bgcolor="primary.main">
@@ -76,9 +69,10 @@ export default withStyles({
               <Box p={1}>
                 {/* <Link href={data.page.href} passHref>
                   <a style={{ display: 'block' }}> */}
-                <div style={{ position: 'relative', width: '100%', height: '400px', paddingBottom: '20%' }}>
+                <img src={data.page.img.src} alt={data.page.img.alt} className={classes.image} />
+                {/* <div style={{ position: 'relative', width: '100%', height: '400px', paddingBottom: '20%' }}>
                   <Image src={data.page.img.src} alt={data.page.img.alt} layout="fill" objectFit="cover" />
-                </div>
+                </div> */}
                 {/* </a>
                 </Link> */}
               </Box>

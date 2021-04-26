@@ -229,9 +229,13 @@ export const parseClassifiedSearch = (basePath, html) => {
         .contents()
         .toArray()
         .map((el) => ({
-          title: $(el).text().trim(),
+          title: $(el)
+            .text()
+            .replace(/-(>|<)/g, '')
+            .trim(),
           href: getAbsHref(basePath, $(el).attr('href'))
-        })),
+        }))
+        .filter((el) => el.title),
       featuredAds: $('body > table:has(.forumline)')
         .first()
         .find('td:has(>a)')
@@ -295,9 +299,13 @@ export const parseClassifiedCategory = (basePath, html) => {
         .contents()
         .toArray()
         .map((el) => ({
-          title: $(el).text().trim(),
+          title: $(el)
+            .text()
+            .replace(/-(>|<)/g, '')
+            .trim(),
           href: getAbsHref(basePath, $(el).attr('href'))
-        })),
+        }))
+        .filter((el) => el.title),
       featuredAds: $('body > table:has(.forumline)')
         .first()
         .find('td:has(>a)')
@@ -361,9 +369,11 @@ export const parseClassifiedDetail = (basePath, html) => {
             .replace(/-(>|<)/g, '')
             .trim(),
           href: getAbsHref(basePath, $(el).attr('href'))
-        })),
+        }))
+        .filter((el) => el.title),
       title: $(mainContent).find('> tbody > tr > th td').first().text().trim(),
       adId: $(mainContent).find('> tbody > tr > th td a').last().text().trim(),
+      price: $(classifiedsBody).find('.maintitle').text().split('Price:')[1].trim(),
       mainPhoto: parseImage(basePath, $(photosContainer).find('img#mainphoto')),
       thumbnails: $(photosContainer)
         .find('a:has(img[src*="pix/thumbnails/"])')
@@ -388,8 +398,8 @@ export const parseClassifiedDetail = (basePath, html) => {
           .filter((i, el) => el.nodeType === 3)
           .text()
           .trim(),
-        phone: $(bottomBodyBox[0]).find('> td:first-child > table > tbody > tr:last-child span#ph').attr('data-ph') || null,
-        email: $(bottomBodyBox[0]).find('> td:first-child > table > tbody > tr:last-child a').attr('href') || null
+        contactPhone: $(bottomBodyBox[0]).find('> td:first-child > table > tbody > tr:last-child span#ph').attr('data-ph') || null,
+        contactEmail: getAbsHref(basePath, $(bottomBodyBox[0]).find('> td:first-child > table > tbody > tr:last-child a').attr('href'))
       },
       adInfo: {
         titles: $(bottomBodyBox[0]).find('> td:last-child td:first-child').html(),
@@ -399,11 +409,49 @@ export const parseClassifiedDetail = (basePath, html) => {
   }
 }
 
+export const parseClassifiedContact = (basePath, html) => {
+  const $ = cheerio.load(html)
+  const formContainer = $('table:has(> form[name="addForm"])')
+  const titleAndPrice = $(formContainer)
+    .find('> tbody > tr:nth-child(2) > td > b')
+    .contents()
+    .filter((i, el) => el.nodeType === 3)
+    .first()
+    .text()
+    .split('Price:')
+
+  return {
+    base: parseBase(basePath, $),
+    page: {
+      title: $(formContainer).find('span.title').text().trim(),
+      detail: {
+        href: getAbsHref(basePath, $(formContainer).find('> tbody > tr:nth-child(2) > td > b a').attr('href')),
+        img: parseImage(basePath, $(formContainer).find('> tbody > tr:nth-child(2) > td > b a img')),
+        title: titleAndPrice[0].trim(),
+        price: titleAndPrice[1].trim()
+      },
+      hiddenInputs: $(formContainer)
+        .find('input[type="hidden"]')
+        .toArray()
+        .map((el) => ({
+          name: $(el).attr('name'),
+          value: $(el).attr('value')
+        })),
+      fields: {
+        name: $(formContainer).find('input[name="name"]').attr('value') || '',
+        email: $(formContainer).find('input[name="email"]').attr('value') || '',
+        location: $(formContainer).find('input[name="location"]').attr('value') || '',
+        desc: $(formContainer).find('textarea[name="desc"]').text() || '',
+        cc: $(formContainer).find('input[name="cc"]').attr('checked') || null
+      }
+    }
+  }
+}
+
 export const parseForums = (basePath, html) => {
   const $ = cheerio.load(html)
   return {
     base: parseBase(basePath, $),
-
     page: {
       forumGroups: $('body > table.forumline')
         .first()
@@ -553,9 +601,13 @@ export const parseTopic = (basePath, html) => {
         .find('a')
         .toArray()
         .map((el) => ({
-          title: $(el).text().trim(),
+          title: $(el)
+            .text()
+            .replace(/-(>|<)/g, '')
+            .trim(),
           href: getAbsHref(basePath, $(el).attr('href'))
-        })),
+        }))
+        .filter((el) => el.title),
       posts: $('body > table.forumline')
         .first()
         .find('> tbody > tr:has(.postdetails)')
@@ -637,9 +689,13 @@ export const parseGalleryCategory = (basePath, html) => {
         .contents()
         .toArray()
         .map((el) => ({
-          title: $(el).text().trim(),
+          title: $(el)
+            .text()
+            .replace(/-(>|<)/g, '')
+            .trim(),
           href: getAbsHref(basePath, $(el).attr('href'))
-        })),
+        }))
+        .filter((el) => el.title),
       entries: $('body > table.forumline > tbody > tr > td > table > tbody > tr')
         .toArray()
         .map((el) => ({
@@ -687,9 +743,13 @@ export const parseGallerySearch = (basePath, html) => {
         .contents()
         .toArray()
         .map((el) => ({
-          title: $(el).text().trim(),
+          title: $(el)
+            .text()
+            .replace(/-(>|<)/g, '')
+            .trim(),
           href: getAbsHref(basePath, $(el).attr('href'))
-        })),
+        }))
+        .filter((el) => el.title),
       entries: $('body > table.forumline > tbody > tr > td > table > tbody > tr')
         .toArray()
         .map((el) => ({
@@ -719,10 +779,13 @@ export const parseGalleryPage = (basePath, html) => {
         .contents()
         .toArray()
         .map((el) => ({
-          title: $(el).text().trim(),
+          title: $(el)
+            .text()
+            .replace(/-(>|<)/g, '')
+            .trim(),
           href: getAbsHref(basePath, $(el).attr('href'))
-        })),
-
+        }))
+        .filter((el) => el.title),
       title: $(contentContainer).find('th.thTop').text(),
       photoLink: $(contentContainer).find('> tbody > tr:nth-child(2) td table td:nth-child(2) input').attr('value') || null,
       forumCode: $(contentContainer).find('> tbody > tr:nth-child(2) td table td:nth-child(4) input').attr('value') || null,

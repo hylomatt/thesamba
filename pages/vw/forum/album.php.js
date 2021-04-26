@@ -11,6 +11,10 @@ import Header from '../../../components/Header'
 export default withStyles({
   root: {
     color: 'white'
+  },
+  catTitle: {
+    display: 'block',
+    padding: '8px 0'
   }
 })(({ data, classes }) => {
   return (
@@ -105,11 +109,13 @@ export default withStyles({
           </Box>
           <Box p={1} pt={2}>
             {data.page.categories.map((cat, i) => (
-              <Box mb={1} key={`mobile-categories-${i}`}>
-                <Grid container>
+              <Box key={`mobile-categories-${i}`}>
+                <Grid container alignItems="center">
                   <Grid item xs={10}>
                     <Link href={cat.href}>
-                      <Typography component="a">{cat.title}</Typography>
+                      <Typography component="a" className={classes.catTitle}>
+                        {cat.title}
+                      </Typography>
                     </Link>
                   </Grid>
                   <Grid item xs={2}>

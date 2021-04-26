@@ -9,6 +9,7 @@ import { withStyles } from '@material-ui/core/styles'
 
 import { getGalleryCategory } from '../../../utils/getters'
 import Header from '../../../components/Header'
+import Breadcrumb from '../../../components/Breadcrumb'
 
 export default withStyles({
   root: {
@@ -38,20 +39,7 @@ export default withStyles({
           <Typography variant="h4">{data.page.title}</Typography>
         </Box>
         <Box mb={2}>
-          {data.page.nav.map((el, i) => {
-            if (el.href) {
-              return (
-                <Link href={el.href} key={`topic-nav-${i}`} passHref>
-                  <Typography component="a">{el.title}</Typography>
-                </Link>
-              )
-            }
-            return (
-              <Typography component="a" key={`topic-nav-${i}`}>
-                {el.title}
-              </Typography>
-            )
-          })}
+          <Breadcrumb crumbs={data.page.nav} />
         </Box>
 
         <Box bgcolor="primary.main">

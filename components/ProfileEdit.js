@@ -29,7 +29,7 @@ export default function ProfileEdit({ data }) {
         <Box mb={1} border={1} borderColor="primary.main">
           <Box bgcolor="primary.main" p={1}>
             <Typography align="center" className={classes.root}>
-              {data.profile.title}
+              {data.page.title}
             </Typography>
           </Box>
         </Box>
@@ -39,10 +39,10 @@ export default function ProfileEdit({ data }) {
             <Typography align="center">Avatar</Typography>
           </Box>
           <Box p={1} align="center">
-            {data.profile.avatar.img.src
+            {data.page.avatar.img.src
               ? (
                 <div style={{ position: 'relative', width: '100%', height: '66px', paddingBottom: '20%' }}>
-                  <Image src={data.profile.avatar.img.src} alt={data.profile.avatar.img.alt} layout="fill" objectFit="contain" />
+                  <Image src={data.page.avatar.img.src} alt={data.page.avatar.img.alt} layout="fill" objectFit="contain" />
                 </div>
               )
               : (
@@ -57,8 +57,8 @@ export default function ProfileEdit({ data }) {
           </Box>
           <Box p={1}>
             <Grid container>
-              {data.profile.info.map((el, i) => (
-                <React.Fragment key={`profile-contact-${data.profile.title}-${i}`}>
+              {data.page.info.map((el, i) => (
+                <React.Fragment key={`profile-contact-${data.page.title}-${i}`}>
                   <Grid item xs={6}>
                     <Typography>{el[0]}</Typography>
                   </Grid>
@@ -77,8 +77,8 @@ export default function ProfileEdit({ data }) {
           </Box>
           <Box p={1}>
             <Grid container>
-              {data.profile.contact.map((el, i) => (
-                <React.Fragment key={`profile-contact-${data.profile.title}-${i}`}>
+              {data.page.contact.map((el, i) => (
+                <React.Fragment key={`profile-contact-${data.page.title}-${i}`}>
                   <Grid item xs={6}>
                     <Typography>{el[0]}</Typography>
                   </Grid>
@@ -96,7 +96,7 @@ export default function ProfileEdit({ data }) {
             <Typography align="center">Signature</Typography>
           </Box>
           <Box p={1}>
-            <Typography component="div" dangerouslySetInnerHTML={{ __html: data.profile.signature }} />
+            <Typography component="div" dangerouslySetInnerHTML={{ __html: data.page.signature }} />
           </Box>
         </Box>
       </Box>
