@@ -77,12 +77,14 @@ const formatBaseUrl = (url) => {
 // }
 
 export const getHome = async (req) => {
-  const homeSource = await getPage(req)
   const basePath = formatBaseUrl(req.url)
-  const featuredAds = await getPage({
-    ...req,
-    url: `${basePath}classifieds/featuredads_refresh2.php?l=1`
-  })
+  const [homeSource, featuredAds] = await Promise.all([
+    getPage(req),
+    getPage({
+      ...req,
+      url: `${basePath}classifieds/featuredads_refresh2.php?l=1`
+    })
+  ])
   const data = await parseHome(basePath, homeSource.data)
   data.page.featuredAds = await parseFeaturedClassifieds(basePath, featuredAds.data)
   return { ...homeSource, data }
