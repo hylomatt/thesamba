@@ -14,7 +14,9 @@ export default withStyles((theme) => ({
   list: {
     width: 250
   },
-
+  uoList: {
+    width: '100%'
+  },
   accRoot: {
     width: '100%'
   },
@@ -34,6 +36,18 @@ export default withStyles((theme) => ({
 
   menuBtn: {
     height: 64
+  },
+
+  listItemNoPadding: {
+    paddingTop: 0,
+    paddingBottom: 0
+  },
+  listItemNoMargin: {
+    marginTop: 0,
+    marginBottom: 0
+  },
+  linkPadding: {
+    padding: '10px 0'
   }
 }))(
   ({
@@ -115,11 +129,11 @@ export default withStyles((theme) => ({
                     <Typography className={classes.heading}>{el.title}</Typography>
                   </AccordionSummary>
                   <AccordionDetails>
-                    <List disablePadding={true}>
-                      <ListItem button>
-                        <ListItemText>
+                    <List disablePadding={true} className={classes.uoList}>
+                      <ListItem component="li" button className={classes.listItemNoPadding}>
+                        <ListItemText className={classes.listItemNoMargin}>
                           <Link href={el.href} passHref>
-                            <Typography component="a" className={classes.heading}>
+                            <Typography component="a" className={`${classes.heading} ${classes.linkPadding}`}>
                               {el.title} Index
                             </Typography>
                           </Link>
@@ -127,10 +141,10 @@ export default withStyles((theme) => ({
                       </ListItem>
 
                       {el.items.map((sub, subIdx) => (
-                        <ListItem button key={`nav-mobile-subitem-${sub.title.toLowerCase().replace(/[^a-z0-9]/, '-')}`}>
-                          <ListItemText>
+                        <ListItem button className={classes.listItemNoPadding} key={`nav-mobile-subitem-${sub.title.toLowerCase().replace(/[^a-z0-9]/, '-')}`}>
+                          <ListItemText className={classes.listItemNoMargin}>
                             <Link href={sub.href} passHref>
-                              <Typography component="a" className={classes.heading}>
+                              <Typography component="a" className={`${classes.heading} ${classes.linkPadding}`}>
                                 {sub.title}
                               </Typography>
                             </Link>
