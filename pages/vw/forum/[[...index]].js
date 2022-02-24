@@ -86,13 +86,13 @@ export default withStyles({
                   </Grid>
                   <Hidden smUp>
                     <Grid item xs={12} container justify="flex-end">
-                      <Typography align="right">T: {subEl.topics}</Typography>
+                      <Typography align="right">Topics: {subEl.topics}</Typography>
                       <Box mx={1} height={16}>
                         <Divider orientation="vertical" />
                       </Box>
-                      <Typography align="right">P: {subEl.posts}</Typography>
+                      <Typography align="right">Posts: {subEl.posts}</Typography>
                       <Grid item xs={12}>
-                        <Typography align="right">LP: {subEl.lastPost.text}</Typography>
+                        <Typography align="right">Last Post: {subEl.lastPost.text}</Typography>
                       </Grid>
                     </Grid>
                   </Hidden>

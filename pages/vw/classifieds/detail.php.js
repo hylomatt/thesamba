@@ -5,7 +5,6 @@ import Slider from 'react-slick'
 
 import { Box, Typography, Grid, Button, Divider } from '@material-ui/core'
 import { withStyles } from '@material-ui/core/styles'
-import { Skeleton } from '@material-ui/lab'
 
 import { getClassifiedDetail } from '../../../utils/getters'
 import Header from '../../../components/Header'
@@ -140,16 +139,20 @@ export default withStyles({
             <Typography>Ad Information</Typography>
           </Box>
           <Box p={1}>
-            <Grid container>
-              <Grid item>
-                <Box pr={1}>
-                  <Typography component="div" dangerouslySetInnerHTML={{ __html: data.page.adInfo.titles }} />
-                </Box>
+            {data.page.adInfo.map((el, i) => (
+              <Grid container key={`detail-ad-info-${data.page.adId}-${i}`}>
+                <Grid item xs={12} sm={3} md={2}>
+                  <Box pr={1}>
+                    <Typography component="div" dangerouslySetInnerHTML={{ __html: el[0] }} />
+                  </Box>
+                </Grid>
+                <Grid item xs={12} sm={9} md={10}>
+                  <Box pl={2} pb={[1, 0]}>
+                    <Typography component="div" dangerouslySetInnerHTML={{ __html: el[1] }} />
+                  </Box>
+                </Grid>
               </Grid>
-              <Grid item>
-                <Typography component="div" dangerouslySetInnerHTML={{ __html: data.page.adInfo.values }} />
-              </Grid>
-            </Grid>
+            ))}
           </Box>
         </Box>
       </Box>

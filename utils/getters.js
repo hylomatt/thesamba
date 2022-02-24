@@ -6,6 +6,7 @@ import constants from './constants'
 import { getSetCookieHeaders } from './cookies'
 import {
   parseHome,
+  parseFeaturedClassifieds,
   parseClassifieds,
   parseClassifiedSearch,
   parseClassifiedCategory,
@@ -44,6 +45,10 @@ const getPage = async (req) => {
     })
 }
 
+const formatBaseUrl = (url) => {
+  return url.replace(/\/_next\/.*\/vw/, '/vw').replace('.json', '')
+}
+
 // const getFeed = async (req) => {
 //   // https://www.thesamba.com/vw/forum/viewforum.php?f=5
 //   // https://www.thesamba.com/vw/forum/rss.php?f=5
@@ -72,141 +77,146 @@ const getPage = async (req) => {
 // }
 
 export const getHome = async (req) => {
-  return await getPage(req).then((r) => {
-    const basePath = req.url.replace(/\/_next\/.*\/vw/, '/vw').replace('.json', '')
-    return { ...r, data: parseHome(basePath, r.data) }
+  const homeSource = await getPage(req)
+  const basePath = formatBaseUrl(req.url)
+  const featuredAds = await getPage({
+    ...req,
+    url: `${basePath}classifieds/featuredads_refresh2.php?l=1`
   })
+  const data = await parseHome(basePath, homeSource.data)
+  data.page.featuredAds = await parseFeaturedClassifieds(basePath, featuredAds.data)
+  return { ...homeSource, data }
 }
 
 export const getClassifieds = async (req) => {
   return await getPage(req).then((r) => {
-    const basePath = req.url.replace(/\/_next\/.*\/vw/, '/vw').replace('.json', '')
+    const basePath = formatBaseUrl(req.url)
     return { ...r, data: parseClassifieds(basePath, r.data) }
   })
 }
 
 export const getClassifiedSearch = async (req) => {
   return await getPage(req).then((r) => {
-    const basePath = req.url.replace(/\/_next\/.*\/vw/, '/vw').replace('.json', '')
+    const basePath = formatBaseUrl(req.url)
     return { ...r, data: parseClassifiedSearch(basePath, r.data) }
   })
 }
 
 export const getClassifiedCategory = async (req) => {
   return await getPage(req).then((r) => {
-    const basePath = req.url.replace(/\/_next\/.*\/vw/, '/vw').replace('.json', '')
+    const basePath = formatBaseUrl(req.url)
     return { ...r, data: parseClassifiedCategory(basePath, r.data) }
   })
 }
 
 export const getClassifiedDetail = async (req) => {
   return await getPage(req).then((r) => {
-    const basePath = req.url.replace(/\/_next\/.*\/vw/, '/vw').replace('.json', '')
+    const basePath = formatBaseUrl(req.url)
     return { ...r, data: parseClassifiedDetail(basePath, r.data) }
   })
 }
 
 export const getClassifiedContact = async (req) => {
   return await getPage(req).then((r) => {
-    const basePath = req.url.replace(/\/_next\/.*\/vw/, '/vw').replace('.json', '')
+    const basePath = formatBaseUrl(req.url)
     return { ...r, data: parseClassifiedContact(basePath, r.data) }
   })
 }
 
 export const getForums = async (req) => {
   return await getPage(req).then((r) => {
-    const basePath = req.url.replace(/\/_next\/.*\/vw/, '/vw').replace('.json', '')
+    const basePath = formatBaseUrl(req.url)
     return { ...r, data: parseForums(basePath, r.data) }
   })
 }
 
 export const getForumSearch = async (req) => {
   return await getPage(req).then((r) => {
-    const basePath = req.url.replace(/\/_next\/.*\/vw/, '/vw').replace('.json', '')
+    const basePath = formatBaseUrl(req.url)
     return { ...r, data: parseForumSearch(basePath, r.data) }
   })
 }
 
 export const getForum = async (req) => {
   return await getPage(req).then((r) => {
-    const basePath = req.url.replace(/\/_next\/.*\/vw/, '/vw').replace('.json', '')
+    const basePath = formatBaseUrl(req.url)
     return { ...r, data: parseForum(basePath, r.data) }
   })
 }
 
 export const getTopic = async (req) => {
   return await getPage(req).then((r) => {
-    const basePath = req.url.replace(/\/_next\/.*\/vw/, '/vw').replace('.json', '')
+    const basePath = formatBaseUrl(req.url)
     return { ...r, data: parseTopic(basePath, r.data) }
   })
 }
 
 export const getGallery = async (req) => {
   return await getPage(req).then((r) => {
-    const basePath = req.url.replace(/\/_next\/.*\/vw/, '/vw').replace('.json', '')
+    const basePath = formatBaseUrl(req.url)
     return { ...r, data: parseGallery(basePath, r.data) }
   })
 }
 
 export const getGalleryCategory = async (req) => {
   return await getPage(req).then((r) => {
-    const basePath = req.url.replace(/\/_next\/.*\/vw/, '/vw').replace('.json', '')
+    const basePath = formatBaseUrl(req.url)
     return { ...r, data: parseGalleryCategory(basePath, r.data) }
   })
 }
 
 export const getGallerySearch = async (req) => {
   return await getPage(req).then((r) => {
-    const basePath = req.url.replace(/\/_next\/.*\/vw/, '/vw').replace('.json', '')
+    const basePath = formatBaseUrl(req.url)
     return { ...r, data: parseGallerySearch(basePath, r.data) }
   })
 }
 
 export const getGalleryPage = async (req) => {
   return await getPage(req).then((r) => {
-    const basePath = req.url.replace(/\/_next\/.*\/vw/, '/vw').replace('.json', '')
+    const basePath = formatBaseUrl(req.url)
     return { ...r, data: parseGalleryPage(basePath, r.data) }
   })
 }
 
 export const getCommunity = async (req) => {
   return await getPage(req).then((r) => {
-    const basePath = req.url.replace(/\/_next\/.*\/vw/, '/vw').replace('.json', '')
+    const basePath = formatBaseUrl(req.url)
     return { ...r, data: parseCommunity(basePath, r.data) }
   })
 }
 
 export const getTechnical = async (req) => {
   return await getPage(req).then((r) => {
-    const basePath = req.url.replace(/\/_next\/.*\/vw/, '/vw').replace('.json', '')
+    const basePath = formatBaseUrl(req.url)
     return { ...r, data: parseTechnical(basePath, r.data) }
   })
 }
 
 export const getArchives = async (req) => {
   return await getPage(req).then((r) => {
-    const basePath = req.url.replace(/\/_next\/.*\/vw/, '/vw').replace('.json', '')
+    const basePath = formatBaseUrl(req.url)
     return { ...r, data: parseArchives(basePath, r.data) }
   })
 }
 
 export const getAbout = async (req) => {
   return await getPage(req).then((r) => {
-    const basePath = req.url.replace(/\/_next\/.*\/vw/, '/vw').replace('.json', '')
+    const basePath = formatBaseUrl(req.url)
     return { ...r, data: parseAbout(basePath, r.data) }
   })
 }
 
 export const getLogin = async (req) => {
   return await getPage(req).then((r) => {
-    const basePath = req.url.replace(/\/_next\/.*\/vw/, '/vw').replace('.json', '')
+    const basePath = formatBaseUrl(req.url)
     return { ...r, data: parseLogin(basePath, r.data) }
   })
 }
 
 export const getProfile = async (req, query) => {
   return await getPage(req).then((r) => {
-    const basePath = req.url.replace(/\/_next\/.*\/vw/, '/vw').replace('.json', '')
+    const basePath = formatBaseUrl(req.url)
 
     const { mode, agreed } = query
     const profileMode = (mode || '').toLowerCase()
@@ -247,7 +257,7 @@ export const getProfile = async (req, query) => {
 
 export const getWhatsNew = async (req) => {
   return await getPage(req).then((r) => {
-    const basePath = req.url.replace(/\/_next\/.*\/vw/, '/vw').replace('.json', '')
+    const basePath = formatBaseUrl(req.url)
     return { ...r, data: parseWhatsNew(basePath, r.data) }
   })
 }

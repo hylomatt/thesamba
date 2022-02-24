@@ -73,7 +73,7 @@ const parseBase = (basePath, $) => {
   }
 }
 
-export const parseHome = (basePath, html) => {
+export const parseHome = async (basePath, html) => {
   const $ = cheerio.load(html)
 
   const mainContent = $('body > table:has(table.borderedhome) > tbody > tr')
@@ -110,18 +110,7 @@ export const parseHome = (basePath, html) => {
         img: parseImage(basePath, $(centerColumn).find('>table:first-child img#randoms')),
         content: $(centerColumn).find('>table:first-child span.gen').html()
       },
-      featuredAds: $(centerColumn)
-        .find('span#ads td.genmed')
-        .toArray()
-        .map((el) => ({
-          title: $(el)
-            .contents()
-            .filter((i, el) => el.nodeType === 3)
-            .text()
-            .trim(),
-          img: parseImage(basePath, $(el).find('img')),
-          href: getAbsHref(basePath, $(el).find('a').attr('href'))
-        })),
+      featuredAds: {},
       advertisement: {},
       stolen: {
         href: getAbsHref(basePath, $(rightColumn).find('> table:contains("Stolen") a:has(img)').attr('href')),
@@ -136,6 +125,22 @@ export const parseHome = (basePath, html) => {
           .replace(/^<\/div>/, '') + '</div>'
     }
   }
+}
+
+export const parseFeaturedClassifieds = async (basePath, html) => {
+  const $ = cheerio.load(html)
+
+  return $('td.genmed')
+    .toArray()
+    .map((el) => ({
+      title: $(el)
+        .contents()
+        .filter((i, el) => el.nodeType === 3)
+        .text()
+        .trim(),
+      img: parseImage(basePath, $(el).find('img')),
+      href: getAbsHref(basePath, $(el).find('a').attr('href'))
+    }))
 }
 
 export const parseClassifieds = (basePath, html) => {
@@ -356,6 +361,21 @@ export const parseClassifiedDetail = (basePath, html) => {
   const photosContainer = $(mainContent).find('> tbody > tr:nth-child(2) > td table:has(#mainphoto)')
   const classifiedsBody = $(mainContent).find('table > tbody:has(> tr > td > span.maintitle) > tr > td')
   const bottomBodyBox = $(classifiedsBody[2]).find('> table > tbody > tr:has(td.row1)')
+
+  const adInfoTitles = $(bottomBodyBox[0])
+    .find('> td:last-child td:first-child')
+    .html()
+    .replace('<br />', '<br>')
+    .split('<br>')
+  const adInfoValues = $(bottomBodyBox[0])
+    .find('> td:last-child td:last-child')
+    .html()
+    .replace('<br />', '<br>')
+    .split('<br>')
+  const adInfo = adInfoTitles.map((el, i) => {
+    return [el, adInfoValues[i]]
+  })
+
   return {
     base: parseBase(basePath, $),
     page: {
@@ -410,10 +430,7 @@ export const parseClassifiedDetail = (basePath, html) => {
         contactPhone: $(bottomBodyBox[0]).find('> td:first-child > table > tbody > tr:last-child span#ph').attr('data-ph') || null,
         contactEmail: getAbsHref(basePath, $(bottomBodyBox[0]).find('> td:first-child > table > tbody > tr:last-child a').attr('href'))
       },
-      adInfo: {
-        titles: $(bottomBodyBox[0]).find('> td:last-child td:first-child').html(),
-        values: $(bottomBodyBox[0]).find('> td:last-child td:last-child').html()
-      }
+      adInfo
     }
   }
 }
@@ -601,10 +618,27 @@ export const parseTopic = (basePath, html) => {
         .first()
         .find('b, a')
         .toArray()
-        .map((el) => ({
-          title: $(el).text().trim(),
-          href: getAbsHref(basePath, $(el).attr('href'))
-        })),
+        .reduce((acc, el) => {
+          const newPage = {
+            title: $(el).text().trim().replace('Previous', 'Prev'),
+            href: getAbsHref(basePath, $(el).attr('href')),
+            current: false
+          }
+          if (!newPage.href) {
+            newPage.current = true
+          }
+          const lastPageNum = parseInt(acc.slice(-1)[0]?.title || 0, 10)
+          const newPageNum = !isNaN(newPage.title)
+            ? parseInt(newPage.title, 10)
+            : 0
+
+          const newAcc = [...acc]
+          if ((newPageNum - lastPageNum) > 1) {
+            newAcc.push({ title: '...', href: null })
+          }
+          newAcc.push(newPage)
+          return newAcc
+        }, []),
       nav: $('span.nav')
         .first()
         .find('a')
@@ -637,7 +671,7 @@ export const parseTopic = (basePath, html) => {
               .filter((i, el) => el.nodeType === 3)
               .toArray()
               .map((el) => $(el).text()),
-            content: $(el).find('.postbody').html() || null
+            content: $(el).children('td:last-of-type').find('table > tbody > tr:last-of-type > td').html() || null
           })
 
           return acc

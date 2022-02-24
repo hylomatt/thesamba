@@ -1,3 +1,5 @@
+import classNames from 'classnames'
+
 import Head from 'next/head'
 import React from 'react'
 import Link from 'next/link'
@@ -12,6 +14,21 @@ import Breadcrumb from '../../../components/Breadcrumb'
 export default withStyles({
   root: {
     color: 'white'
+  },
+  postContent: {
+    wordWrap: 'break-word'
+  },
+  pageButton: {
+    margin: '0px 4px 8px'
+  },
+  pageButtonInner: {
+    width: '40px',
+    textAlign: 'center',
+    lineHeight: '40px'
+  },
+  pageButtonInnerCurrent: {
+    backgroundColor: '#fff',
+    outline: '1px solid #e7e7e7'
   }
 })(({ data, classes }) => {
   return (
@@ -78,13 +95,34 @@ export default withStyles({
                     </Box>
                   </Hidden>
                   <Box py={1} px={2}>
-                    <Typography component="div" dangerouslySetInnerHTML={{ __html: el.content }} />
+                    <Typography component="div" className={classes.postContent} dangerouslySetInnerHTML={{ __html: el.content }} />
                   </Box>
                 </Box>
               </Grid>
             </Grid>
           </Box>
         ))}
+        <Box p={2}>
+          <Grid container justify="center">
+            {data.page.pages.map((el, i) => (
+              <Grid item key={`topic-page-${i}`} className={classes.pageButton}>
+                {el.href
+                  ? (
+                    <Link href={el.href || ''} passHref>
+                      <Typography component="a">
+                        <Box bgcolor="secondary.light" className={classes.pageButtonInner}>{el.title}</Box>
+                      </Typography>
+                    </Link>
+                  )
+                  : (
+                    <Typography>
+                      <Box bgcolor="secondary.light" className={`${classes.pageButtonInner} ${el.current && classes.pageButtonInnerCurrent}`}>{el.title}</Box>
+                    </Typography>
+                  )}
+              </Grid>
+            ))}
+          </Grid>
+        </Box>
       </Box>
     </Box>
   )

@@ -4,12 +4,13 @@ import Link from 'next/link'
 import Image from 'next/image'
 
 import { Box, Typography, Grid } from '@material-ui/core'
+import { Skeleton } from '@material-ui/lab'
 import { withStyles } from '@material-ui/core/styles'
 
 import { getHome } from '../../utils/getters'
 import Header from '../../components/Header'
 
-import constants from '../../utils/constants'
+// import constants from '../../utils/constants'
 
 export default withStyles({
   events: {
@@ -106,7 +107,36 @@ export default withStyles({
           <Box bgcolor="secondary.light" p={1}>
             <Typography>Featured Ads</Typography>
           </Box>
-          <Box p={1}></Box>
+          <Box p={1}>
+            <Grid container>
+              {data.page.featuredAds.map((el, i) => (
+                <Grid item xs={6} sm={4} md={2} key={`featured-ad-${el.title}-${i}`}>
+                  <Box p={1}>
+                    <Box>
+                      <Link href={el.href} passHref>
+                        <a style={{ display: 'block', height: '100%' }}>
+                          {!el.img.src.includes('blank.gif')
+                            ? (
+                              <div style={{ position: 'relative', width: '100%', height: '120px', paddingBottom: '20%' }}>
+                                <Image src={el.img.src} alt={el.img.alt} layout="fill" objectFit="cover" />
+                              </div>
+                            )
+                            : (
+                              <Skeleton variant="rect" height="100%" animation="wave" />
+                            )}
+                        </a>
+                      </Link>
+                    </Box>
+                    <Box pt={1}>
+                      <Link href={el.href} passHref>
+                        <Typography component="a">{el.title}</Typography>
+                      </Link>
+                    </Box>
+                  </Box>
+                </Grid>
+              ))}
+            </Grid>
+          </Box>
         </Box>
 
         {/* advertisement */}
