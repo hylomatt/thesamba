@@ -1,4 +1,9 @@
 {
+  "settings": {
+    "react": {
+        "version": "detect"
+    }
+  },
   "env": {
     "browser": true,
     "es2021": true,
@@ -155,5 +160,6 @@
     "space-before-function-paren": 0,
     "space-in-parens": 0,
     "spaced-comment": 0
+    // "react/react-in-jsx-scope": "off"
   }
 }
