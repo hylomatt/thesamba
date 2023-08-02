@@ -2,7 +2,8 @@ module.exports = {
   trailingSlash: true,
 
   images: {
-    domains: ['www.thesamba.com']
+    domains: ['www.thesamba.com'],
+    disableStaticImages: true
   },
 
   async redirects() {

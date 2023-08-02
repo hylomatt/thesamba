@@ -2,10 +2,10 @@ import React, { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 
-import { Box, Grid, Hidden, IconButton, Drawer, List, ListItem, ListItemText, Typography, Accordion, AccordionDetails, AccordionSummary, Button, MenuItem, Popper, ClickAwayListener, Grow, Paper, MenuList, Divider } from '@material-ui/core'
-import MenuIcon from '@material-ui/icons/Menu'
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-import { withStyles } from '@material-ui/core/styles'
+import { Box, Grid, Hidden, IconButton, Drawer, List, ListItem, ListItemText, Typography, Accordion, AccordionDetails, AccordionSummary, Button, MenuItem, Popper, ClickAwayListener, Grow, Paper, MenuList, Divider } from '@mui/material'
+import MenuIcon from '@mui/icons-material/Menu'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import { withStyles } from '@mui/styles'
 
 export default withStyles((theme) => ({
   root: {

@@ -1,8 +1,8 @@
 import React from 'react'
 import Link from 'next/link'
 
-import { Box, Typography, Grid } from '@material-ui/core'
-import { withStyles } from '@material-ui/core/styles'
+import { Box, Typography, Grid } from '@mui/material'
+import { withStyles } from '@mui/styles'
 
 export default withStyles((theme) => ({
   root: {

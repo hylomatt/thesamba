@@ -2,9 +2,9 @@ import React from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
 
-import { Box, Typography, Accordion, AccordionSummary, AccordionDetails, List, ListItem, ListItemText } from '@material-ui/core'
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-import { withStyles } from '@material-ui/core/styles'
+import { Box, Typography, Accordion, AccordionSummary, AccordionDetails, List, ListItem, ListItemText } from '@mui/material'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import { withStyles } from '@mui/styles'
 
 import { getWhatsNew } from '../../../utils/getters'
 import Header from '../../../components/Header'

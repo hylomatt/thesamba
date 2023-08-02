@@ -2,9 +2,9 @@ import Head from 'next/head'
 import React from 'react'
 import Link from 'next/link'
 
-import { Box, Typography, Grid, Accordion, AccordionSummary, AccordionDetails, List, ListItem, ListItemText, Hidden } from '@material-ui/core'
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-import { withStyles } from '@material-ui/core/styles'
+import { Box, Typography, Grid, Accordion, AccordionSummary, AccordionDetails, List, ListItem, ListItemText, Hidden } from '@mui/material'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import { withStyles } from '@mui/styles'
 
 import { getClassifieds } from '../../../utils/getters'
 import Header from '../../../components/Header'

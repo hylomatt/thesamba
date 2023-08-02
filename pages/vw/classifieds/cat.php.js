@@ -3,9 +3,9 @@ import Head from 'next/head'
 import Link from 'next/link'
 import Image from 'next/image'
 
-import { Box, Typography, Grid, Hidden } from '@material-ui/core'
-import { Skeleton } from '@material-ui/lab'
-import { withStyles } from '@material-ui/core/styles'
+import { Box, Typography, Grid, Hidden } from '@mui/material'
+import { Skeleton } from '@mui/lab'
+import { withStyles } from '@mui/styles'
 
 import { getClassifiedCategory } from '../../../utils/getters'
 import Header from '../../../components/Header'

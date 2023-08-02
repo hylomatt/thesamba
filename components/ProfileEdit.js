@@ -2,9 +2,9 @@ import React from 'react'
 import Head from 'next/head'
 import Image from 'next/image'
 
-import { Box, Typography, Grid } from '@material-ui/core'
-import { Skeleton } from '@material-ui/lab'
-import { makeStyles } from '@material-ui/core/styles'
+import { Box, Typography, Grid } from '@mui/material'
+import { Skeleton } from '@mui/lab'
+import { makeStyles } from '@mui/styles'
 
 import Header from './Header'
 

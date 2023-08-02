@@ -2,8 +2,8 @@ import React from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
 
-import { Box, Typography, Grid, Hidden } from '@material-ui/core'
-import { withStyles } from '@material-ui/core/styles'
+import { Box, Typography, Grid, Hidden } from '@mui/material'
+import { withStyles } from '@mui/styles'
 
 import { getGallery } from '../../../utils/getters'
 import Header from '../../../components/Header'

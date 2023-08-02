@@ -3,8 +3,8 @@ import Head from 'next/head'
 import Link from 'next/link'
 import Slider from 'react-slick'
 
-import { Box, Typography, Grid, Button, Divider } from '@material-ui/core'
-import { withStyles } from '@material-ui/core/styles'
+import { Box, Typography, Grid, Button, Divider } from '@mui/material'
+import { withStyles } from '@mui/styles'
 
 import { getClassifiedDetail } from '../../../utils/getters'
 import Header from '../../../components/Header'

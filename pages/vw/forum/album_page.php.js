@@ -4,8 +4,8 @@ import Head from 'next/head'
 // import Image from 'next/image'
 import copy from 'copy-to-clipboard'
 
-import { Box, Typography, Grid } from '@material-ui/core'
-import { withStyles } from '@material-ui/core/styles'
+import { Box, Typography, Grid } from '@mui/material'
+import { withStyles } from '@mui/styles'
 
 import { getGalleryPage } from '../../../utils/getters'
 import Header from '../../../components/Header'

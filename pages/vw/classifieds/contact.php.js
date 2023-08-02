@@ -2,8 +2,8 @@ import React, { useState } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
 
-import { Box, Typography, Grid, TextField, Button, FormControlLabel, Checkbox } from '@material-ui/core'
-import { withStyles } from '@material-ui/core/styles'
+import { Box, Typography, Grid, TextField, Button, FormControlLabel, Checkbox } from '@mui/material'
+import { withStyles } from '@mui/styles'
 
 import { getClassifiedContact } from '../../../utils/getters'
 import Header from '../../../components/Header'

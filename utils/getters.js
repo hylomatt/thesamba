@@ -33,7 +33,7 @@ import {
 
 const getPage = async (req) => {
   const url = `${constants.baseUrl}${req.url}`.replace(/\/_next\/.*\/vw/, '/vw').replace('.json', '')
-  return await fetch(url, { headers: { cookie: req.headers.cookie } })
+  return await fetch(url, { headers: { cookie: req?.headers?.cookie } })
     .then(async (r) => ({
       cookies: getSetCookieHeaders(r.headers.get('set-cookie')),
       data: iconv.decode(Buffer.from(await r.arrayBuffer()), 'WINDOWS-1252'),

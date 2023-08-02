@@ -26,10 +26,10 @@ import {
   InputLabel,
   Select,
   Checkbox
-} from '@material-ui/core'
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-// import SearchIcon from '@material-ui/icons/Search'
-import { withStyles } from '@material-ui/core/styles'
+} from '@mui/material'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+// import SearchIcon from '@mui/icons-material/Search'
+import { withStyles } from '@mui/styles'
 
 export default withStyles((theme) => ({
   halfWidth: {

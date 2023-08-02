@@ -2,8 +2,8 @@ import Head from 'next/head'
 import React from 'react'
 import Link from 'next/link'
 
-import { Box, Grid, Typography, Hidden, Divider } from '@material-ui/core'
-import { withStyles } from '@material-ui/core/styles'
+import { Box, Grid, Typography, Hidden, Divider } from '@mui/material'
+import { withStyles } from '@mui/styles'
 
 import { getForums } from '../../../utils/getters'
 import Header from '../../../components/Header'

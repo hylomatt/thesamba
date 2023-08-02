@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react'
 import UserContext from '../utils/providers/UserProvider'
 import Head from 'next/head'
-import { ThemeProvider } from '@material-ui/core/styles'
-import CssBaseline from '@material-ui/core/CssBaseline'
+import { ThemeProvider } from '@mui/styles'
+import CssBaseline from '@mui/material/CssBaseline'
 import usePageTracking from '../utils/usePageTracking'
 
 import theme from '../utils/theme'

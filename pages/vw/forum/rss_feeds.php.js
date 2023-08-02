@@ -1,8 +1,8 @@
 import React from 'react'
 import Head from 'next/head'
 
-import { Box, Typography } from '@material-ui/core'
-import { withStyles } from '@material-ui/core/styles'
+import { Box, Typography } from '@mui/material'
+import { withStyles } from '@mui/styles'
 
 import { getHome } from '../../../utils/getters'
 import Header from '../../../components/Header'

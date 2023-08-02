@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import Head from 'next/head'
 
-import { Box, Typography, FormControl, TextField, InputLabel, Select, FormGroup, Button } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
+import { Box, Typography, FormControl, TextField, InputLabel, Select, FormGroup, Button } from '@mui/material'
+import { makeStyles } from '@mui/styles'
 
 import Header from './Header'
 
