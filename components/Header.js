@@ -5,6 +5,7 @@ import Image from 'next/image'
 import { Box, Grid, Hidden, IconButton, Drawer, List, ListItem, ListItemText, Typography, Accordion, AccordionDetails, AccordionSummary, Button, MenuItem, Popper, ClickAwayListener, Grow, Paper, MenuList, Divider } from '@material-ui/core'
 import MenuIcon from '@material-ui/icons/Menu'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
+import CloseIcon from '@material-ui/icons/Close'
 import { withStyles } from '@material-ui/core/styles'
 
 export default withStyles((theme) => ({
@@ -48,6 +49,9 @@ export default withStyles((theme) => ({
   },
   linkPadding: {
     padding: '10px 0'
+  },
+  headerOver: {
+    height: 64
   }
 }))(
   ({
@@ -57,6 +61,12 @@ export default withStyles((theme) => ({
     classes,
     selected = null
   }) => {
+    const WhiteTextTypography = withStyles({
+      root: {
+        color: '#FFFFFF'
+      }
+    })(Typography)
+
     const [menu, setMenu] = useState(false)
     const [expanded, setExpanded] = useState(false)
 
@@ -114,13 +124,23 @@ export default withStyles((theme) => ({
         </Box>
         <Drawer open={menu} onClose={() => setMenu(false)}>
           <div className={classes.list} role="presentation" /* onClick={() => setMenu(false)} */>
-            {loggedIn && (
-              <Box p={2}>
-                <Typography>
-                  Hello, <strong>{preHeader.user}</strong>
-                </Typography>
-              </Box>
-            )}
+            <Box bgcolor="primary.dark" className={classes.headerOver}>
+              <Grid container alignItems="center">
+                <Grid item>
+                  <IconButton className={classes.menuBtn} aria-label="menu" color="secondary" onClick={() => setMenu(false)}>
+                    <CloseIcon fontSize="large" color="secondary" />
+                  </IconButton>
+                </Grid>
+
+                <Grid item>
+                  {loggedIn && (
+                    <WhiteTextTypography>
+                      Hello, <strong>{preHeader.user}</strong>
+                    </WhiteTextTypography>
+                  )}
+                </Grid>
+              </Grid>
+            </Box>
 
             <div className={classes.accRoot}>
               {nav.map((el, i) => (

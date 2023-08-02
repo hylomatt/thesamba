@@ -29,6 +29,13 @@ export default async (req, res) => {
     })
 
   res.setHeader('set-cookie', resp.cookies || [])
+
+  console.log('api login:', {
+    status: resp.status,
+    statusText: resp.statusText,
+    redirect: resp.redirect
+  })
+
   res.status(resp.status).json({
     status: resp.status,
     statusText: resp.statusText,

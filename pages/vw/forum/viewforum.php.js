@@ -118,8 +118,7 @@ export default withStyles({
                           {/* {subEl.newPosts ? '!' : ''} */}
 
                           <Link href={subEl.href || ''} passHref>
-                            <Typography component="a" className="font-semibold">
-                              {subEl.title}
+                            <Typography component="a" className="font-semibold" dangerouslySetInnerHTML={{ __html: subEl.title }}>
                             </Typography>
                           </Link>
                           <Typography>{subEl.description}</Typography>

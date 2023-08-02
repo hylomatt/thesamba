@@ -35,7 +35,7 @@ export default withStyles((theme) => ({
           {prevPage
             ? (
               <Link href={prevPage.href}>
-                <Typography component="a" className={[classes.pagingText, classes.pagingPrevNext]}>
+                <Typography component="a" className={`${classes.pagingText} ${classes.pagingPrevNext}`}>
                 Previous
                 </Typography>
               </Link>
@@ -53,7 +53,7 @@ export default withStyles((theme) => ({
           {nextPage
             ? (
               <Link href={nextPage.href}>
-                <Typography component="a" className={[classes.pagingText, classes.pagingPrevNext]}>
+                <Typography component="a" className={`${classes.pagingText} ${classes.pagingPrevNext}`}>
                 Next
                 </Typography>
               </Link>

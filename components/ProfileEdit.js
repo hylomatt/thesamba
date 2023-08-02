@@ -51,7 +51,7 @@ export default function ProfileEdit({ data }) {
           </Box>
         </Box>
 
-        <Box mb={1} border={1} borderColor="secondary.main">
+        {/* <Box mb={1} border={1} borderColor="secondary.main">
           <Box bgcolor="secondary.main" p={1}>
             <Typography align="center">All about...</Typography>
           </Box>
@@ -98,7 +98,7 @@ export default function ProfileEdit({ data }) {
           <Box p={1}>
             <Typography component="div" dangerouslySetInnerHTML={{ __html: data.page.signature }} />
           </Box>
-        </Box>
+        </Box> */}
       </Box>
     </Box>
   )

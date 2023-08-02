@@ -1,15 +1,17 @@
 import Head from 'next/head'
 import React from 'react'
-import Link from 'next/link'
+// import Link from 'next/link'
 
-import { Box, Typography, Grid, Accordion, AccordionSummary, AccordionDetails, List, ListItem, ListItemText, Hidden } from '@material-ui/core'
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
+import { Box, Typography
+  // Grid, Accordion, AccordionSummary, AccordionDetails, List, ListItem, ListItemText, Hidden
+} from '@material-ui/core'
+// import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import { withStyles } from '@material-ui/core/styles'
 
-import { getClassifieds } from '../../../utils/getters'
+import { getPlaceAd } from '../../../utils/getters'
 import Header from '../../../components/Header'
 
-import constants from '../../../utils/constants'
+// import constants from '../../../utils/constants'
 
 export default withStyles((theme) => ({
   root: {
@@ -56,8 +58,17 @@ export default withStyles((theme) => ({
 })
 
 export async function getServerSideProps(context) {
-  const { data, ...rest } = await getClassifieds(context.req)
+  const { data, ...rest } = await getPlaceAd(context.req)
   context.res.setHeader('set-cookie', rest.cookies || [])
+
+  if (rest.redirect) {
+    return {
+      redirect: {
+        destination: rest.redirect,
+        permanent: false
+      }
+    }
+  }
 
   return {
     props: {

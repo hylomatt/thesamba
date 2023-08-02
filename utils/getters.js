@@ -8,6 +8,7 @@ import {
   parseHome,
   parseFeaturedClassifieds,
   parseClassifieds,
+  parsePlaceAd,
   parseClassifiedSearch,
   parseClassifiedCategory,
   parseClassifiedDetail,
@@ -16,6 +17,7 @@ import {
   parseForumSearch,
   parseForum,
   parseTopic,
+  parsePosting,
   parseGallery,
   parseGalleryCategory,
   parseGallerySearch,
@@ -25,6 +27,7 @@ import {
   parseArchives,
   parseAbout,
   parseLogin,
+  parseProfileEdit,
   parseProfileView,
   parseProfileRegister,
   parseProfileRegisterAgreed,
@@ -33,12 +36,19 @@ import {
 
 const getPage = async (req) => {
   const url = `${constants.baseUrl}${req.url}`.replace(/\/_next\/.*\/vw/, '/vw').replace('.json', '')
-  return await fetch(url, { headers: { cookie: req.headers.cookie } })
-    .then(async (r) => ({
-      cookies: getSetCookieHeaders(r.headers.get('set-cookie')),
-      data: iconv.decode(Buffer.from(await r.arrayBuffer()), 'WINDOWS-1252'),
-      redirect: url !== r.url ? r.url.replace(constants.baseUrl, '') : null
-    }))
+  return await fetch(url, { headers: { cookie: req?.headers?.cookie } })
+    .then(async (r) => {
+      const cookies = getSetCookieHeaders(r.headers.get('set-cookie') || [])
+      const arrayBuffer = await r.arrayBuffer()
+      const data = iconv.decode(Buffer.from(arrayBuffer), 'WINDOWS-1252')
+      const redirect = url !== r.url ? r.url.replace(constants.baseUrl, '') : null
+
+      return {
+        cookies,
+        data,
+        redirect
+      }
+    })
     .catch((e) => {
       console.error(e)
       return null
@@ -97,6 +107,13 @@ export const getClassifieds = async (req) => {
   })
 }
 
+export const getPlaceAd = async (req) => {
+  return await getPage(req).then((r) => {
+    const basePath = formatBaseUrl(req.url)
+    return { ...r, data: parsePlaceAd(basePath, r.data) }
+  })
+}
+
 export const getClassifiedSearch = async (req) => {
   return await getPage(req).then((r) => {
     const basePath = formatBaseUrl(req.url)
@@ -151,6 +168,14 @@ export const getTopic = async (req) => {
     const basePath = formatBaseUrl(req.url)
     return { ...r, data: parseTopic(basePath, r.data) }
   })
+}
+
+export const getPosting = async (req) => {
+  return await getPage(req).then((r) => {
+    const basePath = formatBaseUrl(req.url)
+    return { ...r, data: parsePosting(basePath, r.data) }
+  })
+
 }
 
 export const getGallery = async (req) => {
@@ -224,7 +249,7 @@ export const getProfile = async (req, query) => {
     const profileMode = (mode || '').toLowerCase()
 
     if (profileMode === 'editprofile') {
-      return { ...r, data: {} }
+      return { ...r, data: parseProfileEdit(basePath, r.data) }
     } else if (profileMode === 'viewprofile') {
       return { ...r, data: parseProfileView(basePath, r.data) }
     } else if (profileMode === 'register' && agreed === 'true') {

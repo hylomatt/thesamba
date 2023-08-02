@@ -213,6 +213,18 @@ export const parseClassifieds = (basePath, html) => {
   }
 }
 
+export const parsePlaceAd = (basePath, html) => {
+  console.log('parsePlaceAd')
+  const $ = cheerio.load(html)
+  return {
+    base: parseBase(basePath, $),
+    page: {
+      // title: $('body > table .maintitle').first().text(),
+      // href: getAbsHref(basePath, $('body > table .maintitle').attr('href'))
+    }
+  }
+}
+
 export const parseClassifiedSearch = (basePath, html) => {
   const $ = cheerio.load(html)
   return {
@@ -566,7 +578,10 @@ export const parseForum = (basePath, html) => {
 
           acc[acc.length - 1].items.push({
             newPosts: !!$(el).find('img[src*="folder_new"]').length,
-            title: $(el).find('td:eq(1) a.topictitle').text(),
+            title: [
+              $(el).find('td:eq(1) span.topictitle > b').html(),
+              $(el).find('td:eq(1) span.topictitle a.topictitle').text()
+            ].join(' '),
             href: getAbsHref(basePath, $(el).find('td:eq(1) a.topictitle').attr('href')),
             pages: $(el).find('td:eq(1) span.gensmall').last().text().trim(),
             replies: $(el).find('td:eq(2) .postdetails').text(),
@@ -662,6 +677,12 @@ export const parseTopic = (basePath, html) => {
           acc.push({
             name: {
               title: $(el).find('span.name b a').text(),
+              flags: $(el).find('span.name + a')
+                .toArray()
+                .map((flag) => ({
+                  href: $(flag).attr('href'),
+                  img: parseImage(basePath, $(flag).find('img'))
+                })),
               href: getAbsHref(basePath, $(el).find('span.name b a').attr('href'))
             },
             posterDetails: $(el).find('> td > span.postdetails').html() || null,
@@ -675,7 +696,22 @@ export const parseTopic = (basePath, html) => {
           })
 
           return acc
-        }, [])
+        }, []),
+      postReply: {
+        title: $('body > table span.nav a[href*="posting"] img').attr('alt'),
+        href: getAbsHref(basePath, $('body > table span.nav a[href*="posting"]').attr('href'))
+      }
+    }
+  }
+}
+
+export const parsePosting = (basePath, html) => {
+  const $ = cheerio.load(html)
+  return {
+    base: parseBase(basePath, $),
+    page: {
+      title: $('a.maintitle').text(),
+      href: getAbsHref(basePath, $('a.maintitle').attr('href'))
     }
   }
 }
@@ -880,9 +916,45 @@ export const parseAbout = (basePath, html) => {
 
 export const parseLogin = (basePath, html) => {
   const $ = cheerio.load(html)
+  const container = $('body form[name="login_form"]')
   return {
     base: parseBase(basePath, $),
-    page: {}
+    page: {
+      fields: $(container)
+        .find('input')
+        .toArray()
+        .reduce((acc, el) => ({
+          ...acc,
+          [$(el).attr('name')]: $(el).attr('value') || null
+        }), {})
+    }
+  }
+}
+
+export const parseProfileEdit = (basePath, html) => {
+  const $ = cheerio.load(html)
+  const container = $('body > table.forumline')
+  return {
+    base: parseBase(basePath, $),
+    page: {
+      title: $(container).find('.thHead').text(),
+      avatar: {
+        img: parseImage(basePath, $(container).find('> tbody > tr:nth-child(3) > td:first-child > img'))
+      }
+      // info: $(container)
+      //   .find('> tbody > tr:nth-child(3) > td:last-child tr')
+      //   .toArray()
+      //   .map((el) => {
+      //     return [$(el).find('td:first-child .gen').text().trim(), $(el).find('td:last-child .gen').html()]
+      //   })
+      // contact: $(container)
+      //   .find('> tbody > tr:nth-child(5) tr')
+      //   .toArray()
+      //   .map((el) => {
+      //     return [$(el).find('td:first-child .gen').text().trim(), $(el).find('td:last-child .gen').html()]
+      //   }),
+      // signature: $(container).find('> tbody > tr:last-child > td').html()
+    }
   }
 }
 

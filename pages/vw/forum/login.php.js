@@ -35,6 +35,14 @@ export default withStyles({
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+
+    console.log('handleSubmit:', JSON.stringify({
+      username: values.username,
+      password: values.password,
+      redirect: data.page.fields.redirect,
+      login: 'Log in'
+    }))
+
     await fetch('/api/login/', {
       credentials: 'include',
       method: 'post',
@@ -44,7 +52,7 @@ export default withStyles({
       body: JSON.stringify({
         username: values.username,
         password: values.password,
-        // redirect: '/vw/index.php',
+        redirect: data.page.fields.redirect,
         login: 'Log in'
       })
     })
@@ -135,10 +143,14 @@ export default withStyles({
 export async function getServerSideProps(context) {
   const { data, ...rest } = await getLogin(context.req)
   context.res.setHeader('set-cookie', rest.cookies || [])
+
   if (rest.redirect) {
-    context.res.statusCode = 302
-    context.res.setHeader('location', rest.redirect)
-    context.res.end()
+    return {
+      redirect: {
+        destination: rest.redirect,
+        permanent: false
+      }
+    }
   }
 
   return {

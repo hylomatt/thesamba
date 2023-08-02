@@ -2,7 +2,7 @@ import Head from 'next/head'
 import React from 'react'
 import Link from 'next/link'
 
-import { Box, Grid, Typography, Hidden } from '@material-ui/core'
+import { Box, Grid, Typography, Hidden, Button } from '@material-ui/core'
 import { withStyles } from '@material-ui/core/styles'
 
 import { getTopic } from '../../../utils/getters'
@@ -27,6 +27,20 @@ export default withStyles({
   pageButtonInnerCurrent: {
     backgroundColor: '#fff',
     outline: '1px solid #e7e7e7'
+  },
+  nameStuff: {
+    '& a': {
+      display: 'inline-block',
+      verticalAlign: 'middle'
+    }
+  },
+  flagLink: {
+    height: '15px',
+    marginLeft: '4px',
+
+    '& img': {
+      height: '15px'
+    }
   }
 })(({ data, classes }) => {
   return (
@@ -68,10 +82,17 @@ export default withStyles({
               <Grid item xs={12} sm={12} md={2}>
                 <Box p={1} bgcolor="secondary.light">
                   <Grid container justify="space-between" alignItems="center">
-                    <Grid item>
+                    <Grid item className={classes.nameStuff}>
                       <Link href={el.name.href || ''} passHref>
                         <Typography component="a">{el.name.title}</Typography>
                       </Link>
+                      {el.name.flags.map((flag, fi) => (
+                        <Link href={flag.href || ''} passHref key={`topic-post-user-${el.name.title}-flag-${fi}`}>
+                          <a className={classes.flagLink}>
+                            <img src={flag.img.src} alt={flag.img.alt} />
+                          </a>
+                        </Link>
+                      ))}
                     </Grid>
                     <Hidden mdUp>
                       <Grid item>
@@ -100,6 +121,16 @@ export default withStyles({
             </Grid>
           </Box>
         ))}
+
+        <Box bgcolor="secondary.light" p={2} mt={4} mb={2} align="center">
+          <Link href={data.page.postReply.href} passHref>
+            <Button variant="outlined" component="a" size="large">
+              {data.page.postReply.title}
+            </Button>
+          </Link>
+        </Box>
+
+
         <Box p={2}>
           <Grid container justify="center">
             {data.page.pages.map((el, i) => (
