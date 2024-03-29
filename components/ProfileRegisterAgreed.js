@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import Head from 'next/head'
+import Image from 'next/image'
 
 import { Box, Typography, FormControl, TextField, InputLabel, Select, FormGroup, Button } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
@@ -96,7 +97,7 @@ export default function ProfileRegisterAgreed({ data }) {
                   If you are visually impaired or cannot otherwise read this code please contact the <a href="mailto:everettb@thesamba.com">Administrator</a> for help.
                 </Typography>
                 <Box mb={1} py={1}>
-                  <img src={data.page.confirmImage.src} width="100%" />
+                  <Image src={data.page.confirmImage.src} alt="" width="100%" />
                 </Box>
                 <FormControl fullWidth={true} className={classes.mb1}>
                   <TField label="Confirmation code" name="confirm_code" maxLength="6" required />

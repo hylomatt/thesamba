@@ -3,7 +3,7 @@ import constants from '../../utils/constants'
 import { getSetCookieHeaders } from '../../utils/cookies'
 import { URLSearchParams } from 'url'
 
-export default async (req, res) => {
+const loginHandler = async (req, res) => {
   if (req.method !== 'POST') {
     res.status(405).end()
   }
@@ -35,3 +35,5 @@ export default async (req, res) => {
     redirect: resp.redirect
   })
 }
+
+export default loginHandler;

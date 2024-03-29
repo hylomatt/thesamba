@@ -1,7 +1,7 @@
 import React from 'react'
 import Head from 'next/head'
 // import Link from 'next/link'
-// import Image from 'next/image'
+import Image from 'next/image'
 import copy from 'copy-to-clipboard'
 
 import { Box, Typography, Grid } from '@material-ui/core'
@@ -69,7 +69,7 @@ export default withStyles({
               <Box p={1}>
                 {/* <Link href={data.page.href} passHref>
                   <a style={{ display: 'block' }}> */}
-                <img src={data.page.img.src} alt={data.page.img.alt} className={classes.image} />
+                <Image src={data.page.img.src} alt={data.page.img.alt} className={classes.image} />
                 {/* <div style={{ position: 'relative', width: '100%', height: '400px', paddingBottom: '20%' }}>
                   <Image src={data.page.img.src} alt={data.page.img.alt} layout="fill" objectFit="cover" />
                 </div> */}

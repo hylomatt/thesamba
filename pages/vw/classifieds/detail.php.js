@@ -1,6 +1,9 @@
+/* eslint-disable react/no-unknown-property */
+
 import React, { useRef } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
+import Image from 'next/image'
 import Slider from 'react-slick'
 
 import { Box, Typography, Grid, Button, Divider } from '@material-ui/core'
@@ -68,12 +71,12 @@ export default withStyles({
               <Slider {...sliderSettings} ref={sliderRef} className={classes.slider}>
                 {!data.page.thumbnails.length && (
                   <Box onClick={gotoNext} className={classes.slideBox}>
-                    <img src={data.page.mainPhoto.src} alt={data.page.mainPhoto.alt} width="100%" />
+                    <Image src={data.page.mainPhoto.src} alt={data.page.mainPhoto.alt} width="100%" />
                   </Box>
                 )}
                 {data.page.thumbnails.map((item, i) => (
                   <Box key={`detail-image-${data.page.adId}-${i}`} onClick={gotoNext} className={classes.slideBox}>
-                    <img src={item.src.replace('thumbnails/', '')} alt={item.alt} width="100%" />
+                    <Image src={item.src.replace('thumbnails/', '')} alt={item.alt} width="100%" />
                     {item.label && (
                       <Typography variant="body2" align="center" className={classes.slideText}>
                         {item.label}

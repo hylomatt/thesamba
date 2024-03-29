@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
+import Image from 'next/image'
 
 import { Box, Typography, Grid, TextField, Button, FormControlLabel, Checkbox } from '@material-ui/core'
 import { withStyles } from '@material-ui/core/styles'
@@ -62,7 +63,7 @@ export default withStyles((theme) => ({}))(({ data, classes }) => {
         <Box mb={2} align="center">
           <Link href={data.page.detail.href}>
             <a>
-              <img src={data.page.detail.img.src} />
+              <Image src={data.page.detail.img.src} alt={data.page.detail.title} />
             </a>
           </Link>
           <Box my={1}>

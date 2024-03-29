@@ -1,6 +1,7 @@
 import React from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
+import Image from 'next/image'
 
 import { Box, Typography, Grid, Hidden } from '@material-ui/core'
 import { withStyles } from '@material-ui/core/styles'
@@ -37,7 +38,7 @@ export default withStyles({
               <Box p={1}>
                 <Link href={data.page.latestEntry.href}>
                   <a>
-                    <img src={data.page.latestEntry.img.src} />
+                    <Image src={data.page.latestEntry.img.src} alt={data.page.latestEntry.topictitle} />
                   </a>
                 </Link>
                 <Typography>{data.page.latestEntry.topictitle}</Typography>
@@ -56,7 +57,7 @@ export default withStyles({
               <Box p={1}>
                 <Link href={data.page.stolen.href}>
                   <a>
-                    <img src={data.page.stolen.img.src} />
+                    <Image src={data.page.stolen.img.src} alt={data.page.stolen.topictitle} />
                   </a>
                 </Link>
                 <Typography>{data.page.stolen.topictitle}</Typography>

@@ -114,7 +114,7 @@ export default withStyles({
                     <Link href={el.href}>
                       <a>
                         <div>
-                          <img src={el.img.src} />
+                          <Image src={el.img.src} alt={el.title} />
                         </div>
                         <Typography align="center">{el.title}</Typography>
                       </a>

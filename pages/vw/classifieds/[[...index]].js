@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
+import Image from 'next/image'
 
 import { Box, Typography, Grid, Accordion, AccordionSummary, AccordionDetails, List, ListItem, ListItemText, Hidden, IconButton, Paper } from '@material-ui/core'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
@@ -156,7 +157,7 @@ export default withStyles((theme) => ({
                         <Link href={el.href} key={`classifieds-featured-ads-${i}`}>
                           <a>
                             <div>
-                              <img src={el.img.src} />
+                              <Image src={el.img.src} alt={el.title} />
                             </div>
                             <Typography align="center">{el.title}</Typography>
                           </a>
@@ -181,7 +182,7 @@ export default withStyles((theme) => ({
                         <Link href={el.href}>
                           <a>
                             <div>
-                              <img src={el.img.src} />
+                              <Image src={el.img.src} alt={el.title} />
                             </div>
                             <Typography component="div" align="center">
                               <Box {...(el.heavyTitle && { fontWeight: 'fontWeightBold' })}>{el.title}</Box>
