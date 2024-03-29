@@ -1,10 +1,10 @@
-import Head from 'next/head'
-import React from 'react'
+import Head from "next/head";
+import React from "react";
 
-import { Box, Typography } from '@material-ui/core'
+import { Box, Typography } from "@mui/material";
 
-import { getCommunity } from '../../../utils/getters'
-import Header from '../../../components/Header'
+import { getCommunity } from "../../../utils/getters";
+import Header from "../../../components/Header";
 
 export default function ForumIndex({ data }) {
   return (
@@ -19,16 +19,16 @@ export default function ForumIndex({ data }) {
         <Typography>Community</Typography>
       </Box>
     </Box>
-  )
+  );
 }
 
 export async function getServerSideProps(context) {
-  const { data, ...rest } = await getCommunity(context.req)
-  context.res.setHeader('set-cookie', rest.cookies || [])
+  const { data, ...rest } = await getCommunity(context.req);
+  context.res.setHeader("set-cookie", rest.cookies || []);
 
   return {
     props: {
-      data
-    }
-  }
+      data,
+    },
+  };
 }

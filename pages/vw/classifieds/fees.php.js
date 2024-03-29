@@ -1,41 +1,12 @@
-import Head from 'next/head'
-import React from 'react'
+import Head from "next/head";
+import React from "react";
 
-import { Box, Typography } from '@material-ui/core'
-import { withStyles } from '@material-ui/core/styles'
+import { Box, Typography } from "@mui/material";
 
-import { getHome } from '../../../utils/getters'
-import Header from '../../../components/Header'
+import { getHome } from "../../../utils/getters";
+import Header from "../../../components/Header";
 
-export default withStyles((theme) => ({
-  root: {
-    color: 'white'
-  },
-  list: {
-    width: 250
-  },
-
-  accRoot: {
-    width: '100%'
-  },
-  heading: {
-    display: 'block',
-    fontSize: theme.typography.pxToRem(15),
-    flexShrink: 0
-  },
-
-  popper: {
-    minWidth: 200
-  },
-
-  menuItem: {
-    justifyContent: 'center'
-  },
-
-  menuBtn: {
-    height: 64
-  }
-}))(({ data, classes }) => {
+export default function Main({ data }) {
   return (
     <Box p={{ xs: 0, md: 1 }}>
       <Head>
@@ -48,16 +19,16 @@ export default withStyles((theme) => ({
         <Typography>Fees</Typography>
       </Box>
     </Box>
-  )
-})
+  );
+}
 
 export async function getServerSideProps(context) {
-  const { data, ...rest } = await getHome(context.req)
-  context.res.setHeader('set-cookie', rest.cookies || [])
+  const { data, ...rest } = await getHome(context.req);
+  context.res.setHeader("set-cookie", rest.cookies || []);
 
   return {
     props: {
-      data
-    }
-  }
+      data,
+    },
+  };
 }

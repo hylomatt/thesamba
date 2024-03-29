@@ -1,3 +1,5 @@
-export default {
-  baseUrl: 'https://www.thesamba.com'
-}
+const constants = {
+  baseUrl: "https://www.thesamba.com",
+};
+
+export default constants;

@@ -1,79 +1,84 @@
-import React, { useState } from 'react'
-import Head from 'next/head'
-import { useRouter } from 'next/router'
+import React, { useState } from "react";
+import Head from "next/head";
+import { useRouter } from "next/router";
 
-import { Box, Button, Typography, TextField, FormControl, InputLabel, OutlinedInput, InputAdornment, IconButton } from '@material-ui/core'
-import Visibility from '@material-ui/icons/Visibility'
-import VisibilityOff from '@material-ui/icons/VisibilityOff'
-import { withStyles } from '@material-ui/styles'
+import {
+  Box,
+  Button,
+  Typography,
+  TextField,
+  FormControl,
+  InputLabel,
+  OutlinedInput,
+  InputAdornment,
+  IconButton,
+} from "@mui/material";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
-import { getLogin } from '../../../utils/getters'
-import Header from '../../../components/Header'
+import { getLogin } from "../../../utils/getters";
+import Header from "../../../components/Header";
 
-export default withStyles({
-  root: {
-    color: '#fff'
-  }
-})(({ data, classes }) => {
-  const router = useRouter()
+export default function Main({ data }) {
+  const router = useRouter();
 
   const [values, setValues] = useState({
-    username: '',
-    password: '',
+    username: "",
+    password: "",
     showPassword: false,
-    failed: false
-  })
+    failed: false,
+  });
 
-  let failureMessage
+  let failureMessage;
   const loginFailed = () => {
-    setValues({ ...values, failed: true })
-    clearTimeout(failureMessage)
+    setValues({ ...values, failed: true });
+    clearTimeout(failureMessage);
     failureMessage = setTimeout(() => {
-      setValues({ ...values, failed: false })
-    }, 5000)
-  }
+      setValues({ ...values, failed: false });
+    }, 5000);
+  };
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
-    await fetch('/api/login/', {
-      credentials: 'include',
-      method: 'post',
+    e.preventDefault();
+    await fetch("/api/login/", {
+      credentials: "include",
+      method: "post",
       headers: {
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
         username: values.username,
         password: values.password,
         // redirect: '/vw/index.php',
-        login: 'Log in'
-      })
+        login: "Log in",
+      }),
     })
       .then(async (r) => {
         if (r.status === 302) {
-          const redirectUrl = (await r.json()).redirect
-          console.log('login succeeded:', redirectUrl)
-          router.push(redirectUrl)
+          const redirectUrl = (await r.json()).redirect;
+          console.log("login succeeded:", redirectUrl);
+          router.push(redirectUrl);
         } else {
-          console.log('login failed')
-          loginFailed()
+          console.log("login failed");
+          loginFailed();
         }
       })
       .catch((e) => {
-        console.log(e)
-      })
-  }
+        console.log(e);
+      });
+  };
 
   const handleChange = (prop) => (event) => {
-    setValues({ ...values, [prop]: event.target.value })
-  }
+    setValues({ ...values, [prop]: event.target.value });
+  };
 
   const handleClickShowPassword = () => {
-    setValues({ ...values, showPassword: !values.showPassword })
-  }
+    setValues({ ...values, showPassword: !values.showPassword });
+  };
 
   const handleMouseDownPassword = (event) => {
-    event.preventDefault()
-  }
+    event.preventDefault();
+  };
 
   return (
     <Box p={{ xs: 0, md: 1 }}>
@@ -87,27 +92,49 @@ export default withStyles({
         <Typography variant="h5" paragraph={true}>
           Log in to your account:
         </Typography>
-        <Typography paragraph={true}>Please enter your username and password to log in. If you do not have an account, please click on Register in the upper left of the site.</Typography>
+        <Typography paragraph={true}>
+          Please enter your username and password to log in. If you do not have
+          an account, please click on Register in the upper left of the site.
+        </Typography>
         <Box py={2} px={1}>
           <form onSubmit={handleSubmit}>
             <Box mb={2}>
               <FormControl variant="outlined" fullWidth={true} required>
-                <TextField id="outlined-basic" label="Username" variant="outlined" fullWidth={true} required value={values.username} onChange={handleChange('username')} />
+                <TextField
+                  id="outlined-basic"
+                  label="Username"
+                  variant="outlined"
+                  fullWidth={true}
+                  required
+                  value={values.username}
+                  onChange={handleChange("username")}
+                />
               </FormControl>
             </Box>
 
             <Box mb={2}>
               <FormControl variant="outlined" fullWidth={true} required>
-                <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+                <InputLabel htmlFor="outlined-adornment-password">
+                  Password
+                </InputLabel>
                 <OutlinedInput
                   id="outlined-adornment-password"
-                  type={values.showPassword ? 'text' : 'password'}
+                  type={values.showPassword ? "text" : "password"}
                   value={values.password}
-                  onChange={handleChange('password')}
+                  onChange={handleChange("password")}
                   endAdornment={
                     <InputAdornment position="end">
-                      <IconButton aria-label="toggle password visibility" onClick={handleClickShowPassword} onMouseDown={handleMouseDownPassword} edge="end">
-                        {values.showPassword ? <Visibility /> : <VisibilityOff />}
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={handleClickShowPassword}
+                        onMouseDown={handleMouseDownPassword}
+                        edge="end"
+                      >
+                        {values.showPassword ? (
+                          <Visibility />
+                        ) : (
+                          <VisibilityOff />
+                        )}
                       </IconButton>
                     </InputAdornment>
                   }
@@ -122,28 +149,28 @@ export default withStyles({
 
             {values.failed && (
               <Box mt={2} p={1} borderRadius={4} bgcolor="error.dark">
-                <Typography className={classes.root}>Login failed</Typography>
+                <Typography sx={{ color: "#fff" }}>Login failed</Typography>
               </Box>
             )}
           </form>
         </Box>
       </Box>
     </Box>
-  )
-})
+  );
+}
 
 export async function getServerSideProps(context) {
-  const { data, ...rest } = await getLogin(context.req)
-  context.res.setHeader('set-cookie', rest.cookies || [])
+  const { data, ...rest } = await getLogin(context.req);
+  context.res.setHeader("set-cookie", rest.cookies || []);
   if (rest.redirect) {
-    context.res.statusCode = 302
-    context.res.setHeader('location', rest.redirect)
-    context.res.end()
+    context.res.statusCode = 302;
+    context.res.setHeader("location", rest.redirect);
+    context.res.end();
   }
 
   return {
     props: {
-      data
-    }
-  }
+      data,
+    },
+  };
 }

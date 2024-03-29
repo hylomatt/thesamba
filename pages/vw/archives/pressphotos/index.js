@@ -1,10 +1,10 @@
-import Head from 'next/head'
-import React from 'react'
+import Head from "next/head";
+import React from "react";
 
-import { Box, Typography } from '@material-ui/core'
+import { Box, Typography } from "@mui/material";
 
-import { getArchives } from '../../../../utils/getters'
-import Header from '../../../../components/Header'
+import { getArchives } from "../../../../utils/getters";
+import Header from "../../../../components/Header";
 
 export default function TechnicalIndex({ data }) {
   return (
@@ -19,16 +19,16 @@ export default function TechnicalIndex({ data }) {
         <Typography>Press photos</Typography>
       </Box>
     </Box>
-  )
+  );
 }
 
 export async function getServerSideProps(context) {
-  const { data, ...rest } = await getArchives(context.req)
-  context.res.setHeader('set-cookie', rest.cookies || [])
+  const { data, ...rest } = await getArchives(context.req);
+  context.res.setHeader("set-cookie", rest.cookies || []);
 
   return {
     props: {
-      data
-    }
-  }
+      data,
+    },
+  };
 }

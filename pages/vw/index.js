@@ -1,24 +1,22 @@
-import React from 'react'
-import Head from 'next/head'
-import Link from 'next/link'
-import Image from 'next/image'
+import React from "react";
+import Head from "next/head";
+import Link from "next/link";
+import Image from "next/image";
 
-import { Box, Typography, Grid } from '@material-ui/core'
-import { withStyles } from '@material-ui/core/styles'
+import { Box, Typography, Grid } from "@mui/material";
+import { styled } from "@mui/system";
 
-import { getHome } from '../../utils/getters'
-import Header from '../../components/Header'
+import { getHome } from "../../utils/getters";
+import Header from "../../components/Header";
 
-// import constants from '../../utils/constants'
+const StyledBox = styled(Box)({
+  "& > div": {
+    marginBottom: "8px",
+    fontSize: 13,
+  },
+});
 
-export default withStyles({
-  events: {
-    '& > div': {
-      marginBottom: '8px',
-      fontSize: 13
-    }
-  }
-})(({ data, classes }) => {
+export default function Main({ data }) {
   return (
     <Box p={{ xs: 0, md: 1 }}>
       <Head>
@@ -37,7 +35,7 @@ export default withStyles({
             {data.page.scams.map((el, i) => (
               <Box key={`scam-warning-${i}`}>
                 <Link href={el.href} passHref>
-                  <Typography component="a">{el.title}</Typography>
+                  {el.title}
                 </Link>
               </Box>
             ))}
@@ -53,14 +51,26 @@ export default withStyles({
               </Box>
               <Box p={1}>
                 <Link href={data.page.classifieds.href}>
-                  <a>
-                    <div style={{ position: 'relative', width: '100%', height: '100px', paddingBottom: '20%' }}>
-                      <Image src={data.page.classifieds.img.src} alt={data.page.classifieds.img.alt} layout="fill" objectFit="contain" />
-                    </div>
-                  </a>
+                  <div
+                    style={{
+                      position: "relative",
+                      width: "100%",
+                      height: "100px",
+                      paddingBottom: "20%",
+                    }}
+                  >
+                    <Image
+                      src={data.page.classifieds.img.src}
+                      alt={data.page.classifieds.img.alt}
+                      fill={true}
+                      style={{ objectFit: "contain" }}
+                    />
+                  </div>
                 </Link>
                 <Box pt={1}>
-                  <Typography align="center">{data.page.classifieds.title}</Typography>
+                  <Typography align="center">
+                    {data.page.classifieds.title}
+                  </Typography>
                 </Box>
               </Box>
             </Box>
@@ -73,14 +83,26 @@ export default withStyles({
               </Box>
               <Box p={1}>
                 <Link href={data.page.gallery.href}>
-                  <a>
-                    <div style={{ position: 'relative', width: '100%', height: '100px', paddingBottom: '20%' }}>
-                      <Image src={data.page.gallery.img.src} alt={data.page.gallery.img.alt} layout="fill" objectFit="contain" />
-                    </div>
-                  </a>
+                  <div
+                    style={{
+                      position: "relative",
+                      width: "100%",
+                      height: "100px",
+                      paddingBottom: "20%",
+                    }}
+                  >
+                    <Image
+                      src={data.page.gallery.img.src}
+                      alt={data.page.gallery.img.alt}
+                      fill={true}
+                      style={{ objectFit: "contain" }}
+                    />
+                  </div>
                 </Link>
                 <Box pt={1}>
-                  <Typography align="center">{data.page.gallery.title}</Typography>
+                  <Typography align="center">
+                    {data.page.gallery.title}
+                  </Typography>
                 </Box>
               </Box>
             </Box>
@@ -91,14 +113,25 @@ export default withStyles({
         <Box mb={1} p={1} border={1} borderColor="secondary.light">
           <Box mb={2}>
             <Link href={data.page.fact.href}>
-              <a>
-                <Box position="relative" width="100%" height="80px" style={{ paddingBottom: '20%' }}>
-                  <Image src={data.page.fact.img.src} alt={data.page.fact.img.alt} layout="fill" objectFit="contain" />
-                </Box>
-              </a>
+              <Box
+                position="relative"
+                width="100%"
+                height="80px"
+                style={{ paddingBottom: "20%" }}
+              >
+                <Image
+                  src={data.page.fact.img.src}
+                  alt={data.page.fact.img.alt}
+                  fill={true}
+                  style={{ objectFit: "contain" }}
+                />
+              </Box>
             </Link>
           </Box>
-          <Typography component="div" dangerouslySetInnerHTML={{ __html: data.page.fact.content }} />
+          <Typography
+            component="div"
+            dangerouslySetInnerHTML={{ __html: data.page.fact.content }}
+          />
         </Box>
 
         {/* featured ads */}
@@ -109,15 +142,19 @@ export default withStyles({
           <Box p={1}>
             <Grid container>
               {data.page.featuredAds.map((el, i) => (
-                <Grid item xs={6} sm={4} md={2} key={`featured-ad-${el.title}-${i}`}>
+                <Grid
+                  item
+                  xs={6}
+                  sm={4}
+                  md={2}
+                  key={`featured-ad-${el.title}-${i}`}
+                >
                   <Box p={1} align="center">
                     <Link href={el.href}>
-                      <a>
-                        <div>
-                          <img src={el.img.src} alt={el.title} />
-                        </div>
-                        <Typography align="center">{el.title}</Typography>
-                      </a>
+                      <div>
+                        <img src={el.img.src} alt={el.title} />
+                      </div>
+                      <Typography align="center">{el.title}</Typography>
                     </Link>
                   </Box>
                 </Grid>
@@ -141,12 +178,22 @@ export default withStyles({
               <Typography>Stolen</Typography>
             </Box>
             <Box p={1}>
-              <Link href={data.page.stolen.href}>
-                <a style={{ display: 'block' }}>
-                  <div style={{ position: 'relative', width: '100%', height: '100px', paddingBottom: '20%' }}>
-                    <Image src={data.page.stolen.img.src} alt={data.page.stolen.img.alt} layout="fill" objectFit="contain" />
-                  </div>
-                </a>
+              <Link href={data.page.stolen.href} style={{ display: "block" }}>
+                <div
+                  style={{
+                    position: "relative",
+                    width: "100%",
+                    height: "100px",
+                    paddingBottom: "20%",
+                  }}
+                >
+                  <Image
+                    src={data.page.stolen.img.src}
+                    alt={data.page.stolen.img.alt}
+                    fill={true}
+                    style={{ objectFit: "contain" }}
+                  />
+                </div>
               </Link>
               <Box pt={1}>
                 <Typography align="center">{data.page.stolen.title}</Typography>
@@ -160,20 +207,23 @@ export default withStyles({
           <Box bgcolor="secondary.light" p={1}>
             <Typography>Coming Events</Typography>
           </Box>
-          <Box p={1} className={classes.events} dangerouslySetInnerHTML={{ __html: data.page.comingEvents }} />
+          <StyledBox
+            p={1}
+            dangerouslySetInnerHTML={{ __html: data.page.comingEvents }}
+          />
         </Box>
       </Box>
     </Box>
-  )
-})
+  );
+}
 
 export async function getServerSideProps(context) {
-  const { data, ...rest } = await getHome(context.req)
-  context.res.setHeader('set-cookie', rest.cookies || [])
+  const { data, ...rest } = await getHome(context.req);
+  context.res.setHeader("set-cookie", rest.cookies || []);
 
   return {
     props: {
-      data
-    }
-  }
+      data,
+    },
+  };
 }

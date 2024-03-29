@@ -1,20 +1,11 @@
-import React from 'react'
-import Head from 'next/head'
+import React from "react";
+import Head from "next/head";
 
-import { Box, Typography } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
+import { Box, Typography } from "@mui/material";
 
-import Header from './Header'
-
-const useStyles = makeStyles({
-  root: {
-    color: 'white'
-  }
-})
+import Header from "./Header";
 
 export default function ProfileRegister({ data }) {
-  const classes = useStyles()
-
   return (
     <Box p={{ xs: 0, md: 1 }}>
       <Head>
@@ -26,16 +17,19 @@ export default function ProfileRegister({ data }) {
       <Box px={{ xs: 1, md: 0 }} py={1}>
         <Box mb={1} border={1} borderColor="primary.main">
           <Box bgcolor="primary.main" p={1}>
-            <Typography align="center" className={classes.root}>
+            <Typography align="center" sx={{ color: "white" }}>
               {data.page.title}
             </Typography>
           </Box>
 
           <Box mb={1} p={2}>
-            <Typography component="div" dangerouslySetInnerHTML={{ __html: data.page.content }} />
+            <Typography
+              component="div"
+              dangerouslySetInnerHTML={{ __html: data.page.content }}
+            />
           </Box>
         </Box>
       </Box>
     </Box>
-  )
+  );
 }

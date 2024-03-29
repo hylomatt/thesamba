@@ -1,22 +1,12 @@
-import React from 'react'
-import Head from 'next/head'
-import Image from 'next/image'
+import React from "react";
+import Head from "next/head";
+import Image from "next/image";
 
-import { Box, Typography, Grid } from '@material-ui/core'
-import { Skeleton } from '@material-ui/lab'
-import { makeStyles } from '@material-ui/core/styles'
+import { Box, Typography, Grid, Skeleton } from "@mui/material";
 
-import Header from './Header'
-
-const useStyles = makeStyles({
-  root: {
-    color: 'white'
-  }
-})
+import Header from "./Header";
 
 export default function ProfileView({ data }) {
-  const classes = useStyles()
-
   return (
     <Box p={{ xs: 0, md: 1 }}>
       <Head>
@@ -28,7 +18,7 @@ export default function ProfileView({ data }) {
       <Box px={{ xs: 1, md: 0 }} py={1}>
         <Box mb={1} border={1} borderColor="primary.main">
           <Box bgcolor="primary.main" p={1}>
-            <Typography align="center" className={classes.root}>
+            <Typography align="center" sx={{ color: "white" }}>
               {data.page.title}
             </Typography>
           </Box>
@@ -39,15 +29,30 @@ export default function ProfileView({ data }) {
             <Typography align="center">Avatar</Typography>
           </Box>
           <Box p={1} align="center">
-            {data.page.avatar.img.src
-              ? (
-                <div style={{ position: 'relative', width: '100%', height: '66px', paddingBottom: '20%' }}>
-                  <Image src={data.page.avatar.img.src} alt={data.page.avatar.img.alt} layout="fill" objectFit="contain" />
-                </div>
-              )
-              : (
-                <Skeleton variant="rect" height="66px" width="100px" animation="wave" />
-              )}
+            {data.page.avatar.img.src ? (
+              <div
+                style={{
+                  position: "relative",
+                  width: "100%",
+                  height: "66px",
+                  paddingBottom: "20%",
+                }}
+              >
+                <Image
+                  src={data.page.avatar.img.src}
+                  alt={data.page.avatar.img.alt}
+                  fill={true}
+                  style={{ objectFit: "contain" }}
+                />
+              </div>
+            ) : (
+              <Skeleton
+                variant="rect"
+                height="66px"
+                width="100px"
+                animation="wave"
+              />
+            )}
           </Box>
         </Box>
 
@@ -63,7 +68,10 @@ export default function ProfileView({ data }) {
                     <Typography>{el[0]}</Typography>
                   </Grid>
                   <Grid item xs={6}>
-                    <Typography component="div" dangerouslySetInnerHTML={{ __html: el[1] }} />
+                    <Typography
+                      component="div"
+                      dangerouslySetInnerHTML={{ __html: el[1] }}
+                    />
                   </Grid>
                 </React.Fragment>
               ))}
@@ -83,7 +91,10 @@ export default function ProfileView({ data }) {
                     <Typography>{el[0]}</Typography>
                   </Grid>
                   <Grid item xs={6}>
-                    <Typography component="div" dangerouslySetInnerHTML={{ __html: el[1] }} />
+                    <Typography
+                      component="div"
+                      dangerouslySetInnerHTML={{ __html: el[1] }}
+                    />
                   </Grid>
                 </React.Fragment>
               ))}
@@ -96,10 +107,13 @@ export default function ProfileView({ data }) {
             <Typography align="center">Signature</Typography>
           </Box>
           <Box p={1}>
-            <Typography component="div" dangerouslySetInnerHTML={{ __html: data.page.signature }} />
+            <Typography
+              component="div"
+              dangerouslySetInnerHTML={{ __html: data.page.signature }}
+            />
           </Box>
         </Box>
       </Box>
     </Box>
-  )
+  );
 }

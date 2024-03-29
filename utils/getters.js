@@ -1,9 +1,9 @@
-import fetch from 'node-fetch'
+import fetch from "node-fetch";
 // import xml2js from 'xml2js'
-import iconv from 'iconv-lite'
+import iconv from "iconv-lite";
 
-import constants from './constants'
-import { getSetCookieHeaders } from './cookies'
+import constants from "./constants";
+import { getSetCookieHeaders } from "./cookies";
 import {
   parseHome,
   parseFeaturedClassifieds,
@@ -28,26 +28,28 @@ import {
   parseProfileView,
   parseProfileRegister,
   parseProfileRegisterAgreed,
-  parseWhatsNew
-} from './parsers'
+  parseWhatsNew,
+} from "./parsers";
 
 const getPage = async (req) => {
-  const url = `${constants.baseUrl}${req.url}`.replace(/\/_next\/.*\/vw/, '/vw').replace('.json', '')
+  const url = `${constants.baseUrl}${req.url}`
+    .replace(/\/_next\/.*\/vw/, "/vw")
+    .replace(".json", "");
   return await fetch(url, { headers: { cookie: req?.headers?.cookie } })
     .then(async (r) => ({
-      cookies: getSetCookieHeaders(r.headers.get('set-cookie')),
-      data: iconv.decode(Buffer.from(await r.arrayBuffer()), 'WINDOWS-1252'),
-      redirect: url !== r.url ? r.url.replace(constants.baseUrl, '') : null
+      cookies: getSetCookieHeaders(r.headers.get("set-cookie")),
+      data: iconv.decode(Buffer.from(await r.arrayBuffer()), "WINDOWS-1252"),
+      redirect: url !== r.url ? r.url.replace(constants.baseUrl, "") : null,
     }))
     .catch((e) => {
-      console.error(e)
-      return null
-    })
-}
+      console.error(e);
+      return null;
+    });
+};
 
 const formatBaseUrl = (url) => {
-  return url.replace(/\/_next\/.*\/vw/, '/vw').replace('.json', '')
-}
+  return url.replace(/\/_next\/.*\/vw/, "/vw").replace(".json", "");
+};
 
 // const getFeed = async (req) => {
 //   // https://www.thesamba.com/vw/forum/viewforum.php?f=5
@@ -77,189 +79,192 @@ const formatBaseUrl = (url) => {
 // }
 
 export const getHome = async (req) => {
-  const basePath = formatBaseUrl(req.url)
+  const basePath = formatBaseUrl(req.url);
   const [homeSource, featuredAds] = await Promise.all([
     getPage(req),
     getPage({
       ...req,
-      url: `${basePath}classifieds/featuredads_refresh2.php?l=1`
-    })
-  ])
-  const data = await parseHome(basePath, homeSource.data)
-  data.page.featuredAds = await parseFeaturedClassifieds(basePath, featuredAds.data)
-  return { ...homeSource, data }
-}
+      url: `${basePath}classifieds/featuredads_refresh2.php?l=1`,
+    }),
+  ]);
+  const data = await parseHome(basePath, homeSource.data);
+  data.page.featuredAds = await parseFeaturedClassifieds(
+    basePath,
+    featuredAds.data
+  );
+  return { ...homeSource, data };
+};
 
 export const getClassifieds = async (req) => {
   return await getPage(req).then((r) => {
-    const basePath = formatBaseUrl(req.url)
-    return { ...r, data: parseClassifieds(basePath, r.data) }
-  })
-}
+    const basePath = formatBaseUrl(req.url);
+    return { ...r, data: parseClassifieds(basePath, r.data) };
+  });
+};
 
 export const getClassifiedSearch = async (req) => {
   return await getPage(req).then((r) => {
-    const basePath = formatBaseUrl(req.url)
-    return { ...r, data: parseClassifiedSearch(basePath, r.data) }
-  })
-}
+    const basePath = formatBaseUrl(req.url);
+    return { ...r, data: parseClassifiedSearch(basePath, r.data) };
+  });
+};
 
 export const getClassifiedCategory = async (req) => {
   return await getPage(req).then((r) => {
-    const basePath = formatBaseUrl(req.url)
-    return { ...r, data: parseClassifiedCategory(basePath, r.data) }
-  })
-}
+    const basePath = formatBaseUrl(req.url);
+    return { ...r, data: parseClassifiedCategory(basePath, r.data) };
+  });
+};
 
 export const getClassifiedDetail = async (req) => {
   return await getPage(req).then((r) => {
-    const basePath = formatBaseUrl(req.url)
-    return { ...r, data: parseClassifiedDetail(basePath, r.data) }
-  })
-}
+    const basePath = formatBaseUrl(req.url);
+    return { ...r, data: parseClassifiedDetail(basePath, r.data) };
+  });
+};
 
 export const getClassifiedContact = async (req) => {
   return await getPage(req).then((r) => {
-    const basePath = formatBaseUrl(req.url)
-    return { ...r, data: parseClassifiedContact(basePath, r.data) }
-  })
-}
+    const basePath = formatBaseUrl(req.url);
+    return { ...r, data: parseClassifiedContact(basePath, r.data) };
+  });
+};
 
 export const getForums = async (req) => {
   return await getPage(req).then((r) => {
-    const basePath = formatBaseUrl(req.url)
-    return { ...r, data: parseForums(basePath, r.data) }
-  })
-}
+    const basePath = formatBaseUrl(req.url);
+    return { ...r, data: parseForums(basePath, r.data) };
+  });
+};
 
 export const getForumSearch = async (req) => {
   return await getPage(req).then((r) => {
-    const basePath = formatBaseUrl(req.url)
-    return { ...r, data: parseForumSearch(basePath, r.data) }
-  })
-}
+    const basePath = formatBaseUrl(req.url);
+    return { ...r, data: parseForumSearch(basePath, r.data) };
+  });
+};
 
 export const getForum = async (req) => {
   return await getPage(req).then((r) => {
-    const basePath = formatBaseUrl(req.url)
-    return { ...r, data: parseForum(basePath, r.data) }
-  })
-}
+    const basePath = formatBaseUrl(req.url);
+    return { ...r, data: parseForum(basePath, r.data) };
+  });
+};
 
 export const getTopic = async (req) => {
   return await getPage(req).then((r) => {
-    const basePath = formatBaseUrl(req.url)
-    return { ...r, data: parseTopic(basePath, r.data) }
-  })
-}
+    const basePath = formatBaseUrl(req.url);
+    return { ...r, data: parseTopic(basePath, r.data) };
+  });
+};
 
 export const getGallery = async (req) => {
   return await getPage(req).then((r) => {
-    const basePath = formatBaseUrl(req.url)
-    return { ...r, data: parseGallery(basePath, r.data) }
-  })
-}
+    const basePath = formatBaseUrl(req.url);
+    return { ...r, data: parseGallery(basePath, r.data) };
+  });
+};
 
 export const getGalleryCategory = async (req) => {
   return await getPage(req).then((r) => {
-    const basePath = formatBaseUrl(req.url)
-    return { ...r, data: parseGalleryCategory(basePath, r.data) }
-  })
-}
+    const basePath = formatBaseUrl(req.url);
+    return { ...r, data: parseGalleryCategory(basePath, r.data) };
+  });
+};
 
 export const getGallerySearch = async (req) => {
   return await getPage(req).then((r) => {
-    const basePath = formatBaseUrl(req.url)
-    return { ...r, data: parseGallerySearch(basePath, r.data) }
-  })
-}
+    const basePath = formatBaseUrl(req.url);
+    return { ...r, data: parseGallerySearch(basePath, r.data) };
+  });
+};
 
 export const getGalleryPage = async (req) => {
   return await getPage(req).then((r) => {
-    const basePath = formatBaseUrl(req.url)
-    return { ...r, data: parseGalleryPage(basePath, r.data) }
-  })
-}
+    const basePath = formatBaseUrl(req.url);
+    return { ...r, data: parseGalleryPage(basePath, r.data) };
+  });
+};
 
 export const getCommunity = async (req) => {
   return await getPage(req).then((r) => {
-    const basePath = formatBaseUrl(req.url)
-    return { ...r, data: parseCommunity(basePath, r.data) }
-  })
-}
+    const basePath = formatBaseUrl(req.url);
+    return { ...r, data: parseCommunity(basePath, r.data) };
+  });
+};
 
 export const getTechnical = async (req) => {
   return await getPage(req).then((r) => {
-    const basePath = formatBaseUrl(req.url)
-    return { ...r, data: parseTechnical(basePath, r.data) }
-  })
-}
+    const basePath = formatBaseUrl(req.url);
+    return { ...r, data: parseTechnical(basePath, r.data) };
+  });
+};
 
 export const getArchives = async (req) => {
   return await getPage(req).then((r) => {
-    const basePath = formatBaseUrl(req.url)
-    return { ...r, data: parseArchives(basePath, r.data) }
-  })
-}
+    const basePath = formatBaseUrl(req.url);
+    return { ...r, data: parseArchives(basePath, r.data) };
+  });
+};
 
 export const getAbout = async (req) => {
   return await getPage(req).then((r) => {
-    const basePath = formatBaseUrl(req.url)
-    return { ...r, data: parseAbout(basePath, r.data) }
-  })
-}
+    const basePath = formatBaseUrl(req.url);
+    return { ...r, data: parseAbout(basePath, r.data) };
+  });
+};
 
 export const getLogin = async (req) => {
   return await getPage(req).then((r) => {
-    const basePath = formatBaseUrl(req.url)
-    return { ...r, data: parseLogin(basePath, r.data) }
-  })
-}
+    const basePath = formatBaseUrl(req.url);
+    return { ...r, data: parseLogin(basePath, r.data) };
+  });
+};
 
 export const getProfile = async (req, query) => {
   return await getPage(req).then((r) => {
-    const basePath = formatBaseUrl(req.url)
+    const basePath = formatBaseUrl(req.url);
 
-    const { mode, agreed } = query
-    const profileMode = (mode || '').toLowerCase()
+    const { mode, agreed } = query;
+    const profileMode = (mode || "").toLowerCase();
 
-    if (profileMode === 'editprofile') {
-      return { ...r, data: {} }
-    } else if (profileMode === 'viewprofile') {
-      return { ...r, data: parseProfileView(basePath, r.data) }
-    } else if (profileMode === 'register' && agreed === 'true') {
-      return { ...r, data: parseProfileRegisterAgreed(basePath, r.data) }
-    } else if (profileMode === 'register') {
-      return { ...r, data: parseProfileRegister(basePath, r.data) }
-    } else if (profileMode === 'watchlist_ads') {
-      return { ...r, data: {} }
-    } else if (profileMode === 'watchlist_album') {
-      return { ...r, data: {} }
-    } else if (profileMode === 'watchlist') {
-      return { ...r, data: {} }
-    } else if (profileMode === 'emaillist_ads') {
-      return { ...r, data: {} }
-    } else if (profileMode === 'watchlist_sellers') {
-      return { ...r, data: {} }
-    } else if (profileMode === 'foelist_class') {
-      return { ...r, data: {} }
-    } else if (profileMode === 'favorite_searches') {
-      return { ...r, data: {} }
-    } else if (profileMode === 'alerts') {
-      return { ...r, data: {} }
-    } else if (profileMode === 'bookmarks') {
-      return { ...r, data: {} }
-    } else if (profileMode === 'buddylist') {
-      return { ...r, data: {} }
-    } else if (profileMode === 'foelist') {
-      return { ...r, data: {} }
+    if (profileMode === "editprofile") {
+      return { ...r, data: {} };
+    } else if (profileMode === "viewprofile") {
+      return { ...r, data: parseProfileView(basePath, r.data) };
+    } else if (profileMode === "register" && agreed === "true") {
+      return { ...r, data: parseProfileRegisterAgreed(basePath, r.data) };
+    } else if (profileMode === "register") {
+      return { ...r, data: parseProfileRegister(basePath, r.data) };
+    } else if (profileMode === "watchlist_ads") {
+      return { ...r, data: {} };
+    } else if (profileMode === "watchlist_album") {
+      return { ...r, data: {} };
+    } else if (profileMode === "watchlist") {
+      return { ...r, data: {} };
+    } else if (profileMode === "emaillist_ads") {
+      return { ...r, data: {} };
+    } else if (profileMode === "watchlist_sellers") {
+      return { ...r, data: {} };
+    } else if (profileMode === "foelist_class") {
+      return { ...r, data: {} };
+    } else if (profileMode === "favorite_searches") {
+      return { ...r, data: {} };
+    } else if (profileMode === "alerts") {
+      return { ...r, data: {} };
+    } else if (profileMode === "bookmarks") {
+      return { ...r, data: {} };
+    } else if (profileMode === "buddylist") {
+      return { ...r, data: {} };
+    } else if (profileMode === "foelist") {
+      return { ...r, data: {} };
     }
-  })
-}
+  });
+};
 
 export const getWhatsNew = async (req) => {
   return await getPage(req).then((r) => {
-    const basePath = formatBaseUrl(req.url)
-    return { ...r, data: parseWhatsNew(basePath, r.data) }
-  })
-}
+    const basePath = formatBaseUrl(req.url);
+    return { ...r, data: parseWhatsNew(basePath, r.data) };
+  });
+};

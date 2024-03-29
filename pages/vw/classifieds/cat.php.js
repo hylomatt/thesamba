@@ -1,53 +1,16 @@
-import React from 'react'
-import Head from 'next/head'
-import Link from 'next/link'
-import Image from 'next/image'
+import React from "react";
+import Head from "next/head";
+import Link from "next/link";
+import Image from "next/image";
 
-import { Box, Typography, Grid, Hidden } from '@material-ui/core'
-import { Skeleton } from '@material-ui/lab'
-import { withStyles } from '@material-ui/core/styles'
+import { Box, Typography, Grid, Hidden, Skeleton } from "@mui/material";
 
-import { getClassifiedCategory } from '../../../utils/getters'
-import Header from '../../../components/Header'
-import Pagination from '../../../components/Pagination'
-import Breadcrumb from '../../../components/Breadcrumb'
+import { getClassifiedCategory } from "../../../utils/getters";
+import Header from "../../../components/Header";
+import Pagination from "../../../components/Pagination";
+import Breadcrumb from "../../../components/Breadcrumb";
 
-export default withStyles((theme) => ({
-  root: {
-    color: 'white'
-  },
-  list: {
-    width: 250
-  },
-
-  accRoot: {
-    width: '100%'
-  },
-  heading: {
-    display: 'block',
-    fontSize: theme.typography.pxToRem(15),
-    flexShrink: 0
-  },
-
-  popper: {
-    minWidth: 200
-  },
-
-  menuItem: {
-    justifyContent: 'center'
-  },
-
-  menuBtn: {
-    height: 64
-  },
-
-  classifiedImage: {
-    display: 'block',
-    margin: '0 auto',
-    maxWidth: '100%',
-    maxHeight: '120px'
-  }
-}))(({ data, classes }) => {
+export default function Main({ data }) {
   return (
     <Box p={{ xs: 0, md: 1 }}>
       <Head>
@@ -69,26 +32,26 @@ export default withStyles((theme) => ({
             <Grid container>
               <Grid item xs={2}>
                 <Box p={1} px={2}>
-                  <Typography align="center" className={classes.root}>
+                  <Typography align="center" sx={{ color: "white" }}>
                     Picture
                   </Typography>
                 </Box>
               </Grid>
               <Grid item xs={5}>
                 <Box p={1} px={2}>
-                  <Typography className={classes.root}>Description</Typography>
+                  <Typography sx={{ color: "white" }}>Description</Typography>
                 </Box>
               </Grid>
               <Grid item xs={2}>
                 <Box p={1} px={2}>
-                  <Typography align="center" className={classes.root}>
+                  <Typography align="center" sx={{ color: "white" }}>
                     Price
                   </Typography>
                 </Box>
               </Grid>
               <Grid item xs={3}>
                 <Box p={1} px={2}>
-                  <Typography align="center" className={classes.root}>
+                  <Typography align="center" sx={{ color: "white" }}>
                     Date/Location
                   </Typography>
                 </Box>
@@ -98,30 +61,45 @@ export default withStyles((theme) => ({
         </Hidden>
 
         {data.page.ads.map((el, i) => (
-          <Box bgcolor={i % 2 ? 'white' : 'secondary.light'} key={`classifies-ad-${el.title}-${i}`}>
+          <Box
+            bgcolor={i % 2 ? "white" : "secondary.light"}
+            key={`classifies-ad-${el.title}-${i}`}
+          >
             <Grid container>
               <Grid item xs={6} sm={4} md={2}>
                 <Box p={1} height="100%">
-                  <Link href={el.href} passHref>
-                    <a style={{ display: 'block', height: '100%' }}>
-                      {!el.img.src.includes('blank.gif')
-                        ? (
-                          <div style={{ position: 'relative', width: '100%', height: '120px', paddingBottom: '20%' }}>
-                            <Image src={el.img.src} alt={el.img.alt} layout="fill" objectFit="cover" />
-                          </div>
-                        )
-                        : (
-                          <Skeleton variant="rect" height="100%" animation="wave" />
-                        )}
-                    </a>
+                  <Link
+                    href={el.href}
+                    passHref
+                    style={{ display: "block", height: "100%" }}
+                  >
+                    {!el.img.src.includes("blank.gif") ? (
+                      <div
+                        style={{
+                          position: "relative",
+                          width: "100%",
+                          height: "120px",
+                          paddingBottom: "20%",
+                        }}
+                      >
+                        <Image
+                          src={el.img.src}
+                          alt={el.img.alt}
+                          fill={true}
+                          style={{ objectFit: "cover" }}
+                        />
+                      </div>
+                    ) : (
+                      <Skeleton variant="rect" height="100%" animation="wave" />
+                    )}
                   </Link>
                 </Box>
               </Grid>
               <Grid item xs={6} sm={6} md={5} container direction="column">
-                <Grid item style={{ flex: 'auto' }}>
+                <Grid item style={{ flex: "auto" }}>
                   <Box p={1} px={1}>
                     <Link href={el.href} passHref>
-                      <Typography component="a">{el.title}</Typography>
+                      {el.title}
                     </Link>
                   </Box>
                 </Grid>
@@ -135,7 +113,7 @@ export default withStyles((theme) => ({
                 <Grid item xs={6} sm={6} md={5}>
                   <Box p={1} px={1}>
                     <Link href={el.href} passHref>
-                      <Typography component="a">{el.title}</Typography>
+                      {el.title}
                     </Link>
                   </Box>
                 </Grid>
@@ -149,7 +127,7 @@ export default withStyles((theme) => ({
                     <Typography display="block">{el.date}</Typography>
                     <Typography display="block">{el.location}</Typography>
                     <Link href={el.seller.href} passHref>
-                      <Typography component="a">{el.seller.title}</Typography>
+                      {el.seller.title}
                     </Link>
                   </Box>
                 </Grid>
@@ -161,16 +139,16 @@ export default withStyles((theme) => ({
 
       <Pagination pages={data.page.pages} />
     </Box>
-  )
-})
+  );
+}
 
 export async function getServerSideProps(context) {
-  const { data, ...rest } = await getClassifiedCategory(context.req)
-  context.res.setHeader('set-cookie', rest.cookies || [])
+  const { data, ...rest } = await getClassifiedCategory(context.req);
+  context.res.setHeader("set-cookie", rest.cookies || []);
 
   return {
     props: {
-      data
-    }
-  }
+      data,
+    },
+  };
 }

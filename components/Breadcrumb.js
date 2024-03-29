@@ -1,43 +1,58 @@
-import React from 'react'
-import Link from 'next/link'
+import React from "react";
+import Link from "next/link";
+import { useTheme } from "@mui/material/styles";
 
-import { Typography, Divider, Grid } from '@material-ui/core'
-import { withStyles } from '@material-ui/core/styles'
+import { Typography, Divider, Grid } from "@mui/material";
+import { styled } from "@mui/system";
 
-export default withStyles((theme) => ({
-  divider: {
+export default function Main({ crumbs }) {
+  const theme = useTheme();
+
+  const StyledDivider = styled(Divider)(({ theme }) => ({
     background: theme.palette.primary.light,
-    margin: '0px 4px',
-    height: '12px'
-  }
-}))(({ crumbs, classes }) => {
+    margin: "0px 4px",
+    height: "12px",
+  }));
+
   return (
     <Grid container alignItems="center">
       {crumbs.map((el, i) => {
-        const output = []
+        const output = [];
 
         if (el.href) {
           output.push(
-            <Link href={el.href} key={`breadcrumb-nav-${i}-${el.title}-${el.href}`} passHref>
-              <Typography component="a" variant="body2">
-                {el.title}
-              </Typography>
+            <Link
+              href={el.href}
+              key={`breadcrumb-nav-${i}-${el.title}-${el.href}`}
+              passHref
+              variant="body2"
+            >
+              {el.title}
             </Link>
-          )
+          );
         } else {
           output.push(
-            <Typography component="span" variant="body2" key={`breadcrumb-nav-${i}-${el.title}`}>
+            <Typography
+              component="span"
+              variant="body2"
+              key={`breadcrumb-nav-${i}-${el.title}`}
+            >
               {el.title}
             </Typography>
-          )
+          );
         }
 
         if (i < crumbs.length - 1) {
-          output.push(<Divider orientation="vertical" className={classes.divider} key={`breadcrumb-nav-${i}-${el.title}-divider`} />)
+          output.push(
+            <StyledDivider
+              orientation="vertical"
+              key={`breadcrumb-nav-${i}-${el.title}-divider`}
+            />
+          );
         }
 
-        return output
+        return output;
       })}
     </Grid>
-  )
-})
+  );
+}

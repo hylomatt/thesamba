@@ -1,34 +1,14 @@
-import Head from 'next/head'
-import React from 'react'
-import Link from 'next/link'
+import Head from "next/head";
+import React from "react";
+import Link from "next/link";
 
-import { Box, Grid, Typography, Hidden } from '@material-ui/core'
-import { withStyles } from '@material-ui/core/styles'
+import { Box, Grid, Typography, Hidden } from "@mui/material";
 
-import { getTopic } from '../../../utils/getters'
-import Header from '../../../components/Header'
-import Breadcrumb from '../../../components/Breadcrumb'
+import { getTopic } from "../../../utils/getters";
+import Header from "../../../components/Header";
+import Breadcrumb from "../../../components/Breadcrumb";
 
-export default withStyles({
-  root: {
-    color: 'white'
-  },
-  postContent: {
-    wordWrap: 'break-word'
-  },
-  pageButton: {
-    margin: '0px 4px 8px'
-  },
-  pageButtonInner: {
-    width: '40px',
-    textAlign: 'center',
-    lineHeight: '40px'
-  },
-  pageButtonInnerCurrent: {
-    backgroundColor: '#fff',
-    outline: '1px solid #e7e7e7'
-  }
-})(({ data, classes }) => {
+export default function Main({ data }) {
   return (
     <Box p={{ xs: 0, md: 1 }}>
       <Head>
@@ -49,12 +29,12 @@ export default withStyles({
           <Box py={1} mb={2} bgcolor="primary.main">
             <Grid container>
               <Grid item xs={2}>
-                <Typography align="center" className={classes.root}>
+                <Typography align="center" sx={{ color: "white" }}>
                   Author
                 </Typography>
               </Grid>
               <Grid item xs={10}>
-                <Typography align="center" className={classes.root}>
+                <Typography align="center" sx={{ color: "white" }}>
                   Message
                 </Typography>
               </Grid>
@@ -67,20 +47,28 @@ export default withStyles({
             <Grid container>
               <Grid item xs={12} sm={12} md={2}>
                 <Box p={1} bgcolor="secondary.light">
-                  <Grid container justifyContent="space-between" alignItems="center">
+                  <Grid
+                    container
+                    justifyContent="space-between"
+                    alignItems="center"
+                  >
                     <Grid item>
-                      <Link href={el.name.href || ''} passHref>
-                        <Typography component="a">{el.name.title}</Typography>
+                      <Link href={el.name.href || ""} passHref>
+                        {el.name.title}
                       </Link>
                     </Grid>
                     <Hidden mdUp>
                       <Grid item>
-                        <Typography variant="body2">{el.postDetails[0]}</Typography>
+                        <Typography variant="body2">
+                          {el.postDetails[0]}
+                        </Typography>
                       </Grid>
                     </Hidden>
                   </Grid>
                   <Hidden smDown>
-                    <Box dangerouslySetInnerHTML={{ __html: el.posterDetails }}></Box>
+                    <Box
+                      dangerouslySetInnerHTML={{ __html: el.posterDetails }}
+                    ></Box>
                   </Hidden>
                 </Box>
               </Grid>
@@ -88,12 +76,19 @@ export default withStyles({
                 <Box pl={{ xs: 0, md: 1 }}>
                   <Hidden smDown>
                     <Box mb={1} p={1} bgcolor="secondary.light">
-                      <Typography component="div" dangerouslySetInnerHTML={{ __html: el.postDetails[0] }} />
+                      <Typography
+                        component="div"
+                        dangerouslySetInnerHTML={{ __html: el.postDetails[0] }}
+                      />
                       {/* <Typography component="div" dangerouslySetInnerHTML={{ __html: el.postDetails[1] }} /> */}
                     </Box>
                   </Hidden>
                   <Box py={1} px={2}>
-                    <Typography component="div" className={classes.postContent} dangerouslySetInnerHTML={{ __html: el.content }} />
+                    <Typography
+                      component="div"
+                      sx={{ wordWrap: "break-word" }}
+                      dangerouslySetInnerHTML={{ __html: el.content }}
+                    />
                   </Box>
                 </Box>
               </Grid>
@@ -103,36 +98,54 @@ export default withStyles({
         <Box p={2}>
           <Grid container justifyContent="center">
             {data.page.pages.map((el, i) => (
-              <Grid item key={`topic-page-${i}`} className={classes.pageButton}>
-                {el.href
-                  ? (
-                    <Link href={el.href || ''} passHref>
-                      <Typography component="a">
-                        <Box bgcolor="secondary.light" className={classes.pageButtonInner}>{el.title}</Box>
-                      </Typography>
-                    </Link>
-                  )
-                  : (
-                    <Typography>
-                      <Box bgcolor="secondary.light" className={`${classes.pageButtonInner} ${el.current && classes.pageButtonInnerCurrent}`}>{el.title}</Box>
-                    </Typography>
-                  )}
+              <Grid item key={`topic-page-${i}`} sx={{ margin: "0px 4px 8px" }}>
+                {el.href ? (
+                  <Link href={el.href || ""} passHref>
+                    <Box
+                      bgcolor="secondary.light"
+                      sx={{
+                        width: "40px",
+                        textAlign: "center",
+                        lineHeight: "40px",
+                      }}
+                    >
+                      {el.title}
+                    </Box>
+                  </Link>
+                ) : (
+                  <Typography>
+                    <Box
+                      bgcolor="secondary.light"
+                      sx={{
+                        width: "40px",
+                        textAlign: "center",
+                        lineHeight: "40px",
+                        ...(el.current && {
+                          backgroundColor: "#fff",
+                          outline: "1px solid #e7e7e7",
+                        }),
+                      }}
+                    >
+                      {el.title}
+                    </Box>
+                  </Typography>
+                )}
               </Grid>
             ))}
           </Grid>
         </Box>
       </Box>
     </Box>
-  )
-})
+  );
+}
 
 export async function getServerSideProps(context) {
-  const { data, ...rest } = await getTopic(context.req)
-  context.res.setHeader('set-cookie', rest.cookies || [])
+  const { data, ...rest } = await getTopic(context.req);
+  context.res.setHeader("set-cookie", rest.cookies || []);
 
   return {
     props: {
-      data
-    }
-  }
+      data,
+    },
+  };
 }

@@ -1,23 +1,24 @@
-import React from 'react'
-import Head from 'next/head'
-import Link from 'next/link'
-import Image from 'next/image'
+import React from "react";
+import Head from "next/head";
+import Link from "next/link";
+import Image from "next/image";
 
-import { Box, Typography, Grid, Hidden } from '@material-ui/core'
-import { withStyles } from '@material-ui/core/styles'
+import { Box, Typography, Grid, Hidden } from "@mui/material";
+import { styled } from "@mui/system";
 
-import { getGallery } from '../../../utils/getters'
-import Header from '../../../components/Header'
+import { getGallery } from "../../../utils/getters";
+import Header from "../../../components/Header";
 
-export default withStyles({
-  root: {
-    color: 'white'
-  },
-  catTitle: {
-    display: 'block',
-    padding: '8px 0'
-  }
-})(({ data, classes }) => {
+const StyledTypography = styled(Typography)({
+  color: "white",
+});
+
+const StyledCatTitle = styled(Link)({
+  display: "block",
+  padding: "8px 0",
+});
+
+export default function Main({ data }) {
   return (
     <Box p={{ xs: 0, md: 1 }}>
       <Head>
@@ -31,18 +32,22 @@ export default withStyles({
           <Grid item xs={12} sm={6}>
             <Box mb={1} border={1} borderColor="primary.main" align="center">
               <Box bgcolor="primary.main" p={1}>
-                <Typography align="center" className={classes.root}>
-                  Latest Entry
-                </Typography>
+                <StyledTypography align="center">Latest Entry</StyledTypography>
               </Box>
               <Box p={1}>
                 <Link href={data.page.latestEntry.href}>
-                  <a>
-                    <img src={data.page.latestEntry.img.src} alt={data.page.latestEntry.topictitle} />
-                  </a>
+                  <img
+                    src={data.page.latestEntry.img.src}
+                    alt={data.page.latestEntry.topictitle}
+                  />
                 </Link>
                 <Typography>{data.page.latestEntry.topictitle}</Typography>
-                <Typography component="div" dangerouslySetInnerHTML={{ __html: data.page.latestEntry.postbody }} />
+                <Typography
+                  component="div"
+                  dangerouslySetInnerHTML={{
+                    __html: data.page.latestEntry.postbody,
+                  }}
+                />
               </Box>
             </Box>
           </Grid>
@@ -50,18 +55,22 @@ export default withStyles({
           <Grid item xs={12} sm={6}>
             <Box mb={1} border={1} borderColor="primary.main" align="center">
               <Box bgcolor="primary.main" p={1}>
-                <Typography align="center" className={classes.root}>
-                  Stolen
-                </Typography>
+                <StyledTypography align="center">Stolen</StyledTypography>
               </Box>
               <Box p={1}>
                 <Link href={data.page.stolen.href}>
-                  <a>
-                    <img src={data.page.stolen.img.src} alt={data.page.stolen.topictitle} />
-                  </a>
+                  <img
+                    src={data.page.stolen.img.src}
+                    alt={data.page.stolen.topictitle}
+                  />
                 </Link>
                 <Typography>{data.page.stolen.topictitle}</Typography>
-                <Typography component="div" dangerouslySetInnerHTML={{ __html: data.page.stolen.postbody }} />
+                <Typography
+                  component="div"
+                  dangerouslySetInnerHTML={{
+                    __html: data.page.stolen.postbody,
+                  }}
+                />
               </Box>
             </Box>
           </Grid>
@@ -72,23 +81,17 @@ export default withStyles({
             <Grid container>
               <Grid item xs={9}>
                 <Box p={1}>
-                  <Typography align="center" className={classes.root}>
-                    Category
-                  </Typography>
+                  <StyledTypography align="center">Category</StyledTypography>
                 </Box>
               </Grid>
               <Grid item xs={1}>
                 <Box p={1}>
-                  <Typography align="right" className={classes.root}>
-                    Pics
-                  </Typography>
+                  <StyledTypography align="right">Pics</StyledTypography>
                 </Box>
               </Grid>
               <Grid item xs={2}>
                 <Box p={1}>
-                  <Typography align="right" className={classes.root}>
-                    Last Post
-                  </Typography>
+                  <StyledTypography align="right">Last Post</StyledTypography>
                 </Box>
               </Grid>
             </Grid>
@@ -99,12 +102,10 @@ export default withStyles({
           <Box bgcolor="primary.main" p={1}>
             <Grid container>
               <Grid item xs={10}>
-                <Typography className={classes.root}>Categories</Typography>
+                <StyledTypography>Categories</StyledTypography>
               </Grid>
               <Grid item xs={2}>
-                <Typography align="right" className={classes.root}>
-                  Pics
-                </Typography>
+                <StyledTypography align="right">Pics</StyledTypography>
               </Grid>
             </Grid>
           </Box>
@@ -113,11 +114,7 @@ export default withStyles({
               <Box key={`mobile-categories-${i}`}>
                 <Grid container alignItems="center">
                   <Grid item xs={10}>
-                    <Link href={cat.href}>
-                      <Typography component="a" className={classes.catTitle}>
-                        {cat.title}
-                      </Typography>
-                    </Link>
+                    <StyledCatTitle href={cat.href}>{cat.title}</StyledCatTitle>
                   </Grid>
                   <Grid item xs={2}>
                     <Typography align="right">{cat.pics}</Typography>
@@ -129,16 +126,16 @@ export default withStyles({
         </Box>
       </Box>
     </Box>
-  )
-})
+  );
+}
 
 export async function getServerSideProps(context) {
-  const { data, ...rest } = await getGallery(context.req)
-  context.res.setHeader('set-cookie', rest.cookies || [])
+  const { data, ...rest } = await getGallery(context.req);
+  context.res.setHeader("set-cookie", rest.cookies || []);
 
   return {
     props: {
-      data
-    }
-  }
+      data,
+    },
+  };
 }

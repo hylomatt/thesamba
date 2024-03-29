@@ -1,17 +1,12 @@
-import React from 'react'
-import Head from 'next/head'
+import React from "react";
+import Head from "next/head";
 
-import { Box, Typography } from '@material-ui/core'
-import { withStyles } from '@material-ui/core/styles'
+import { Box, Typography } from "@mui/material";
 
-import { getHome } from '../../../../utils/getters'
-import Header from '../../../../components/Header'
+import { getHome } from "../../../../utils/getters";
+import Header from "../../../../components/Header";
 
-export default withStyles({
-  root: {
-    color: 'white'
-  }
-})(({ data, classes }) => {
+export default function Main({ data }) {
   return (
     <Box p={{ xs: 0, md: 1 }}>
       <Head>
@@ -24,16 +19,16 @@ export default withStyles({
         <Typography>Chat</Typography>
       </Box>
     </Box>
-  )
-})
+  );
+}
 
 export async function getServerSideProps(context) {
-  const { data, ...rest } = await getHome(context.req)
-  context.res.setHeader('set-cookie', rest.cookies || [])
+  const { data, ...rest } = await getHome(context.req);
+  context.res.setHeader("set-cookie", rest.cookies || []);
 
   return {
     props: {
-      data
-    }
-  }
+      data,
+    },
+  };
 }
