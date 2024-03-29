@@ -19,9 +19,10 @@
     "cookies": "^0.8.0",
     "copy-to-clipboard": "^3.3.3",
     "date-fns": "^2.30.0",
+    "iconv-lite": "^0.6.3",
     "lodash": "^4.17.21",
-    "next": "^11.1.4",
-    "next-universal-cookie": "^2.0.0",
+    "next": "^12.3.4",
+    "next-universal-cookie": "^3.1.0",
     "node-fetch": "^2.6.1",
     "postcss": "^8.2.8",
     "prettier": "^2.2.1",
@@ -36,6 +37,6 @@
   },
   "devDependencies": {
     "@types/material-ui": "^0.21.17",
-    "eslint-config-next": "14.1.4"
+    "eslint-config-next": "^12.3.4"
   }
 }

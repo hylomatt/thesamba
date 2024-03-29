@@ -71,12 +71,12 @@ export default withStyles({
               <Slider {...sliderSettings} ref={sliderRef} className={classes.slider}>
                 {!data.page.thumbnails.length && (
                   <Box onClick={gotoNext} className={classes.slideBox}>
-                    <Image src={data.page.mainPhoto.src} alt={data.page.mainPhoto.alt} width="100%" />
+                    <img src={data.page.mainPhoto.src} alt={data.page.mainPhoto.alt} width="100%" />
                   </Box>
                 )}
                 {data.page.thumbnails.map((item, i) => (
                   <Box key={`detail-image-${data.page.adId}-${i}`} onClick={gotoNext} className={classes.slideBox}>
-                    <Image src={item.src.replace('thumbnails/', '')} alt={item.alt} width="100%" />
+                    <img src={item.src.replace('thumbnails/', '')} alt={item.alt} width="100%" />
                     {item.label && (
                       <Typography variant="body2" align="center" className={classes.slideText}>
                         {item.label}

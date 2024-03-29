@@ -63,7 +63,7 @@ export default withStyles((theme) => ({}))(({ data, classes }) => {
         <Box mb={2} align="center">
           <Link href={data.page.detail.href}>
             <a>
-              <Image src={data.page.detail.img.src} alt={data.page.detail.title} />
+              <img src={data.page.detail.img.src} alt={data.page.detail.title} />
             </a>
           </Link>
           <Box my={1}>
@@ -94,7 +94,7 @@ export default withStyles((theme) => ({}))(({ data, classes }) => {
               </Box>
 
               <Box mt={2}>
-                <Grid container justify="space-evenly">
+                <Grid container justifyContent="space-evenly">
                   <Grid item>
                     <Link href={data.page.detail.href} passHref>
                       <Button component="a" variant="contained" onClick={onCancel} size="large">

@@ -69,7 +69,7 @@ export default withStyles({
               <Box p={1}>
                 {/* <Link href={data.page.href} passHref>
                   <a style={{ display: 'block' }}> */}
-                <Image src={data.page.img.src} alt={data.page.img.alt} className={classes.image} />
+                <img src={data.page.img.src} alt={data.page.img.alt} className={classes.image} />
                 {/* <div style={{ position: 'relative', width: '100%', height: '400px', paddingBottom: '20%' }}>
                   <Image src={data.page.img.src} alt={data.page.img.alt} layout="fill" objectFit="cover" />
                 </div> */}

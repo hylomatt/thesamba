@@ -85,7 +85,7 @@ export default withStyles({
                     </Box>
                   </Grid>
                   <Hidden smUp>
-                    <Grid item xs={12} container justify="flex-end">
+                    <Grid item xs={12} container justifyContent="flex-end">
                       <Typography align="right">Topics: {subEl.topics}</Typography>
                       <Box mx={1} height={16}>
                         <Divider orientation="vertical" />

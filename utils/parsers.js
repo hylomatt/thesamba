@@ -24,7 +24,12 @@ const getFQUrl = (basePath, href) => {
 }
 
 const parseImage = (basePath, imgHtml) => {
-  const $ = cheerio(imgHtml)
+  let $ = null;
+  try {
+    $ = cheerio.load(imgHtml, null, false)
+  } catch (e) {
+    $ = imgHtml
+  }
   return {
     src: getFQUrl(basePath, $.attr('src')) || null,
     alt: $.attr('alt') || null,

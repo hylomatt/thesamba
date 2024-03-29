@@ -30,7 +30,7 @@ export default withStyles((theme) => ({
 
   return (
     <Box py={2} bgcolor="secondary.light">
-      <Grid container justify="space-evenly">
+      <Grid container justifyContent="space-evenly">
         <Grid item className={classes.pagingPrevNextGrid}>
           {prevPage
             ? (

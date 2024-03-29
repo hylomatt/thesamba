@@ -62,7 +62,7 @@ export default withStyles((theme) => ({
       <Header data={data} selected="Home" />
 
       <Box px={{ xs: 1, md: 0 }} py={1}>
-        <Grid container justify="space-between">
+        <Grid container justifyContent="space-between">
           <Hidden smDown>
             <Grid item xs={11} md={3}>
               <Box mb={1} mr={{ md: 2 }} border={1} borderColor="secondary.light">
@@ -150,14 +150,14 @@ export default withStyles((theme) => ({
                 <Typography>Featured Ads</Typography>
               </Box>
               <Box p={1}>
-                <Grid container justify="center" alignItems="flex-start">
+                <Grid container justifyContent="center" alignItems="flex-start">
                   {data.page.featuredAds.map((el, i) => (
                     <Grid item xs={6} sm={4} md={2} key={`classifieds-random-ads-${i}`}>
                       <Box px={2} pb={2} align="center">
                         <Link href={el.href} key={`classifieds-featured-ads-${i}`}>
                           <a>
                             <div>
-                              <Image src={el.img.src} alt={el.title} />
+                              <img src={el.img.src} alt={el.title} />
                             </div>
                             <Typography align="center">{el.title}</Typography>
                           </a>
@@ -175,14 +175,14 @@ export default withStyles((theme) => ({
                 <Typography>Random Featured Ads</Typography>
               </Box>
               <Box p={1}>
-                <Grid container justify="center" alignItems="flex-start">
+                <Grid container justifyContent="center" alignItems="flex-start">
                   {data.page.randomAds.map((el, i) => (
                     <Grid item xs={6} sm={4} md={2} key={`classifieds-random-ads-${i}`}>
                       <Box px={2} pb={2} align="center">
                         <Link href={el.href}>
                           <a>
                             <div>
-                              <Image src={el.img.src} alt={el.title} />
+                              <img src={el.img.src} alt={el.title} />
                             </div>
                             <Typography component="div" align="center">
                               <Box {...(el.heavyTitle && { fontWeight: 'fontWeightBold' })}>{el.title}</Box>

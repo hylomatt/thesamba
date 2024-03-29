@@ -91,7 +91,7 @@ export default withStyles((theme) => ({
       <>
         <HeaderTop data={preHeader} loggedIn={loggedIn} />
         <Box bgcolor="primary.dark">
-          <Grid container justify="space-between" alignItems="center" wrap="nowrap">
+          <Grid container justifyContent="space-between" alignItems="center" wrap="nowrap">
             <Hidden mdUp>
               <IconButton className={classes.menuBtn} aria-label="menu" color="secondary" onClick={() => setMenu(true)}>
                 <MenuIcon fontSize="large" color="secondary" />
@@ -260,7 +260,7 @@ export default withStyles((theme) => ({
 
         <Hidden smDown>
           <Box bgcolor="primary.main">
-            <Grid container justify="center" alignItems="center">
+            <Grid container justifyContent="center" alignItems="center">
               {nav.map((el, i) => (
                 <React.Fragment key={`nav-item-${el.title.toLowerCase().replace(/[^a-z0-9]/, '-')}`}>
                   <Box px={2} py={1}>

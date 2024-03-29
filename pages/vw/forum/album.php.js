@@ -38,7 +38,7 @@ export default withStyles({
               <Box p={1}>
                 <Link href={data.page.latestEntry.href}>
                   <a>
-                    <Image src={data.page.latestEntry.img.src} alt={data.page.latestEntry.topictitle} />
+                    <img src={data.page.latestEntry.img.src} alt={data.page.latestEntry.topictitle} />
                   </a>
                 </Link>
                 <Typography>{data.page.latestEntry.topictitle}</Typography>
@@ -57,7 +57,7 @@ export default withStyles({
               <Box p={1}>
                 <Link href={data.page.stolen.href}>
                   <a>
-                    <Image src={data.page.stolen.img.src} alt={data.page.stolen.topictitle} />
+                    <img src={data.page.stolen.img.src} alt={data.page.stolen.topictitle} />
                   </a>
                 </Link>
                 <Typography>{data.page.stolen.topictitle}</Typography>

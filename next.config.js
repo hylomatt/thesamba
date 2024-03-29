@@ -5,6 +5,8 @@ module.exports = {
     domains: ['www.thesamba.com']
   },
 
+  swcMinify: true,
+
   async redirects() {
     return [
       {

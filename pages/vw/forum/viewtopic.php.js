@@ -67,7 +67,7 @@ export default withStyles({
             <Grid container>
               <Grid item xs={12} sm={12} md={2}>
                 <Box p={1} bgcolor="secondary.light">
-                  <Grid container justify="space-between" alignItems="center">
+                  <Grid container justifyContent="space-between" alignItems="center">
                     <Grid item>
                       <Link href={el.name.href || ''} passHref>
                         <Typography component="a">{el.name.title}</Typography>
@@ -101,7 +101,7 @@ export default withStyles({
           </Box>
         ))}
         <Box p={2}>
-          <Grid container justify="center">
+          <Grid container justifyContent="center">
             {data.page.pages.map((el, i) => (
               <Grid item key={`topic-page-${i}`} className={classes.pageButton}>
                 {el.href
